@@ -35,11 +35,11 @@
   #include "frame_output_v234fb.h"
   #define CHNL_CNT io::IO_DATA_CH3
 #endif // else from #ifdef __STANDALONE__
-std::cout << CHNL_CNT;
+
 #include "seq_public.h"
 #include <ctime> // added to calculate FPS ~~RAY ADDED THIS~~
+#include <opencv2/opencv.hpp>
 #include <typeinfo>
-#include <iostream>
 //***************************************************************************
 
 // Possible to set input resolution (must be supported by the DCU)
@@ -117,7 +117,7 @@ int main(int, char **)
   }
 
   printf("Press Ctrl+C to terminate the demo.\n");
-
+  printf("Jake loves cocks.\n");
   io::FrameOutputV234Fb lDcuOutput(WIDTH,
                         HEIGHT,
                         io::IO_DATA_DEPTH_08,
@@ -157,14 +157,10 @@ int main(int, char **)
   lIsp.StartCam();
 
 
-  //using namespace std;
   lpFrame = lIsp.GetFrame();
-  printf("%s\n", "-----------" );
-  std::cout << typeid(lpFrame).name() << "\n";
-  printf("%s\n", "-----------" );
-
   while(lpFrame)
-	{
+  {
+	//std::cout << typeid(lpFrame).name() << "\n";
     lpFrame = OAL_MemoryReturnAddress(
                           lpFrame,
                           ACCESS_PHY + 1); // get virtual address
@@ -173,9 +169,13 @@ int main(int, char **)
 	clock_t begin = clock();
 	lpFrame = lIsp.GetFrame();
 	clock_t end = clock();
-	double elapsedTime = double(end - begin)/ CLOCKS_PER_SEC;
-	double fps = 1/elapsedTime;
-	printf("FPS: %.2lf \n", fps);
+	//double elapsedTime = double(end - begin)/ CLOCKS_PER_SEC;
+	//double fps = 1/elapsedTime;
+//	string txt = sprintf("FPS: %.2lf \n", fps);
+//	string txt = "HELLO WORLD!";
+	//cv::Point txtPt(10,10);
+//	putText(lpFrame, txt, txtPt,1, 2, cv::Scalar(4, 1, 8),2, false);
+//	printf("%s \n", txt);
 #ifndef __STANDALONE__
     if(sStop)
     {
