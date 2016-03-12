@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{855B3E3B-89E7-4065-A87D-FD0F3E7C7E27}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>orb_apex2_emu</RootNamespace>
+  </PropertyGroup>
+  <!--Take care, this is added manually, won't show in the VS Interface -->
+  <ImportGroup Label="Macros" />
+  <PropertyGroup Label="UserMacros">
+    <MyProjectRoot>.\..\..\..\..\..\s32v234_sdk</MyProjectRoot>
+  </PropertyGroup>
+  <!-- End of manually added section -->
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\OpenCV_Debug.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\common.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\KernelDirectory.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\ACF_Lib.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\feature_detection_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\filtering_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\comparison_kernels.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\OpenCV_Release.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\common.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\KernelDirectory.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\ACF_Lib.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\feature_detection_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\filtering_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\comparison_kernels.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(ProjectDir)..\..\..\..\ocv\win32-x86\include;$(ProjectDir)..\..\..\..\tools\emu\apu\src;$(ProjectDir)..\..\..\..\tools\emu\acf\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\..\..\ocv\win32-x86\vc12\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(ProjectDir)..\..\..\..\ocv\win32-x86\include;$(ProjectDir)..\..\..\..\tools\emu\apu\src;$(ProjectDir)..\..\..\..\tools\emu\acf\src;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)..\..\..\..\ocv\win32-x86\vc12\lib;$(LibraryPath)</LibraryPath>
+    <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>APEX2_EMULATE;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\graphs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command />
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>APEX2_EMULATE;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\graphs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\descriptor.cpp" />
+    <ClCompile Include="..\..\src\orb.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\graphs\apu_fast9_apu_process_desc.hpp" />
+    <ClInclude Include="..\..\graphs\apu_fast9_graph.h" />
+    <ClInclude Include="..\..\graphs\apu_fast9_graph.hpp" />
+    <ClInclude Include="..\..\graphs\apu_match_descriptors_apu_process_desc.hpp" />
+    <ClInclude Include="..\..\graphs\apu_match_descriptors_graph.h" />
+    <ClInclude Include="..\..\graphs\apu_match_descriptors_graph.hpp" />
+    <ClInclude Include="..\..\include\descriptor.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\kernels\apu\comparison_kernels\build-deskwin32\mvc\comparison_kernels_acf.vcxproj">
+      <Project>{c0332039-b96a-4824-b815-597cd8739d02}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\comparison_kernels\build-deskwin32\mvc\comparison_kernels_apu.vcxproj">
+      <Project>{afec36c0-d820-46ee-af81-5ae51205a3e4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\feature_detection_kernels\build-deskwin32\mvc\feature_detection_kernels_acf.vcxproj">
+      <Project>{2d590f92-c802-44fa-b887-97b1f4b6db13}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\feature_detection_kernels\build-deskwin32\mvc\feature_detection_kernels_apu.vcxproj">
+      <Project>{bef5868d-334c-40d6-b0cd-050cd3c36f80}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\filtering_kernels\build-deskwin32\mvc\filtering_kernels_acf.vcxproj">
+      <Project>{f17dfb91-f468-45c1-b0ec-9520825317d0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\filtering_kernels\build-deskwin32\mvc\filtering_kernels_apu.vcxproj">
+      <Project>{862d917e-736b-406b-98b9-2ba5a15e4396}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\libs\arm\utils\common\build-deskwin32\mvc\common.vcxproj">
+      <Project>{89794e96-83e7-4d4f-b218-67e7323e3223}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\tools\emu\acf\build-deskwin32\mvc\ACF_lib.vcxproj">
+      <Project>{2180b2fd-44a1-4d04-b39e-db2085617c79}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\tools\emu\apu\build-deskwin32\mvc\APU_lib.vcxproj">
+      <Project>{faa8b398-f947-4142-864a-ad16f87569fe}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,37 @@
+#!gbuild
+#component integrity_virtual_address_space
+[Program]
+	-I../
+	-I../../include
+	-I../../graphs
+	-I$__VISION_S32V234_SDK/libs/arm/apex/apex/user/include
+	-I$__VISION_S32V234_SDK/libs/arm/apex/acf/include
+	-I$__VISION_S32V234_SDK/libs/arm/apex/icp/include
+	-I$__VISION_S32V234_SDK/libs/arm/utils/oal/user/include
+	-I$__VISION_S32V234_SDK/libs/arm/utils/common/include
+	-I$__VISION_S32V234_SDK/ocv/integrity-arm64/include
+	-I$__VISION_S32V234_SDK/libs/arm/utils/ocl/include
+	-lposix
+	-L$__VISION_S32V234_SDK/ocv/integrity-arm64/lib
+	-lopencv_core
+	-L$__VISION_S32V234_SDK/ocv/integrity-arm64/share/OpenCV/3rdparty/lib
+	-lzlib
+	-livfs
+	-livfsserver
+	-lhostio
+	-lposix
+	-lmath
+	--std
+	--g++
+../../src/main.cpp
+../../src/FloydWarshall.cpp
+$__VISION_S32V234_SDK/libs/arm/utils/oal/build-v234ce-ghs-integrity-d/multi/liboal.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/apex/user/build-v234ce-ghs-integrity-d/multi/libapexuser.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/icp/build-v234ce-ghs-integrity-d/multi/libicp.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/acf/build-v234ce-ghs-integrity-d/multi/libacf.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/utils/ocl/build-v234ce-ghs-integrity-d/multi/libocl.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/ocl_apex/build-v234ce-ghs-integrity-d/multi/libocl_apex.gpj		[Library]   
+
+
+
+

@@ -1,0 +1,22 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I..
+        -I../../src
+        -I../../graphs
+        -I../../../../../arm/apex/icp/include
+        -I../../../../../arm/apex/acf/include
+        -I../../../../../arm/utils/common/include
+        -I../../../../../arm/apex/apex/user/include
+        -I../../../../../arm/utils/oal/user/include
+        -I../../../../../arm/apexcv_base/apexcv_core/include
+../../../../../arm/apexcv_base/color_conversion/src/color_conversion.cpp
+../../../../../arm/apexcv_base/color_conversion/src/apexcv_rgb565_to_rgb888.cpp
+../../../../../arm/apexcv_base/color_conversion/src/apexcv_rgb888_to_rgb565.cpp
+../../../../../arm/apexcv_base/color_conversion/src/apexcv_rgb888_to_y.cpp
+../../../../../arm/apexcv_base/color_conversion/src/apexcv_rgb888_to_yuv.cpp
+../../../../../arm/apexcv_base/color_conversion/src/apexcv_ht_8uc3_to_y.cpp
+../../../../../arm/apexcv_base/color_conversion/src/apexcv_color_conversion_ref.cpp

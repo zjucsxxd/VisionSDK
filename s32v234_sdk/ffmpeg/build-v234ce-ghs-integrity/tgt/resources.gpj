@@ -1,0 +1,8 @@
+#!gbuild
+#component target_resources
+[Project]
+default.ld
+INTEGRITY.ld
+default.bsp
+devtree-arm64.notes
+$__BSP_DIR/default.con

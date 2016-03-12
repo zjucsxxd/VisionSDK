@@ -1,0 +1,672 @@
+/* pocl_cl.h - local runtime library declarations.
+
+   Copyright (c) 2011 Universidad Rey Juan Carlos
+                 2011-2012 Pekka Jääskeläinen
+   
+   Permission is hereby granted, free of charge, to any person obtaining a copy
+   of this software and associated documentation files (the "Software"), to deal
+   in the Software without restriction, including without limitation the rights
+   to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+   copies of the Software, and to permit persons to whom the Software is
+   furnished to do so, subject to the following conditions:
+   
+   The above copyright notice and this permission notice shall be included in
+   all copies or substantial portions of the Software.
+   
+   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+   IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+   FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+   AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+   LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+   OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+   THE SOFTWARE.
+*/
+
+#ifndef POCL_CL_H
+#define POCL_CL_H
+
+#include "config.h"
+#include <assert.h>
+#include <stdio.h>
+#include <pthread.h>
+
+#define CL_USE_DEPRECATED_OPENCL_1_1_APIS
+#ifdef BUILD_ICD
+#  include "pocl_icd.h"
+#endif
+#include "pocl.h"
+
+#define POCL_FILENAME_LENGTH 1024
+
+#define POCL_BUILD "pocl-build"
+#define POCL_KERNEL "pocl-kernel"
+#define POCL_WORKGROUP "pocl-workgroup"
+
+/* The filename in which the program source is stored in the program's temp dir. */
+#define POCL_PROGRAM_CL_FILENAME "program.cl"
+/* The filename in which the program LLVM bc is stored in the program's temp dir. */
+#define POCL_PROGRAM_BC_FILENAME "program.bc"
+/* The filename in which the work group (parallelizable) kernel LLVM bc is stored in 
+   the kernel's temp dir. */
+#define POCL_PARALLEL_BC_FILENAME "parallel.bc"
+
+#if __STDC_VERSION__ < 199901L
+# if __GNUC__ >= 2
+#  define __func__ __PRETTY_FUNCTION__
+# else
+#  define __func__ UNKNOWN_FUNCTION
+# endif
+#endif
+
+#ifdef CLANGXX
+#define LINK_CMD CLANGXX
+#else
+#define LINK_CMD CLANG
+#endif
+
+/* Debugging macros. Also macros for marking unimplemented parts of specs or
+   untested parts of the implementation. */
+
+#define POCL_ABORT_UNIMPLEMENTED()                                      \
+    do {                                                                \
+        fprintf(stderr, "pocl error: encountered unimplemented part of the OpenCL specs in %s:%d\n", __FILE__, __LINE__); \
+        exit(2);                                                        \
+    } while (0) 
+
+#define POCL_WARN_UNTESTED()                                            \
+    do {                                                                \
+        fprintf(stderr, "pocl warning: encountered untested part of the implementation in %s:%d\n", __FILE__, __LINE__); \
+    } while (0) 
+
+#define POCL_WARN_INCOMPLETE()                                            \
+    do {                                                                \
+        fprintf(stderr, "pocl warning: encountered incomplete implementation in %s:%d\n", __FILE__, __LINE__); \
+    } while (0) 
+
+#define POCL_ABORT(__MSG__)                                      \
+    do {                                                                \
+        fprintf(stderr, __MSG__); \
+        exit(2);                                                        \
+    } while (0) 
+
+#define POCL_ERROR(x) do { if (errcode_ret != NULL) {*errcode_ret = (x); } return NULL; } while (0)
+#define POCL_SUCCESS() do { if (errcode_ret != NULL) {*errcode_ret = CL_SUCCESS; } } while (0)
+
+// [cxu]: use #else to re-enable pocl implementation
+#define __APEX_OCL__
+
+#ifdef __APEX_OCL__
+#include <oal.h>
+// OAL_SEMAPHORE
+//typedef union {
+//    struct __pthread_mutex_s __data;
+//    char __size[__SIZEOF_PTHREAD_MUTEX_T];
+//    long int __align;
+//} pthread_mutex_t;
+
+//typedef union
+//{
+//
+//}pthread_mutex_t;
+
+typedef OAL_SEMAPHORE my_pthread_mutex_t;
+// default value (only static mutex): 0/1 depending on where it is used
+#define MUTEX_INITIALIZER	(0)
+//
+/* OAL_SemaphoreCreate: binary(FIFO)/mutex(priority)
+ *
+ * LIB_RESULT OAL_SemaphoreCreate(OAL_SEMAPHORE *pSem,
+ * const char *pName, OAL_SEMAPHORE_TYPE type, unsigned int count);
+ *
+ * pthread_mutex_init:
+ * int pthread_mutex_init(pthread_mutex_t *restrict mutex,
+ * const pthread_mutexattr_t *restrict attr);
+*/
+//#define nucleus_binary_sema_init(a, #a)
+#define mutex_init(a, b) 	OAL_SemaphoreCreate(a, #a, OAL_SEMAPHORE_COUNTING, 1)
+
+// OAL_SemaphoreObtain
+#define mutex_lock(a)    	OAL_SemaphoreObtain(*a)
+// OAL_SemaphoreRelease
+#define mutex_unlock(a)  	OAL_SemaphoreRelease(*a)
+#define mutex_destroy(a)   OAL_SemaphoreDelete(*a)
+#endif
+//[end]
+
+typedef my_pthread_mutex_t pocl_lock_t;
+#define POCL_LOCK_INITIALIZER MUTEX_INITIALIZER
+
+/* Generic functionality for handling different types of 
+   OpenCL (host) objects. */
+
+#define POCL_LOCK(__LOCK__) mutex_lock (&(__LOCK__))
+#define POCL_UNLOCK(__LOCK__) mutex_unlock (&(__LOCK__))
+#define POCL_INIT_LOCK(__LOCK__) mutex_init (&(__LOCK__), NULL)
+#define POCL_DESTROY_LOCK(__LOCK__) mutex_destroy (&(__LOCK__))
+
+#define POCL_LOCK_OBJ(__OBJ__) POCL_LOCK((__OBJ__)->pocl_lock)
+#define POCL_UNLOCK_OBJ(__OBJ__) POCL_UNLOCK((__OBJ__)->pocl_lock)
+
+#define POCL_FREE(p)                              \
+  do{                                             \
+    if((void *)p != (void *)NULL){                \
+      free((void *)p);                            \
+      p = NULL;                                   \
+    }                                             \
+  }while(0)
+
+#define POCL_RELEASE_OBJECT(__OBJ__, __NEW_REFCOUNT__)  \
+  do {                                                  \
+    if((__OBJ__)->pocl_refcount > 0)                    \
+    {                                                   \
+      POCL_LOCK_OBJ (__OBJ__);                            \
+      __NEW_REFCOUNT__ = --(__OBJ__)->pocl_refcount;    \
+      POCL_UNLOCK_OBJ (__OBJ__);                        \
+      if (__NEW_REFCOUNT__ == 0) POCL_DESTROY_LOCK ((__OBJ__)->pocl_lock); \
+    }                                                   \
+    else                                                \
+    {                                                   \
+      __NEW_REFCOUNT__ = 0xFFFFFFFF;                    \
+    }                                                   \
+  } while (0)                          
+
+#define POCL_RETAIN_OBJECT(__OBJ__)             \
+  do {                                          \
+    POCL_LOCK_OBJ (__OBJ__);                    \
+    (__OBJ__)->pocl_refcount++;                   \
+    POCL_UNLOCK_OBJ (__OBJ__);                  \
+  } while (0)
+
+/* The reference counter is initialized to 1,
+   when it goes to 0 object can be freed. */
+#define POCL_INIT_OBJECT_NO_ICD(__OBJ__)         \
+  do {                                           \
+    POCL_INIT_LOCK ((__OBJ__)->pocl_lock);         \
+    (__OBJ__)->pocl_refcount = 1;                  \
+  } while (0)
+
+#ifdef BUILD_ICD
+/* Most (all?) object must also initialize the ICD field */
+#  define POCL_INIT_OBJECT(__OBJ__)                \
+    do {                                           \
+      POCL_INIT_OBJECT_NO_ICD(__OBJ__);            \
+      POCL_INIT_ICD_OBJECT(__OBJ__);               \
+    } while (0)
+#else
+#  define POCL_INIT_OBJECT(__OBJ__)                \
+      POCL_INIT_OBJECT_NO_ICD(__OBJ__)
+#endif
+
+/* Declares the generic pocl object attributes inside a struct. */
+#define POCL_OBJECT \
+  pocl_lock_t pocl_lock; \
+  int pocl_refcount 
+
+#define POCL_OBJECT_INIT \
+  POCL_LOCK_INITIALIZER, 0
+
+#define __APPLE__
+#ifdef __APPLE__
+/* Note: OSX doesn't support aliases because it doesn't use ELF */
+
+#  ifdef BUILD_ICD
+#    error "ICD not supported on OSX"
+#  endif
+#  define POname(name) name
+#  define POdeclsym(name)
+#  define POsym(name)
+#  define POsymAlways(name)
+
+#else
+/* Symbol aliases are supported */
+
+#  define POname(name) PO##name
+#  define POdeclsym(name)			\
+  __typeof__(name) PO##name __attribute__((visibility("hidden")));
+#  define POCL_ALIAS_OPENCL_SYMBOL(name)                                \
+  __typeof__(name) name __attribute__((alias ("PO" #name), visibility("default")));
+#  define POsymAlways(name) POCL_ALIAS_OPENCL_SYMBOL(name)
+#  ifdef DIRECT_LINKAGE
+#    define POsym(name) POCL_ALIAS_OPENCL_SYMBOL(name)
+#  else
+#    define POsym(name)
+#  endif
+
+#endif
+
+/* The ICD compatibility part. This must be first in the objects where
+ * it is used (as the ICD loader assumes that)*/
+#ifdef BUILD_ICD
+#  define POCL_ICD_OBJECT struct _cl_icd_dispatch *dispatch;
+#  define POsymICD(name) POsym(name)
+#  define POdeclsymICD(name) POdeclsym(name)
+#else
+#  define POCL_ICD_OBJECT
+#  define POsymICD(name)
+#  define POdeclsymICD(name)
+#endif
+
+#include "pocl_intfn.h"
+
+/* fields for cl_kernel -> has_arg_metadata */
+#define POCL_HAS_KERNEL_ARG_ADDRESS_QUALIFIER  1
+#define POCL_HAS_KERNEL_ARG_ACCESS_QUALIFIER   2
+#define POCL_HAS_KERNEL_ARG_TYPE_NAME          4
+#define POCL_HAS_KERNEL_ARG_TYPE_QUALIFIER     8
+#define POCL_HAS_KERNEL_ARG_NAME               16
+
+struct pocl_argument {
+  size_t size;
+  void *value;
+};
+
+/**
+ * Enumeration for kernel argument types
+ */
+typedef enum {
+  POCL_ARG_TYPE_NONE = 0,
+  POCL_ARG_TYPE_POINTER = 1,
+  POCL_ARG_TYPE_IMAGE = 2,
+  POCL_ARG_TYPE_SAMPLER = 3,
+} pocl_argument_type;
+
+struct pocl_argument_info {
+  pocl_argument_type type;
+  char is_local;
+  char is_set;
+  cl_kernel_arg_address_qualifier address_qualifier;
+  cl_kernel_arg_access_qualifier access_qualifier;
+  char* type_name;
+  cl_kernel_arg_type_qualifier type_qualifier;
+  char* name;
+};
+
+struct pocl_device_ops {
+  char *device_name;
+  void (*init_device_infos) (struct _cl_device_id*);
+  /* implementation */
+  void (*uninit) (cl_device_id device);
+  unsigned int (*probe) (struct pocl_device_ops *ops);
+  void (*init) (cl_device_id device, const char *parameters);
+  cl_int (*alloc_mem_obj) (cl_device_id device, cl_mem mem_obj);
+  void *(*create_sub_buffer) (void *data, void* buffer, size_t origin, size_t size);
+  void (*free) (void *data, cl_mem_flags flags, void *ptr);
+  void (*read) (void *data, void *host_ptr, const void *device_ptr, size_t cb);
+  void (*read_rect) (void *data, void *host_ptr, void *device_ptr,
+                     const size_t *buffer_origin,
+                     const size_t *host_origin, 
+                     const size_t *region,
+                     size_t buffer_row_pitch,
+                     size_t buffer_slice_pitch,
+                     size_t host_row_pitch,
+                     size_t host_slice_pitch);
+  void (*write) (void *data, const void *host_ptr, void *device_ptr, size_t cb);
+  void (*write_rect) (void *data, const void *host_ptr, void *device_ptr,
+                      const size_t *buffer_origin,
+                      const size_t *host_origin, 
+                      const size_t *region,
+                      size_t buffer_row_pitch,
+                      size_t buffer_slice_pitch,
+                      size_t host_row_pitch,
+                      size_t host_slice_pitch);
+#if 0
+  void (*copy) (void *data, const void *src_ptr,  void *__restrict__ dst_ptr, size_t cb);
+#else
+  void (*copy) (void *data, const void *src_ptr,  void *dst_ptr, size_t cb);
+#endif
+  void (*copy_rect) (void *data, const void *src_ptr, void *dst_ptr,
+                     const size_t *src_origin,
+                     const size_t *dst_origin, 
+                     const size_t *region,
+                     size_t src_row_pitch,
+                     size_t src_slice_pitch,
+                     size_t dst_row_pitch,
+                     size_t dst_slice_pitch);
+
+void (*fill_rect) (void *data,
+                   void *__restrict__ const device_ptr,
+                   const size_t *__restrict__ const buffer_origin,
+                   const size_t *__restrict__ const region,
+                   size_t const buffer_row_pitch,
+                   size_t const buffer_slice_pitch,
+                   void *fill_pixel,
+                   size_t pixel_size);
+
+  /* Maps 'size' bytes of device global memory at buf_ptr + offset to 
+     host-accessible memory. This might or might not involve copying 
+     the block from the device. */
+  void* (*map_mem) (void *data, void *buf_ptr, size_t offset, size_t size, void *host_ptr);
+  void* (*unmap_mem) (void *data, void *host_ptr, void *device_start_ptr, size_t size);
+  
+  void (*compile_submitted_kernels) (_cl_command_node* cmd);
+  void (*run) (void *data, _cl_command_node* cmd);
+  void (*run_native) (void *data, _cl_command_node* cmd);
+  int (*validate_binary) (size_t length, const char *binary);
+  int (*build_program) (void *data, size_t bin_size, void *binary, const char *options, char *dev_tmpdir);
+  int (*create_kernel) (cl_kernel kernel, cl_program program,
+                    const char *kernel_name, char *kern_tmpdir, kernel_metadata *out_kmd,
+                    void **out_dev_kernel_data);
+  int (*delete_kernel) (void *dev_kernel_data);
+  int (*create_workgroup) (void *data, char *default_cmd, char *wg_tmpdir);
+
+  cl_ulong (*get_timer_value) (void *data); /* The current device timer value in nanoseconds. */
+
+  /* Perform initialization steps and can return additional
+     build options that are required for the device. The caller
+     owns the returned string. */
+  char* (*init_build) 
+  (void *data, 
+   const char *dev_tmpdir);
+
+    /* return supported image formats */
+  cl_int (*get_supported_image_formats) (cl_mem_flags flags,
+                                         const cl_image_format **image_formats,
+                                         cl_int *num_image_formats);
+};
+
+struct device_kernel;
+struct _cl_device_id {
+  POCL_ICD_OBJECT
+  POCL_OBJECT;
+  /* queries */
+  cl_device_type type;
+  cl_uint vendor_id;
+  cl_uint max_compute_units;
+  cl_uint max_work_item_dimensions;
+  size_t max_work_item_sizes[3];
+  size_t max_work_group_size;
+  size_t preferred_wg_size_multiple;
+  cl_uint preferred_vector_width_char;
+  cl_uint preferred_vector_width_short;
+  cl_uint preferred_vector_width_int;
+  cl_uint preferred_vector_width_long;
+  cl_uint preferred_vector_width_float;
+  cl_uint preferred_vector_width_double;
+  cl_uint preferred_vector_width_half;
+  cl_uint native_vector_width_char;
+  cl_uint native_vector_width_short;
+  cl_uint native_vector_width_int;
+  cl_uint native_vector_width_long;
+  cl_uint native_vector_width_float;
+  cl_uint native_vector_width_double;
+  cl_uint native_vector_width_half;
+  cl_uint max_clock_frequency;
+  cl_uint address_bits;
+  cl_ulong max_mem_alloc_size;
+  cl_bool image_support;
+  cl_uint max_read_image_args;
+  cl_uint max_write_image_args;
+  size_t image2d_max_width;
+  size_t image2d_max_height;
+  size_t image3d_max_width;
+  size_t image3d_max_height;
+  size_t image3d_max_depth;
+  size_t image_max_buffer_size;
+  size_t image_max_array_size;
+  cl_uint max_samplers;
+  size_t max_parameter_size;
+  cl_uint mem_base_addr_align;
+  cl_uint min_data_type_align_size;
+  cl_device_fp_config half_fp_config;
+  cl_device_fp_config single_fp_config;
+  cl_device_fp_config double_fp_config;
+  cl_device_mem_cache_type global_mem_cache_type;
+  cl_uint global_mem_cacheline_size;
+  cl_ulong global_mem_cache_size;
+  cl_ulong global_mem_size;
+  cl_ulong max_constant_buffer_size;
+  cl_uint max_constant_args;
+  cl_device_local_mem_type local_mem_type;
+  cl_ulong local_mem_size;
+  cl_bool error_correction_support;
+  cl_bool host_unified_memory;
+  size_t profiling_timer_resolution;
+  cl_bool endian_little;
+  cl_bool available;
+  cl_bool compiler_available;
+  cl_device_exec_capabilities execution_capabilities;
+  cl_command_queue_properties queue_properties;
+  cl_platform_id platform;
+  cl_device_partition_property device_partition_properties[1];
+  size_t printf_buffer_size;
+  char *short_name;
+  char *long_name;
+
+  char *vendor;
+  char *driver_version;
+  char *profile;
+  char *version;
+  char *extensions;
+ 
+  void *data;
+  const char* llvm_target_triplet; /* the llvm target triplet to use */
+  const char* llvm_cpu; /* the llvm CPU variant to use */
+  /* A running number (starting from zero) across all the device instances. Used for 
+     indexing  arrays in data structures with device specific entries. */
+  int dev_id;
+  int global_mem_id; /* identifier for device global memory */
+  int has_64bit_long;  /* Does the device have 64bit longs */
+
+  struct pocl_device_ops *ops; /* Device operations, shared amongst same devices */
+};
+
+struct _cl_platform_id {
+  POCL_ICD_OBJECT
+}; 
+
+struct _cl_context {
+  POCL_ICD_OBJECT
+  POCL_OBJECT;
+  /* queries */
+  cl_device_id *devices;
+  cl_context_properties *properties;
+  /* implementation */
+  unsigned num_devices;
+  unsigned num_properties;
+  /* some OpenCL apps (AMD OpenCL SDK at least) use a trial-error 
+     approach for creating a context with a device type, and call 
+     clReleaseContext for the result regardless if it failed or not. 
+     Returns a valid = 0 context in that case.  */
+  char valid;
+};
+
+struct _cl_command_queue {
+  POCL_ICD_OBJECT
+  POCL_OBJECT;
+  /* queries */
+  cl_context context;
+  cl_device_id device;
+  cl_command_queue_properties properties;
+  /* implementation */
+  _cl_command_node *root;
+};
+
+/* memory identifier: id to point the global memory where memory resides 
+                      + pointer to actual data */
+typedef struct _pocl_mem_identifier{
+  int global_mem_id;
+  void* mem_ptr;
+} pocl_mem_identifier;
+
+typedef struct _cl_mem cl_mem_t;
+struct _cl_mem {
+  POCL_ICD_OBJECT
+  POCL_OBJECT;
+  /* queries */
+  cl_mem_object_type type;
+  cl_mem_flags flags;
+  size_t size;
+  void *mem_host_ptr;
+  cl_uint map_count;
+  cl_context context;
+  /* implementation */
+  /* The device-specific pointers to the buffer for all
+     device ids the buffer was allocated to. This can be a
+     direct pointer to the memory of the buffer or a pointer to
+     a book keeping structure. This always contains
+     as many pointers as there are devices in the system, even
+     though the buffer was not allocated for all.
+     The location of the device's buffer ptr is determined by
+     the device's dev_id. */
+  pocl_mem_identifier *device_ptrs;
+  /* A linked list of regions of the buffer mapped to the 
+     host memory */
+  mem_mapping_t *mappings;
+  /* in case this is a sub buffer, this points to the parent
+     buffer */
+  cl_mem_t *parent;
+  /* Image flags */
+  cl_bool                 is_image;
+  cl_channel_order        image_channel_order;
+  cl_channel_type         image_channel_data_type;
+  size_t                  image_width;
+  size_t                  image_height;
+  size_t                  image_depth;
+  size_t                  image_array_size;
+  size_t                  image_row_pitch;
+  size_t                  image_slice_pitch;
+  size_t                  image_elem_size;
+  size_t                  image_channels;
+  cl_uint                 num_mip_levels;
+  cl_uint                 num_samples;
+  cl_mem                  buffer;
+};
+
+struct _cl_program {
+  POCL_ICD_OBJECT
+  POCL_OBJECT;
+  /* queries */
+  cl_context context;
+  cl_uint num_devices;
+  cl_device_id *devices;
+  /* all the program sources appended together, terminated with a zero */
+  char *source;
+  /* The options in the last clBuildProgram call for this Program. */
+  char *compiler_options;
+  /* The binaries for each device. Currently the binary is directly the
+     sequential bitcode produced from the kernel sources.*/
+  size_t *binary_sizes; 
+  unsigned char **binaries; 
+  /* Temp directory (relative to CWD) where the kernel files reside. */
+  char *temp_dir;
+  /* implementation */
+  cl_kernel kernels;
+  /* Used to store the llvm IR of the build to save disk I/O. */
+  void **llvm_irs;
+};
+
+struct _cl_kernel {
+  POCL_ICD_OBJECT
+  POCL_OBJECT;
+  /* queries */
+  cl_uint kid; 
+  char *function_name;
+  char *name;
+  cl_uint num_args;
+  cl_context context;
+  cl_program program;
+  /* implementation */
+  void **device_data;
+  kernel_metadata kmd;
+  //struct pocl_argument_info *arg_info;
+  //cl_uint num_locals;
+  int *reqd_wg_size;
+  /* The kernel arguments that are set with clSetKernelArg().
+     These are copied to the command queue command at enqueue. */
+  struct pocl_argument *dyn_arguments;
+  struct _cl_kernel *next;
+};
+
+typedef struct event_callback_item event_callback_item;
+struct event_callback_item
+{
+  void (*callback_function) (cl_event, cl_int, void*);
+  void *user_data;
+  cl_int trigger_status;
+  void *next;
+};
+
+typedef struct _cl_event _cl_event;
+struct _cl_event {
+  POCL_ICD_OBJECT
+  POCL_OBJECT;
+  cl_command_queue queue;
+  cl_command_type command_type;
+
+  /* list of callback functions */
+  event_callback_item* callback_list;
+
+  /* The execution status of the command this event is monitoring. */
+  cl_int status;
+
+  /* Profiling data: time stamps of the different phases of execution. */
+  cl_ulong time_queue;  /* the enqueue time */
+  cl_ulong time_submit; /* the time the command was submitted to the device */
+  cl_ulong time_start;  /* the time the command actually started executing */
+  cl_ulong time_end;    /* the finish time of the command */   
+
+  /* impicit event = an event for pocl's internal use, not visible to user */
+  int implicit_event;
+  _cl_event * volatile next;
+};
+
+typedef struct _cl_sampler cl_sampler_t;
+
+struct _cl_sampler {
+  POCL_ICD_OBJECT
+  cl_bool             normalized_coords;
+  cl_addressing_mode  addressing_mode;
+  cl_filter_mode      filter_mode;
+};
+
+#define POCL_UPDATE_EVENT_QUEUED(__event, __cq)                         \
+  do {                                                                  \
+    if ((__event) != NULL && (*(__event)) != NULL)                      \
+      {                                                                 \
+        (*(__event))->status = CL_QUEUED;                               \
+        if ((__cq)->properties & CL_QUEUE_PROFILING_ENABLE)             \
+          (*(__event))->time_queue =                                    \
+            (__cq)->device->ops->get_timer_value((__cq)->device->data);      \
+      }                                                                 \
+  } while (0)                                                           \
+
+#define POCL_UPDATE_EVENT_SUBMITTED(__event, __cq)                      \
+  do {                                                                  \
+    if ((__event) != NULL && (*(__event)) != NULL)                      \
+      {                                                                 \
+        assert((*(__event))->status == CL_QUEUED);                      \
+        (*(__event))->status = CL_SUBMITTED;                            \
+        if ((__cq)->properties & CL_QUEUE_PROFILING_ENABLE)             \
+          (*(__event))->time_submit =                                   \
+            (__cq)->device->ops->get_timer_value((__cq)->device->data);      \
+      }                                                                 \
+  } while (0)                                                           \
+
+#define POCL_UPDATE_EVENT_RUNNING(__event, __cq)                        \
+  do {                                                                  \
+    if (__event != NULL && (*(__event)) != NULL)                        \
+      {                                                                 \
+        assert((*(__event))->status == CL_SUBMITTED);                   \
+        (*(__event))->status = CL_RUNNING;                              \
+        if ((__cq)->properties & CL_QUEUE_PROFILING_ENABLE)             \
+          (*(__event))->time_start =                                    \
+            (__cq)->device->ops->get_timer_value((__cq)->device->data);      \
+      }                                                                 \
+  } while (0)                                                           \
+
+#define POCL_UPDATE_EVENT_COMPLETE(__event, __cq)                       \
+  do {                                                                  \
+    if ((__event) != NULL && (*(__event)) != NULL)                      \
+      {                                                                 \
+        assert((*(__event))->status == CL_RUNNING);                     \
+        (*(__event))->status = CL_COMPLETE;                             \
+        if ((__cq)->properties & CL_QUEUE_PROFILING_ENABLE)             \
+          (*(__event))->time_end =                                      \
+            (__cq)->device->ops->get_timer_value((__cq)->device->data);      \
+      }                                                                 \
+  } while (0)                                                           \
+
+#define min(a,b) (((a) < (b)) ? (a) : (b))
+#define max(a,b) (((a) > (b)) ? (a) : (b))
+    
+#endif /* POCL_CL_H */

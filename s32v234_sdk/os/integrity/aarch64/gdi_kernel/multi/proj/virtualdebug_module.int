@@ -1,0 +1,16 @@
+# This file is not standalone- it is meant to be referenced by other int files with
+# the %include "<path>/virtualdebug_module.int"
+
+AddressSpace				virtualdebug_module
+	Filename			virtualdebug_module
+	MaximumPriority			255
+	MemoryPoolSize			64*0x800 + 0x20P
+	Language			C
+	Task				Initial
+		StackLength		0x3P
+		StartIt			true
+                #DebuggerMayHalt         Never
+	EndTask
+EndAddressSpace
+
+

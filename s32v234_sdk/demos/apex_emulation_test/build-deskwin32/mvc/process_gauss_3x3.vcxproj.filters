@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\graphs\apu_gauss_3x3_process.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\graphs\apu_gauss_3x3_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_gauss_3x3_graph.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_gauss_3x3_graph.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_gauss_3x3_process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{C51D4A0D-2C10-4643-80E9-0E5928DC7B21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{1B1B1282-EE58-4321-A160-F72782886056}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphs">
+      <UniqueIdentifier>{E4974778-92FC-4020-BAD6-C4BB2D60A8D4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

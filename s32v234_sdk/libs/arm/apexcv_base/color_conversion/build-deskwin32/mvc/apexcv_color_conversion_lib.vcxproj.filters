@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="graphs">
+      <UniqueIdentifier>{82D998F5-9B5C-49FC-8821-EEC7AE8E2EBE}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{CDC6B6E3-9176-409F-B1B0-29F2DDA3C4BD}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{13DE3154-6B00-4DD4-A077-D8A5938E3CFF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\color_conversion.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\apexcv_color_conversion_ref.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\apexcv_rgb565_to_rgb888.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\apexcv_rgb888_to_rgb565.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\apexcv_rgb888_to_y.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\apexcv_rgb888_to_yuv.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\apexcv_ht_8uc3_to_y.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\apexcv_color_conversion_ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\all_color_conversion_graph_registrations.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\color_conversion_chunk_size_definitions.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\rgb565_to_rgb888_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\rgb565_to_rgb888_graph.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\rgb888_to_rgb565_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\rgb888_to_rgb565_graph.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\rgb888_to_y_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\rgb888_to_y_graph.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\rgb888_to_yuv_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\rgb888_to_yuv_graph.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_base_color_conversion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_color_conversion_test_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_rgb565_to_rgb888.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_rgb888_to_rgb565.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_rgb888_to_y.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_rgb888_to_yuv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

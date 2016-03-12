@@ -1,0 +1,58 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "APU_lib", "..\..\..\..\tools\emu\apu\build-deskwin32\mvc\APU_lib.vcxproj", "{FAA8B398-F947-4142-864A-AD16F87569FE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ACF_lib", "..\..\..\..\tools\emu\acf\build-deskwin32\mvc\ACF_lib.vcxproj", "{2180B2FD-44A1-4D04-B39E-DB2085617C79}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "add_project", "add_project.vcxproj", "{36A319DF-5740-4DB9-B7FE-7B1763A43E14}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "process_add", "process_add.vcxproj", "{7BCEF13D-D4BE-49E9-B1FC-80EEFADC91FA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "arithmetic_kernels_acf", "..\..\..\..\kernels\apu\arithmetic_kernels\build-deskwin32\mvc\arithmetic_kernels_acf.vcxproj", "{935ADA6E-B633-47C9-BA56-A776DA2169FC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "arithmetic_kernels_apu", "..\..\..\..\kernels\apu\arithmetic_kernels\build-deskwin32\mvc\arithmetic_kernels_apu.vcxproj", "{50CC807D-CF2A-4DF2-A6F9-7363622B4F55}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "..\..\..\..\libs\arm\utils\common\build-deskwin32\mvc\common.vcxproj", "{89794E96-83E7-4D4F-B218-67E7323E3223}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Debug|Win32.Build.0 = Debug|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Release|Win32.ActiveCfg = Release|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Release|Win32.Build.0 = Release|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Debug|Win32.Build.0 = Debug|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Release|Win32.ActiveCfg = Release|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Release|Win32.Build.0 = Release|Win32
+		{36A319DF-5740-4DB9-B7FE-7B1763A43E14}.Debug|Win32.ActiveCfg = Debug|Win32
+		{36A319DF-5740-4DB9-B7FE-7B1763A43E14}.Debug|Win32.Build.0 = Debug|Win32
+		{36A319DF-5740-4DB9-B7FE-7B1763A43E14}.Release|Win32.ActiveCfg = Release|Win32
+		{36A319DF-5740-4DB9-B7FE-7B1763A43E14}.Release|Win32.Build.0 = Release|Win32
+		{7BCEF13D-D4BE-49E9-B1FC-80EEFADC91FA}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7BCEF13D-D4BE-49E9-B1FC-80EEFADC91FA}.Debug|Win32.Build.0 = Debug|Win32
+		{7BCEF13D-D4BE-49E9-B1FC-80EEFADC91FA}.Release|Win32.ActiveCfg = Release|Win32
+		{7BCEF13D-D4BE-49E9-B1FC-80EEFADC91FA}.Release|Win32.Build.0 = Release|Win32
+		{935ADA6E-B633-47C9-BA56-A776DA2169FC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{935ADA6E-B633-47C9-BA56-A776DA2169FC}.Debug|Win32.Build.0 = Debug|Win32
+		{935ADA6E-B633-47C9-BA56-A776DA2169FC}.Release|Win32.ActiveCfg = Release|Win32
+		{935ADA6E-B633-47C9-BA56-A776DA2169FC}.Release|Win32.Build.0 = Release|Win32
+		{50CC807D-CF2A-4DF2-A6F9-7363622B4F55}.Debug|Win32.ActiveCfg = Debug|Win32
+		{50CC807D-CF2A-4DF2-A6F9-7363622B4F55}.Debug|Win32.Build.0 = Debug|Win32
+		{50CC807D-CF2A-4DF2-A6F9-7363622B4F55}.Release|Win32.ActiveCfg = Release|Win32
+		{50CC807D-CF2A-4DF2-A6F9-7363622B4F55}.Release|Win32.Build.0 = Release|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Debug|Win32.ActiveCfg = Debug|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Debug|Win32.Build.0 = Debug|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Release|Win32.ActiveCfg = Release|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{9B85AC3A-C7D5-438C-8FE7-576ADECCF952}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="OCL Source Files">
+      <UniqueIdentifier>{CE8FA633-0205-4174-A331-E9E0FC429221}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\src\BitonicSort_Kernels.cl">
+      <Filter>OCL Source Files</Filter>
+    </None>
+    <None Include="..\..\src\FloydWarshall_Kernels.cl">
+      <Filter>OCL Source Files</Filter>
+    </None>
+    <None Include="..\..\src\MedianFilter.cl">
+      <Filter>OCL Source Files</Filter>
+    </None>
+    <None Include="..\..\src\MedianFilter_Async.cl">
+      <Filter>OCL Source Files</Filter>
+    </None>
+    <None Include="..\..\src\MedianFilter_Async_2d.cl">
+      <Filter>OCL Source Files</Filter>
+    </None>
+    <None Include="..\..\src\MemoryModel.cl">
+      <Filter>OCL Source Files</Filter>
+    </None>
+    <None Include="..\..\src\Reduction_Kernels.cl">
+      <Filter>OCL Source Files</Filter>
+    </None>
+  </ItemGroup>
+</Project>

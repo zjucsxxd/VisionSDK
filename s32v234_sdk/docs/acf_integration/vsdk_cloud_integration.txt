@@ -1,0 +1,348 @@
+CLOUD release to VSDK integration guide
+---------------------------------------
+
+
+Check changes in following files for APU build
+==============================================
+- warning, the files are not forced to be 100% same - there can be slight changes, but nothing changing the behavior
+
+s32v234_sdk/libs/apu/common/include/apu_comm.h                        -> ICP_SDK/src/Platform/Drivers/APEX2/inc/apu_comm.h
+s32v234_sdk/libs/apu/common/include/apu_microkernel.h                 -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/apu_microkernel.h
+s32v234_sdk/libs/apu/common/include/apu_mk_lib.h                      -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/offline/apu_mk_lib.h
+s32v234_sdk/libs/apu/common/include/global_errors.h                   -> ICP_SDK/inc/GlobalErrors.h
+s32v234_sdk/libs/apu/common/include/global_types.h                    -> ICP_SDK/inc/GlobalTypes.h
+s32v234_sdk/libs/apu/common/include/hw_reg_user.h                     -> Drivers/Common_CV230X/inc/HwRegUser.hpp
+s32v234_sdk/libs/apu/common/include/hw_res_mgt.h                      -> Drivers/Common_CV230X/inc/HWResMgt.hpp
+s32v234_sdk/libs/apu/common/include/icp_contigdatadesc.h              -> ICP_SDK/inc/ICP_ContigDataDesc.hpp
+s32v234_sdk/libs/apu/common/include/icp_datatype.h                    -> ICP_SDK/inc/ICP_DataType.h
+s32v234_sdk/libs/apu/common/include/register_access.h                 -> Drivers/Common_CV230X/inc/System/RegisterAccess.h
+s32v234_sdk/libs/apu/common/include/swt_report.h                      -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/util/swt_report.h
+s32v234_sdk/libs/apu/common/include/util.h                            -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/util/util.h
+s32v234_sdk/libs/apu/common/include/system/apex_642cl_map.h           -> ICP_SDK/src/Platform/Drivers/APEX2/inc/System/apu/apex_642cl_map.h
+s32v234_sdk/libs/apu/common/include/system/*                          -> ICP_SDK/src/Platform/Drivers/APEX2/inc/System/*
+s32v234_sdk/libs/apu/common/include/driver/apu_dmemfifo_hal.h         -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/offline/apu_dmemfifo_hal.h
+s32v234_sdk/libs/apu/common/include/driver/apu_hal.h                  -> ICP_SDK/src/Platform/Drivers/APEX2/inc/apu_hal.h
+s32v234_sdk/libs/apu/common/include/driver/apu_microkernel_hal.h      -> ICP_SDK/src/Platform/Drivers/APEX2/inc/apu_microkernel_hal.h
+s32v234_sdk/libs/apu/common/include/driver/cmem_hal.h                 -> ICP_SDK/src/Platform/Drivers/APEX2/inc/cmem_hal.h
+s32v234_sdk/libs/apu/common/include/driver/cmem_if_hal.h              -> ICP_SDK/src/Platform/Drivers/APEX2/inc/cmem_if_hal.h
+s32v234_sdk/libs/apu/common/include/driver/global_hal.h               -> ICP_SDK/src/Platform/Drivers/APEX2/inc/global_hal.h
+s32v234_sdk/libs/apu/common/include/driver/hrsz_hal.h                 -> ICP_SDK/src/Platform/Drivers/APEX2/inc/hrsz_hal.h
+s32v234_sdk/libs/apu/common/include/driver/linked_list_utilities.h    -> ICP_SDK/src/Platform/Drivers/APEX2/inc/LinkedListUtilities.h
+s32v234_sdk/libs/apu/common/include/driver/mcdma_hal.h                -> ICP_SDK/src/Platform/Drivers/APEX2/inc/mcdma_hal.h
+s32v234_sdk/libs/apu/common/include/driver/mce_hal.h                  -> ICP_SDK/src/Platform/Drivers/APEX2/inc/mce_hal.h
+s32v234_sdk/libs/apu/common/include/driver/seq_hal.h                  -> ICP_SDK/src/Platform/Drivers/APEX2/inc/seq_hal.h
+s32v234_sdk/libs/apu/common/include/driver/stio_hal.h                 -> ICP_SDK/src/Platform/Drivers/APEX2/inc/stio_hal.h
+
+s32v234_sdk/libs/apu/common/src/apu_mk_lib.cpp                        -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/offline/apu_mk_lib.cpp
+s32v234_sdk/libs/apu/common/src/apu_mk_main.cpp                       -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/offline/apu_mk_main.cpp
+s32v234_sdk/libs/apu/common/src/apumk_hal_cmdque.cpp                  -> ICP_SDK/src/Platform/Drivers/APEX2/src/apumk_hal_cmdque.cpp
+s32v234_sdk/libs/apu/common/src/apumk_hal_comm.cpp                    -> ICP_SDK/src/Platform/Drivers/APEX2/src/apumk_hal_comm.cpp
+s32v234_sdk/libs/apu/common/src/hw_reg_user.cpp                       -> ICP_SDK/src/OS/None/HwRegUser.cpp
+s32v234_sdk/libs/apu/common/src/icp_contigdatadesc.cpp                -> ICP_SDK/src/Features/ICP/ICP_ContigDataDesc.cpp
+s32v234_sdk/libs/apu/common/src/icp_datatype.cpp                      -> ICP_SDK/src/Features/ICP/ICP_DataType.c
+s32v234_sdk/libs/apu/common/src/swt_report.cpp                        -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/util/swt_report.cpp
+s32v234_sdk/libs/apu/common/src/util.cpp                              -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/util/util.cpp
+s32v234_sdk/libs/apu/common/src/driver/apu_dmemfifo_hal.cpp           -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/offline/apu_dmemfifo_hal.cpp
+s32v234_sdk/libs/apu/common/src/driver/cmem_if_hal.cpp                -> ICP_SDK/src/Platform/Drivers/APEX2/src/cmem_if_hal.cpp
+s32v234_sdk/libs/apu/common/src/driver/global_hal.cpp                 -> ICP_SDK/src/Platform/Drivers/APEX2/src/global_hal.cpp
+s32v234_sdk/libs/apu/common/src/driver/hrsz_hal.cpp                   -> ICP_SDK/src/Platform/Drivers/APEX2/src/hrsz_hal.c
+s32v234_sdk/libs/apu/common/src/driver/linked_list_utilities.cpp      -> ICP_SDK/src/Platform/Drivers/APEX2/src/LinkedListUtilities.c
+s32v234_sdk/libs/apu/common/src/driver/mcdma_hal.cpp                  -> ICP_SDK/src/Platform/Drivers/APEX2/src/mcdma_hal.c
+s32v234_sdk/libs/apu/common/src/driver/mce_hal.cpp                    -> ICP_SDK/src/Platform/Drivers/APEX2/src/mce_hal.cpp
+s32v234_sdk/libs/apu/common/src/driver/seq_hal.cpp                    -> ICP_SDK/src/Platform/Drivers/APEX2/src/seq_hal.cpp
+s32v234_sdk/libs/apu/common/src/driver/stio_hal.cpp                   -> ICP_SDK/src/Platform/Drivers/APEX2/src/stio_hal.cpp
+s32v234_sdk/libs/apu/common/BUILD.mk                                  for build params
+s32v234_sdk/build/nbuild/toolchains/apu-acf-sa-tct.mk                 for build params
+s32v234_sdk/build/nbuild/apex_tools/apu-kernel-database.mk            for build params
+s32v234_sdk/build/nbuild/apex_tools/apu-kernel-function.mk            for build params
+s32v234_sdk/build/nbuild/apex_tools/apu-kernel-getgraphs.mk           for build params -> something from CP_SDK/AutoBuild_Tools/src/submake/load_generation.mak
+s32v234_sdk/build/nbuild/apex_tools/apu-kernel-load.mk                for build params
+
+s32v234_sdk/libs/apu/acf_target/include/acf_autokernel_inc.h          -> ICP_SDK/src/Features/ICP/ACF2/Offline/inc/ACF_AutoKernelInc.hpp
+s32v234_sdk/libs/apu/acf_target/include/acf_common_inline.h           -> ICP_SDK/src/Features/ICP/ACF2/ACF_Common__inline.h
+s32v234_sdk/libs/apu/acf_target/include/acf_common.h                  -> ICP_SDK/inc/ACF_Common.h
+s32v234_sdk/libs/apu/acf_target/include/acf_hwutilities_inline.h      -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/acf/ACF_HwUtilities__inline.h
+s32v234_sdk/libs/apu/acf_target/include/acf_hwutilities.h             -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/acf/ACF_HwUtilities.h
+s32v234_sdk/libs/apu/acf_target/include/acf_memmgmt.h                 -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/acf/ACF_MemMgmt.h
+s32v234_sdk/libs/apu/acf_target/include/acf_utilities_inline.h        -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/acf/ACF_Utilities__inline.h
+s32v234_sdk/libs/apu/acf_target/include/acf_utilities.h               -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/acf/ACF_Utilities.h
+s32v234_sdk/libs/apu/acf_target/include/apu_test_util.h               -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/util/apu_test_util.h
+s32v234_sdk/libs/apu/acf_target/include/apu2_load.bcf                 -> ICP_SDK/src/Features/ICP/ACF2/Host/apu2_load.bcf
+s32v234_sdk/libs/apu/acf_target/include/cg_kerneldb.h                 -> ICP_SDK/AutoBuild_Tools/inc/CG_KernelDB.h
+
+s32v234_sdk/libs/apu/acf_target/src/acf_common.cpp                    -> ICP_SDK/src/Features/ICP/ACF2/ACF_Common.c
+s32v234_sdk/libs/apu/acf_target/src/acf_hwutilities.cpp               -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/acf/ACF_HwUtilities.c
+s32v234_sdk/libs/apu/acf_target/src/acf_memmgmt.cpp                   -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/acf/ACF_MemMgmt.c
+s32v234_sdk/libs/apu/acf_target/src/acf_utilities.cpp                 -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/acf/ACF_Utilities.c
+s32v234_sdk/libs/apu/acf_target/src/apu_test_util.cpp                 -> ICP_SDK/src/Features/ICP/ALGO/APEX2/KERNEL/APU/util/apu_test_util.cpp
+s32v234_sdk/libs/apu/acf_target/src/mk_main.cpp                       -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/offline/mk_main.c
+s32v234_sdk/libs/apu/acf_target/BUILD.mk                              for build params
+
+s32v234_sdk/libs/apu/acl_target/include/apu_ocl_datatypes.h           -> ICP_SDK/src/Features/ICP/ACL/APEX2/inc/apu_ocl_datatypes.h
+s32v234_sdk/libs/apu/acl_target/include/apu_ocl_dma_mgr.h             -> ICP_SDK/src/Features/ICP/ACL/APEX2/inc/apu_ocl_dma_mgr.h
+s32v234_sdk/libs/apu/acl_target/include/apu_ocl_kernel.h              -> ICP_SDK/src/Features/ICP/ACL/APEX2/inc/apu_ocl_kernel.h
+s32v234_sdk/libs/apu/acl_target/include/apu_ocl_memaccess.h           -> ICP_SDK/src/Features/ICP/ACL/APEX2/inc/apu_ocl_memaccess.h
+s32v234_sdk/libs/apu/acl_target/include/apu_ocl_struct.h              -> ICP_SDK/src/Features/ICP/ACL/APEX2/inc/apu_ocl_struct.h
+s32v234_sdk/libs/apu/acl_target/include/apu_ocl_wg.h                  -> ICP_SDK/src/Features/ICP/ACL/APEX2/inc/apu_ocl_wg.h
+s32v234_sdk/libs/apu/acl_target/include/apu_ocl.h                     -> ICP_SDK/src/Features/ICP/ACL/APEX2/inc/apu_ocl.h
+s32v234_sdk/libs/apu/acl_target/include/apu_sample_kernel.h           -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/offline/apu_sample_kernel.h
+s32v234_sdk/libs/apu/acl_target/include/tct_opencl_apu_builtin.h      -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/tct_ocl/tct_opencl_apu_builtin.h
+s32v234_sdk/libs/apu/acl_target/include/tct_opencl_apu_config.h       -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/tct_ocl/tct_opencl_apu_config.h
+s32v234_sdk/libs/apu/acl_target/include/tct_opencl_apu.h              -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/tct_ocl/tct_opencl_apu.h
+s32v234_sdk/libs/apu/acl_target/include/tct_opencl.h                  -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/tct_ocl/tct_opencl.h
+
+s32v234_sdk/libs/apu/acl_target/src/apu_kernel_db.cpp                 -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/offline/apu_kernel_db.cpp
+s32v234_sdk/libs/apu/acl_target/src/apu_ocl_builtin.cpp               -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/drv/apu_ocl_builtin.cpp
+s32v234_sdk/libs/apu/acl_target/src/apu_ocl_dma_mgr.cpp               -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/drv/apu_ocl_dma_mgr.cpp
+s32v234_sdk/libs/apu/acl_target/src/apu_ocl_main.cpp                  -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/apu_ocl_main.cpp
+s32v234_sdk/libs/apu/acl_target/src/apu_ocl_memaccess.cpp             -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/drv/apu_ocl_memaccess.cpp
+s32v234_sdk/libs/apu/acl_target/src/apu_ocl_workgroup.cpp             -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/drv/apu_ocl_workgroup.cpp
+s32v234_sdk/libs/apu/acl_target/src/apu_ocl.cpp                       -> ICP_SDK/src/Features/ICP/ACL/APEX2/src/drv/apu_ocl.cpp
+s32v234_sdk/libs/apu/acl_target/src/mem.cpp                           -> ICP_SDK/src/Features/ICP/ACL/APEX2/dma_iss/mem.c
+s32v234_sdk/libs/apu/acl_target/BUILD.mk                              for build params
+
+Check changes in following files for Offline build lib
+======================================================
+- warning, the files are not forced to be 100% same - there can be slight changes, but nothing changing the behavior, primarily for pedantic build on x64
+
+s32v234_sdk/libs/x86/acf_offline/include/acf_apuprogramparams.hpp     -> ICP_SDK/src/Features/ICP/ACF2/Host/ACF_ApuProgramParams.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_graph.hpp                -> ICP_SDK/src/Features/ICP/ACF2/Offline/inc/ACF_Graph.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_kernel.hpp               -> ICP_SDK/src/Features/ICP/ACF2/Offline/inc/ACF_Kernel.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_lm.hpp                   -> ICP_SDK/src/Features/ICP/ACF2/Offline/inc/ACF_lm.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_node.hpp                 -> ICP_SDK/src/Features/ICP/ACF2/Offline/inc/ACF_Node.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_port.hpp                 -> ICP_SDK/src/Features/ICP/ACF2/Offline/inc/ACF_Port.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_process_desc_apu.hpp     -> ICP_SDK/src/Features/ICP/ACF2/Offline/inc/ACF_Process_Desc_APU.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_process_desc.hpp         -> ICP_SDK/src/Features/ICP/ACF2/Offline/inc/ACF_Process_Desc.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_process_portinfo_apu.hpp -> ICP_SDK/inc/ACF_Process_PortInfo_APU.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_process_portinfo.hpp     -> ICP_SDK/inc/ACF_Process_PortInfo.hpp
+s32v234_sdk/libs/x86/acf_offline/include/acf_report.h                 -> cgv/Script/Traceability/release/cgv_report.h
+s32v234_sdk/libs/x86/acf_offline/include/apu2_kernel_db_lib.h         -> ICP_SDK/src/Features/ICP/APU2_Kernel_DB/APU2_Kernel_DB_Lib.h
+s32v234_sdk/libs/x86/acf_offline/include/apu2_kernel_db_types.h       -> ICP_SDK/src/Features/ICP/APU2_Kernel_DB/APU2_Kernel_DB_Types.h
+s32v234_sdk/libs/x86/acf_offline/include/apu2_kernel_port.h           -> ICP_SDK/src/Features/ICP/APU2_Kernel_DB/APU2_Kernel_Port.h
+
+s32v234_sdk/libs/x86/acf_offline/src/acf_apuprogramparams.cpp         -> ICP_SDK/src/Features/ICP/ACF2/Host/ACF_ApuProgramParams.cpp
+s32v234_sdk/libs/x86/acf_offline/src/acf_common.cpp                   -> ICP_SDK/src/Features/ICP/ACF2/ACF_Common.c
+s32v234_sdk/libs/x86/acf_offline/src/acf_graph.cpp                    -> ICP_SDK/src/Features/ICP/ACF2/Offline/src/ACF_Graph.cpp
+s32v234_sdk/libs/x86/acf_offline/src/acf_kernel.cpp                   -> ICP_SDK/src/Features/ICP/ACF2/Offline/src/ACF_Kernel.cpp
+s32v234_sdk/libs/x86/acf_offline/src/acf_lm_stub.cpp                  -> ICP_SDK/src/Features/ICP/ACF2/Offline/src/ACF_lm_stub.cpp
+s32v234_sdk/libs/x86/acf_offline/src/acf_node.cpp                     -> ICP_SDK/src/Features/ICP/ACF2/Offline/src/ACF_Node.cpp
+s32v234_sdk/libs/x86/acf_offline/src/acf_port.cpp                     -> ICP_SDK/src/Features/ICP/ACF2/Offline/src/ACF_Port.cpp
+s32v234_sdk/libs/x86/acf_offline/src/acf_process_desc_apu.cpp         -> ICP_SDK/src/Features/ICP/ACF2/Offline/src/ACF_Process_Desc_APU.cpp
+s32v234_sdk/libs/x86/acf_offline/src/acf_process_desc.cpp             -> ICP_SDK/src/Features/ICP/ACF2/Offline/src/ACF_Process_Desc.cpp
+s32v234_sdk/libs/x86/acf_offline/src/acf_report.cpp                   -> cgv/Script/Traceability/release/cgv_report.cpp
+s32v234_sdk/libs/x86/acf_offline/src/apu2_kernel_db_lib.cpp           -> ICP_SDK/src/Features/ICP/APU2_Kernel_DB/APU2_Kernel_DB_Lib.cpp
+s32v234_sdk/libs/x86/acf_offline/src/apu2_kernel_db_main.cpp          -> ICP_SDK/src/Features/ICP/APU2_Kernel_DB/APU2_Kernel_DB_Main.cpp
+s32v234_sdk/libs/x86/acf_offline/BUILD.mk                             for offline build params
+s32v234_sdk/build/nbuild/toolchains/x86-linux-gnu.mk                  for offline build params
+s32v234_sdk/build/nbuild/platforms/build-x86-gnu-linux-d              for offline build params
+s32v234_sdk/build/nbuild/scripts/gen_apu_load.tcl                     -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/gen_apu_load.tcl
+
+
+Check ARM APEX driver
+=====================
+- warning, the files are not forced to be 100% same - there can be slight changes, but nothing changing the behavior, primarily for pedantic build on x64
+- the arm driver has two parts - kernel and user part.
+  o In kernel part, all functions have apexdriver_ prefix added + apexID added
+  o In user part, all functions have similar names to originals + apexID added
+  o For standalone, the user part just calls the driver functions, on Linux, it implements ioctl interface
+  o All original APEX Driver functions are enhanced with ApexID parameter distinguishing between two APEX instances
+
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_apu_comm.h            -> ICP_SDK/src/Platform/Drivers/APEX2/inc/apu_comm.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_apu_hal.h             -> ICP_SDK/src/Platform/Drivers/APEX2/inc/apu_hal.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_apu_microkernel_hal.h -> ICP_SDK/src/Platform/Drivers/APEX2/inc/apu_microkernel_hal.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_cmem_hal.h            -> ICP_SDK/src/Platform/Drivers/APEX2/inc/cmem_hal.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_cmem_if_hal.h         -> ICP_SDK/src/Platform/Drivers/APEX2/inc/cmem_if_hal.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_global_hal.h          -> ICP_SDK/src/Platform/Drivers/APEX2/inc/global_hal.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_mcdma_hal.h           -> ICP_SDK/src/Platform/Drivers/APEX2/inc/mcdma_hal.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_seq_hal.h             -> ICP_SDK/src/Platform/Drivers/APEX2/inc/seq_hal.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/functions/apexdriver_stio_hal.h            -> ICP_SDK/src/Platform/Drivers/APEX2/inc/stio_hal.h
+s32v234_sdk/libs/arm/apex/apex/kernel/include/linux/apexdriver_hw_reg_user.h             -> Drivers/Common_CV230X/inc/HwRegUser.hpp with specifics to the Linux mapping
+s32v234_sdk/libs/arm/apex/apex/kernel/include/linux/apexdriver_ioctl.h                   -> Check the ioctl interface, if it corresponds with the apex driver functions
+s32v234_sdk/libs/arm/apex/apex/kernel/include/standalone/apexdriver_hw_reg_user.h        -> Drivers/Common_CV230X/inc/HwRegUser.hpp with specifics to the Standalone mapping
+
+s32v234_sdk/libs/arm/apex/apex/kernel/src/functions/apexdriver_apu_hal.c                 -> ICP_SDK/src/Platform/Drivers/APEX2/src/apu_hal.cpp
+s32v234_sdk/libs/arm/apex/apex/kernel/src/functions/apexdriver_apumk_hal_cmdque.c        -> ICP_SDK/src/Platform/Drivers/APEX2/src/apumk_hal_cmdque.cpp
+s32v234_sdk/libs/arm/apex/apex/kernel/src/functions/apexdriver_apumk_hal_comm.c          -> ICP_SDK/src/Platform/Drivers/APEX2/src/apumk_hal_comm.cpp
+s32v234_sdk/libs/arm/apex/apex/kernel/src/functions/apexdriver_cmem_if_hal.c             -> ICP_SDK/src/Platform/Drivers/APEX2/src/cmem_if_hal.cpp
+s32v234_sdk/libs/arm/apex/apex/kernel/src/functions/apexdriver_global_hal.c              -> ICP_SDK/src/Platform/Drivers/APEX2/src/global_hal.cpp
+s32v234_sdk/libs/arm/apex/apex/kernel/src/functions/apexdriver_mcdma_hal.c               -> ICP_SDK/src/Platform/Drivers/APEX2/src/mcdma_hal.c
+s32v234_sdk/libs/arm/apex/apex/kernel/src/functions/apexdriver_seq_hal.c                 -> ICP_SDK/src/Platform/Drivers/APEX2/src/seq_hal.cpp
+s32v234_sdk/libs/arm/apex/apex/kernel/src/functions/apexdriver_stio_hal.c                -> ICP_SDK/src/Platform/Drivers/APEX2/src/stio_hal.cpp
+s32v234_sdk/libs/arm/apex/apex/kernel/src/linux/apexdriver_hw_reg_user.c                 -> ICP_SDK/src/OS/Integrity/HwRegUser.cpp inspiration, but new file for Linux mem access
+s32v234_sdk/libs/arm/apex/apex/kernel/src/linux/apexdriver_ioctl.c                       -> Check the ioctl interface, if it corresponds with the apex driver functions
+s32v234_sdk/libs/arm/apex/apex/kernel/src/linux/apexdriver.c                             -> main Linux driver file with provides interface + memmap
+s32v234_sdk/libs/arm/apex/apex/kernel/src/standalone/apexdriver_hw_reg_user.c            -> ICP_SDK/src/OS/Integrity/HwRegUser.cpp inspiration, but new file for Standalone mem access
+
+Check other ACF related libs
+============================
+- Some files are totally different (e.g. DataDescriptor class), some with slight changes (ACF)
+- DataDescriptor is ICP_ContigDataDesc alternative with more restrictive encapsulation of the data
+- ACF implements the same behavior as original one, just adds ApexID parameter the same as APEX Driver.
+- Oal implements only used functions for specific OS
+- Resource manager is also divided for two APEX instances
+
+s32v234_sdk/libs/arm/apex/icp/include/icp_data.h                                         -> ICP_ContigDataDesc alternative
+s32v234_sdk/libs/arm/apex/icp/include/icp_feature.h                                      -> ICP_SDK/inc/ICP_FeatureDesc.hpp
+s32v234_sdk/libs/arm/apex/icp/include/icp_types.h                                        -> ICP_SDK/inc/ICP_Types.hpp
+s32v234_sdk/libs/arm/apex/icp/src/icp_data.cpp                                           -> ICP_ContigDataDesc alternative
+s32v234_sdk/libs/arm/apex/icp/src/icp_feature.cpp                                        -> ICP_SDK/src/Features/ICP/ICP_FeatureDesc.cpp
+
+s32v234_sdk/libs/arm/apex/acf/include/acf_apu_program_params.h                           -> ICP_SDK/src/Features/ICP/ACF2/Host/ACF_ApuProgramParams.hpp
+s32v234_sdk/libs/arm/apex/acf/include/acf_common_inline.h                                -> ICP_SDK/src/Features/ICP/ACF2/ACF_Common__inline.h
+s32v234_sdk/libs/arm/apex/acf/include/acf_common.h                                       -> ICP_SDK/inc/ACF_Common.h
+s32v234_sdk/libs/arm/apex/acf/include/acf_process_apu.h                                  -> ICP_SDK/inc/ACF_Process_APU.hpp
+s32v234_sdk/libs/arm/apex/acf/include/acf_process_portinfo_apu.h                         -> ICP_SDK/inc/ACF_Process_PortInfo_APU.hpp
+s32v234_sdk/libs/arm/apex/acf/include/acf_process_portinfo.h                             -> ICP_SDK/inc/ACF_Process_PortInfo.hpp
+s32v234_sdk/libs/arm/apex/acf/include/acf_process.h                                      -> ICP_SDK/inc/ACF_Process.hpp
+s32v234_sdk/libs/arm/apex/acf/include/kernel_manager.h                                   -> ICP_SDK/inc/kernel_manager.h
+s32v234_sdk/libs/arm/apex/acf/include/resource_manager_apex.h                            -> ICP_SDK/inc/protected/ResourceManager_APEX.h
+s32v234_sdk/libs/arm/apex/acf/include/resource_manager_private.h                         -> ICP_SDK/src/Platform/ResourceManager/inc/ResourceManagerPrivate.h
+s32v234_sdk/libs/arm/apex/acf/include/resource_manager_protected.h                       -> ICP_SDK/inc/protected/ResourceManagerProtected.h
+s32v234_sdk/libs/arm/apex/acf/include/resource_manager_types.h                           -> ICP_SDK/src/Platform/ResourceManager/inc/ResourceManagerTypes.h
+
+s32v234_sdk/libs/arm/apex/acf/src/acf_apu_program_params.cpp                             -> ICP_SDK/src/Features/ICP/ACF2/Host/ACF_ApuProgramParams.cpp
+s32v234_sdk/libs/arm/apex/acf/src/acf_common.cpp                                         -> ICP_SDK/src/Features/ICP/ACF2/Host/ACF_Common.c
+s32v234_sdk/libs/arm/apex/acf/src/acf_process_apu.cpp                                    -> ICP_SDK/src/Features/ICP/ACF2/Host/ACF_Process_APU.cpp
+s32v234_sdk/libs/arm/apex/acf/src/acf_process.cpp                                        -> ICP_SDK/src/Features/ICP/ACF2/Host/ACF_Process.cpp
+s32v234_sdk/libs/arm/apex/acf/src/kernel_manager_host.cpp                                -> ICP_SDK/src/Features/ICP/APU_MICROKERNEL/host/kernel_manager_host.cpp
+s32v234_sdk/libs/arm/apex/acf/src/resource_manager_apex.cpp                              -> ICP_SDK/src/Platform/ResourceManager/src/ResourceManager_APEX.cpp
+s32v234_sdk/libs/arm/apex/acf/src/resource_manager_private.cpp                           -> ICP_SDK/src/Platform/ResourceManager/src/ResourceManagerPrivate.c
+s32v234_sdk/libs/arm/apex/acf/src/resource_manager_public.cpp                            -> ICP_SDK/src/Platform/ResourceManager/src/ResourceManagerPublic.c
+s32v234_sdk/libs/arm/apex/acf/src/resource_manager_types.cpp                             -> ICP_SDK/src/Platform/ResourceManager/src/ResourceManagerTypes.c
+
+Check s32v234_sdk/libs/arm/utils/oal OAL for used OAL functions.
+
+
+Check APEX CL code
+==================
+- The most of the files are very similar to the originals, just slight changes due to compiler differences.
+
+s32v234_sdk/libs/arm/apex/ocl_apex/include/apu_ocl_struct.h                              -> ICP_SDK/src/Features/ICP/ACL/APEX2/inc/apu_ocl_struct.h
+s32v234_sdk/libs/arm/apex/ocl_apex/src/acl_krnl_manager.cpp                              -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/apex/acl_krnl_manager.cpp
+s32v234_sdk/libs/arm/apex/ocl_apex/src/apex.cpp                                          -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/apex/apex.cpp
+
+s32v234_sdk/libs/arm/utils/ocl/include/_kernel.h                                         -> ICP_SDK/src/Features/ICP/ACL/host/include/_kernel.h
+s32v234_sdk/libs/arm/utils/ocl/include/clEnqueueMapBuffer.h                              -> ICP_SDK/src/Features/ICP/ACL/host/include/CL/clEnqueueMapBuffer.h
+s32v234_sdk/libs/arm/utils/ocl/include/CLUtil.hpp                                        -> Applications/Cognivue/ApexCLSamples/inc/CLUtil.hpp
+s32v234_sdk/libs/arm/utils/ocl/include/config.h                                          -> ICP_SDK/src/Features/ICP/ACL/host/config.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl_cl.h                                         -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_cl.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl_device.h                                     -> ICP_SDK/src/Features/ICP/ACL/host/include/pocl_device.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl_icd.h                                        -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_icd.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl_image_util.h                                 -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_image_util.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl_intfn.h                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_intfn.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl_mem_management.h                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_mem_management.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl_runtime_config.h                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_runtime_config.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl_util.h                                       -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_util.h
+s32v234_sdk/libs/arm/utils/ocl/include/pocl.h                                            -> ICP_SDK/src/Features/ICP/ACL/host/include/pocl.h
+s32v234_sdk/libs/arm/utils/ocl/include/poclu.h                                           -> ICP_SDK/src/Features/ICP/ACL/host/include/poclu.h
+s32v234_sdk/libs/arm/utils/ocl/include/prototypes.inc                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/prototypes.inc
+s32v234_sdk/libs/arm/utils/ocl/include/SDKFile.hpp                                       -> Applications/Cognivue/ApexCLSamples/inc/SDKFile.hpp    
+s32v234_sdk/libs/arm/utils/ocl/include/SDKUtil.hpp                                       -> Applications/Cognivue/ApexCLSamples/inc/SDKUtil.hpp   
+s32v234_sdk/libs/arm/utils/ocl/include/utlist.h                                          -> ICP_SDK/src/Features/ICP/ACL/host/include/utlist.h
+s32v234_sdk/libs/arm/utils/ocl/include/apex/acl_krnl_manager.h                           -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/apex/acl_krnl_manager.h
+s32v234_sdk/libs/arm/utils/ocl/include/apex/apex_acl.h                                   -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/apex/apex.h
+s32v234_sdk/libs/arm/utils/ocl/include/CL/cl_ext.h                                       -> ICP_SDK/src/Features/ICP/ACL/host/include/CL/cl_ext.h
+s32v234_sdk/libs/arm/utils/ocl/include/CL/cl_gl_ext.h                                    -> ICP_SDK/src/Features/ICP/ACL/host/include/CL/cl_gl_ext.h
+s32v234_sdk/libs/arm/utils/ocl/include/CL/cl_gl.h                                        -> ICP_SDK/src/Features/ICP/ACL/host/include/CL/cl_gl.h
+s32v234_sdk/libs/arm/utils/ocl/include/CL/cl_platform.h                                  -> ICP_SDK/src/Features/ICP/ACL/host/include/CL/cl_platform.h
+s32v234_sdk/libs/arm/utils/ocl/include/CL/cl.h                                           -> ICP_SDK/src/Features/ICP/ACL/host/include/CL/cl.h
+s32v234_sdk/libs/arm/utils/ocl/include/CL/cl.hpp                                         -> ICP_SDK/src/Features/ICP/ACL/host/include/CL/cl.hpp.in
+s32v234_sdk/libs/arm/utils/ocl/include/CL/opencl.h                                       -> ICP_SDK/src/Features/ICP/ACL/host/include/CL/opencl.h
+s32v234_sdk/libs/arm/utils/ocl/include/devices/bufalloc.h                                -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/bufalloc.h
+s32v234_sdk/libs/arm/utils/ocl/include/devices/common.h                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/common.h
+s32v234_sdk/libs/arm/utils/ocl/include/devices/cpuinfo.h                                 -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/cpuinfo.h
+s32v234_sdk/libs/arm/utils/ocl/include/devices/dev_image.h                               -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/dev_image.h
+s32v234_sdk/libs/arm/utils/ocl/include/devices/devices.h                                 -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/devices.h
+
+s32v234_sdk/libs/arm/utils/ocl/src/clBuildProgram.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clBuildProgram.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateBuffer.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateBuffer.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateCommandQueue.c                                -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateCommandQueue.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateContext.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateContext.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateContextFromType.c                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateContextFromType.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateFromGLTexture2D.c                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateFromGLTexture2D.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateFromGLTexture3D.c                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateFromGLTexture3D.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateImage.c                                       -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateImage.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateImage2D.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateImage2D.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateImage3D.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateImage3D.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateKernel.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateKernel.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateKernelsInProgram.c                            -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateKernelsInProgram.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateProgramWithBinary.c                           -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateProgramWithBinary.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateProgramWithSource.c                           -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateProgramWithSource.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateSampler.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateSampler.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateSubBuffer.c                                   -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateSubBuffer.c
+s32v234_sdk/libs/arm/utils/ocl/src/clCreateUserEvent.c                                   -> ICP_SDK/src/Features/ICP/ACL/host/CL/clCreateUserEvent.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueBarrier.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueBarrier.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueCopyBuffer.c                                 -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueCopyBuffer.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueCopyBufferRect.c                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueCopyBufferRect.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueCopyBufferToImage.c                          -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueCopyBufferToImage.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueCopyImage.c                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueCopyImage.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueCopyImageToBuffer.c                          -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueCopyImageToBuffer.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueFillImage.c                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueFillImage.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueMapBuffer.c                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueMapBuffer.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueMapBuffer.h                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueMapBuffer.h
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueMapImage.c                                   -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueMapImage.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueMarker.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueMarker.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueMarkerWithWaitList.c                         -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueMarkerWithWaitList.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueNativeKernel.c                               -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueNativeKernel.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueNDRangeKernel.c                              -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueNDRangeKernel.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueReadBuffer.c                                 -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueReadBuffer.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueReadBufferRect.c                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueReadBufferRect.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueReadImage.c                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueReadImage.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueTask.c                                       -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueTask.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueUnmapMemObject.c                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueUnmapMemObject.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueWaitForEvents.c                              -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueWaitForEvents.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueWriteBuffer.c                                -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueWriteBuffer.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueWriteBufferRect.c                            -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueWriteBufferRect.c
+s32v234_sdk/libs/arm/utils/ocl/src/clEnqueueWriteImage.c                                 -> ICP_SDK/src/Features/ICP/ACL/host/CL/clEnqueueWriteImage.c
+s32v234_sdk/libs/arm/utils/ocl/src/clFinish.c                                            -> ICP_SDK/src/Features/ICP/ACL/host/CL/clFinish.c
+s32v234_sdk/libs/arm/utils/ocl/src/clFlush.c                                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/clFlush.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetCommandQueueInfo.c                               -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetCommandQueueInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetContextInfo.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetContextInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetDeviceIDs.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetDeviceIDs.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetDeviceInfo.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetDeviceInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetEventInfo.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetEventInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetEventProfilingInfo.c                             -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetEventProfilingInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetExtensionFunctionAddress.c                       -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetExtensionFunctionAddress.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetImageInfo.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetImageInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetKernelInfo.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetKernelInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetKernelArgInfo.c                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetKernelArgInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetKernelWorkGroupInfo.c                            -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetKernelWorkGroupInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetMemObjectInfo.c                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetMemObjectInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetPlatformIDs.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetPlatformIDs.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetPlatformInfo.c                                   -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetPlatformInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetProgramBuildInfo.c                               -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetProgramBuildInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetProgramInfo.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetProgramInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetSamplerInfo.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetSamplerInfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/clGetSupportedImageFormats.c                          -> ICP_SDK/src/Features/ICP/ACL/host/CL/clGetSupportedImageFormats.c
+s32v234_sdk/libs/arm/utils/ocl/src/clIcdGetPlatformIDsKHR.c                              -> ICP_SDK/src/Features/ICP/ACL/host/CL/clIcdGetPlatformIDsKHR.c
+s32v234_sdk/libs/arm/utils/ocl/src/clReleaseCommandQueue.c                               -> ICP_SDK/src/Features/ICP/ACL/host/CL/clReleaseCommandQueue.c
+s32v234_sdk/libs/arm/utils/ocl/src/clReleaseContext.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clReleaseContext.c
+s32v234_sdk/libs/arm/utils/ocl/src/clReleaseDevice.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clReleaseDevice.c
+s32v234_sdk/libs/arm/utils/ocl/src/clReleaseEvent.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clReleaseEvent.c
+s32v234_sdk/libs/arm/utils/ocl/src/clReleaseKernel.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clReleaseKernel.c
+s32v234_sdk/libs/arm/utils/ocl/src/clReleaseMemObject.c                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clReleaseMemObject.c
+s32v234_sdk/libs/arm/utils/ocl/src/clReleaseProgram.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clReleaseProgram.c
+s32v234_sdk/libs/arm/utils/ocl/src/clReleaseSampler.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clReleaseSampler.c
+s32v234_sdk/libs/arm/utils/ocl/src/clRetainCommandQueue.c                                -> ICP_SDK/src/Features/ICP/ACL/host/CL/clRetainCommandQueue.c
+s32v234_sdk/libs/arm/utils/ocl/src/clRetainContext.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clRetainContext.c
+s32v234_sdk/libs/arm/utils/ocl/src/clRetainDevice.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clRetainDevice.c
+s32v234_sdk/libs/arm/utils/ocl/src/clRetainEvent.c                                       -> ICP_SDK/src/Features/ICP/ACL/host/CL/clRetainEvent.c
+s32v234_sdk/libs/arm/utils/ocl/src/clRetainKernel.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clRetainKernel.c
+s32v234_sdk/libs/arm/utils/ocl/src/clRetainMemObject.c                                   -> ICP_SDK/src/Features/ICP/ACL/host/CL/clRetainMemObject.c
+s32v234_sdk/libs/arm/utils/ocl/src/clRetainProgram.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clRetainProgram.c
+s32v234_sdk/libs/arm/utils/ocl/src/clRetainSampler.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clRetainSampler.c
+s32v234_sdk/libs/arm/utils/ocl/src/clSetEventCallback.c                                  -> ICP_SDK/src/Features/ICP/ACL/host/CL/clSetEventCallback.c
+s32v234_sdk/libs/arm/utils/ocl/src/clSetKernelArg.c                                      -> ICP_SDK/src/Features/ICP/ACL/host/CL/clSetKernelArg.c
+s32v234_sdk/libs/arm/utils/ocl/src/clSetMemObjectDestructorCallback.c                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clSetMemObjectDestructorCallback.c
+s32v234_sdk/libs/arm/utils/ocl/src/clSetUserEventStatus.c                                -> ICP_SDK/src/Features/ICP/ACL/host/CL/clSetUserEventStatus.c
+s32v234_sdk/libs/arm/utils/ocl/src/clUnloadCompiler.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/clUnloadCompiler.c
+s32v234_sdk/libs/arm/utils/ocl/src/clWaitForEvents.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/clWaitForEvents.c
+s32v234_sdk/libs/arm/utils/ocl/src/pocl_image_util.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_image_util.c
+s32v234_sdk/libs/arm/utils/ocl/src/pocl_mem_management.c                                 -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_mem_management.c
+s32v234_sdk/libs/arm/utils/ocl/src/pocl_runtime_config.c                                 -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_runtime_config.c
+s32v234_sdk/libs/arm/utils/ocl/src/pocl_util.c                                           -> ICP_SDK/src/Features/ICP/ACL/host/CL/pocl_util.c
+s32v234_sdk/libs/arm/utils/ocl/src/poclu_bswap.c                                         -> ICP_SDK/src/Features/ICP/ACL/host/CL/poclu_bswap.c
+s32v234_sdk/libs/arm/utils/ocl/src/devices/bufalloc.c                                    -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/bufalloc.c
+s32v234_sdk/libs/arm/utils/ocl/src/devices/cpuinfo.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/cpuinfo.c
+s32v234_sdk/libs/arm/utils/ocl/src/devices/devices.c                                     -> ICP_SDK/src/Features/ICP/ACL/host/CL/devices/devices.c
+

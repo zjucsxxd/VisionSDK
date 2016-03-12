@@ -1,0 +1,7 @@
+#!gbuild
+#component integrity_virtual_address_space
+[Program]
+	-livfs
+	-llibshm_manager.a
+tgt/INTEGRITY.ld
+shm_area.c

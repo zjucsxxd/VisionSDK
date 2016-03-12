@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\graphs\apu_sat_process.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\graphs\apu_sat_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_sat_graph.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_sat_graph.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_sat_process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0B01CE96-1378-4111-A6EF-119B70470349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{209909BD-82D0-455E-B387-5A3E984CD961}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphs">
+      <UniqueIdentifier>{209909BD-82D0-455E-B387-5A3E984CD961}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

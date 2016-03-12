@@ -1,0 +1,8 @@
+::sysinit:/etc/init.d/rcS
+
+#ttyAMA0::respawn:/sbin/getty -L ttyAMA0 57600 vt100
+ttyAMA0::wait:/bin/sh 
+
+::restart:/sbin/init 
+::shutdown:/bin/umount -a -r
+

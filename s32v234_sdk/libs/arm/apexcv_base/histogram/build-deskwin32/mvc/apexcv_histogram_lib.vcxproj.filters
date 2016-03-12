@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="graphs">
+      <UniqueIdentifier>{D7E0D2CF-0420-4426-8584-3466EE13264D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{3AABDD05-D7E9-4952-AEA5-9831C7D0EF18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{8B309F44-4B1F-45E5-AB42-89EB12996F64}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\apexcv_histogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\histogram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\apexcv_histogram_ref.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\apexcv_histogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_histogram_ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\all_histogram_graph_registrations.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\histogram_chunk_size_definitions.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\histogram_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\histogram_graph.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_base_histogram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_histogram_test_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_histogram_ref.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

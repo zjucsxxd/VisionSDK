@@ -1,0 +1,97 @@
+// ISP Graph "static_data"
+Import "../../../inc/ipus_mem_map.h";
+Import "../inc/iofiles.h";
+GraphLimits.NumLines = NUM_LINES;
+		
+Node STATIC_DATA {
+	SCALAR,
+	0,
+	NUM_LINES
+};
+Param STATIC_DATA {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1920 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10150000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load STATIC_DATA {
+	static_data
+	};
+
+
+		Node FastDMA {
+			FDMA,
+			0
+		};
+	
+		Buffer producerless_buffer_1 {
+			null,
+	GENERIC_8,
+	NUM_VALUES,
+	NUM_LINES,
+	NUM_BYTES,
+	1
+		};
+		
+	Input STATIC_DATA_A_0 = STATIC_DATA.A[0];
+	  STATIC_DATA_A_0.firstLine = 0;
+	  STATIC_DATA_A_0.pixels = NUM_BYTES;
+	  STATIC_DATA_A_0.lineSkip = 0;
+	  STATIC_DATA_A_0.increment = 1;
+	  STATIC_DATA_A_0.pixelSkip = 0;
+	  STATIC_DATA_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  producerless_buffer_1, 
+  STATIC_DATA_A_0,
+  1};
+
+		
+		
+		Buffer STATIC_DATA_Buffer_0 {
+			STATIC_DATA.out[0],
+	GENERIC_8,
+	NUM_VALUES,
+	8,
+	NUM_BYTES,
+	1
+		};
+		
+		STATIC_DATA_Buffer_0.readPixels = NUM_BYTES;
+		
+		
+			Input FDMA_TO_DDR = FastDMA.A[0];
+			  FDMA_TO_DDR.firstLine = 0;
+			  FDMA_TO_DDR.increment = 1;
+			
+			Connect {
+				STATIC_DATA_Buffer_0,
+				FDMA_TO_DDR,
+				1};
+
+	DDRBuffer FastDMA_Buffer_0 {
+		FastDMA.out[0],
+	GENERIC_8,
+	NUM_VALUES,
+	NUM_LINES,
+	DISP_STRIDE,
+	1
+	};
+	
+		FastDMA_Buffer_0.readPixels = NUM_BYTES;
+	
+		
+	Connect { FastDMA_Buffer_0, DDR, 0 };
+	
+
+		
+		
+		
+
+		
+		
+	

@@ -1,0 +1,95 @@
+// ISP Graph "static_image"
+Import "../../../inc/ipus_mem_map.h";
+GraphLimits.NumLines = 0;
+		
+Node MIPI_DDR_COPY0 {
+	SCALAR,
+	0,
+	512
+};
+Param MIPI_DDR_COPY0 {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00150000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x00000000 },
+};
+
+
+	Load MIPI_DDR_COPY0 {
+	mipi_ddr
+	};
+
+
+		Node FastDMA {
+			FDMA,
+			0
+		};
+	
+		Buffer producerless_buffer_1 {
+			null,
+	GENERIC_8,
+	1296,
+	991,
+	2592,
+	1
+		};
+		
+	Input MIPI_DDR_COPY0_A_0 = MIPI_DDR_COPY0.A[0];
+	  MIPI_DDR_COPY0_A_0.firstLine = 0;
+	  MIPI_DDR_COPY0_A_0.pixels = 1280;
+	  MIPI_DDR_COPY0_A_0.lineSkip = 0;
+	  MIPI_DDR_COPY0_A_0.increment = 1;
+	  MIPI_DDR_COPY0_A_0.pixelSkip = 0;
+	  MIPI_DDR_COPY0_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  producerless_buffer_1, 
+  MIPI_DDR_COPY0_A_0,
+  1};
+
+		
+		
+		Buffer MIPI_DDR_COPY0_Buffer_0 {
+			MIPI_DDR_COPY0.out[0],
+	GENERIC_8,
+	2560,
+	8,
+	2560,
+	1
+		};
+		
+		MIPI_DDR_COPY0_Buffer_0.readPixels = 1280;
+		
+		
+			Input FDMA_TO_DDR = FastDMA.A[0];
+			  FDMA_TO_DDR.firstLine = 0;
+			  FDMA_TO_DDR.increment = 1;
+			
+			Connect {
+				MIPI_DDR_COPY0_Buffer_0,
+				FDMA_TO_DDR,
+				1};
+
+	DDRBuffer FastDMA_Buffer_0 {
+		FastDMA.out[0],
+	GENERIC_8,
+	2560,
+	512,
+	5760,
+	1
+	};
+	
+		FastDMA_Buffer_0.readPixels = 2560;
+	
+		
+	Connect { FastDMA_Buffer_0, DDR, 0 };
+	
+
+		
+		
+
+		
+		
+	

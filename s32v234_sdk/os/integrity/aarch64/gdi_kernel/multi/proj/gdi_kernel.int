@@ -1,0 +1,35 @@
+# Input File for the Integrate utility for use with the INTEGRITY real-time
+#  operating system by Green Hills Software.
+# Before editing this file, refer to the Integrate Reference Manual.
+
+
+
+Variables
+	__VFS_MEMSIZE				0
+EndVariables
+
+Kernel
+	Filename			gdi_kernel_kernel
+	MemoryPoolSize			$__INTEGRITY_KERNEL_MinimumMemoryPoolSize
+	#MemoryPoolSize			$__INTEGRITY_KERNEL_MinimumMemoryPoolSize + 0x5000000
+EndKernel
+
+%include "virtualdebug_module.int"
+
+%include "ivfsserver_module.int"
+
+%include "ip4server_module.int"
+
+%include "posix_system_server.int"
+
+AddressSpace				shm_manager
+	Filename			shm_manager
+	MemoryPoolSize	0xf0000
+#	MemoryPoolSize	0xa00000
+	Language			C
+	Task				Initial
+		StartIt			true
+	EndTask
+EndAddressSpace
+
+

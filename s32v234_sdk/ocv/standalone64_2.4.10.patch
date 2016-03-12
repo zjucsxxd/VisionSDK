@@ -1,0 +1,2722 @@
+diff -rupN opencv_src-original/cmake/OpenCVFindLibsVideo.cmake opencv_src/cmake/OpenCVFindLibsVideo.cmake
+--- opencv_src-original/cmake/OpenCVFindLibsVideo.cmake	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/cmake/OpenCVFindLibsVideo.cmake	2015-06-09 13:00:07.000000000 +0200
+@@ -13,41 +13,7 @@ endif(WITH_VFW)
+ # --- GStreamer ---
+ ocv_clear_vars(HAVE_GSTREAMER)
+ # try to find gstreamer 1.x first
+-if(WITH_GSTREAMER AND NOT WITH_GSTREAMER_0_10)
+-  CHECK_MODULE(gstreamer-base-1.0 HAVE_GSTREAMER_BASE)
+-  CHECK_MODULE(gstreamer-video-1.0 HAVE_GSTREAMER_VIDEO)
+-  CHECK_MODULE(gstreamer-app-1.0 HAVE_GSTREAMER_APP)
+-  CHECK_MODULE(gstreamer-riff-1.0 HAVE_GSTREAMER_RIFF)
+-  CHECK_MODULE(gstreamer-pbutils-1.0 HAVE_GSTREAMER_PBUTILS)
+ 
+-  if(HAVE_GSTREAMER_BASE AND HAVE_GSTREAMER_VIDEO AND HAVE_GSTREAMER_APP AND HAVE_GSTREAMER_RIFF AND HAVE_GSTREAMER_PBUTILS)
+-      set(HAVE_GSTREAMER TRUE)
+-      set(GSTREAMER_BASE_VERSION ${ALIASOF_gstreamer-base-1.0_VERSION})
+-      set(GSTREAMER_VIDEO_VERSION ${ALIASOF_gstreamer-video-1.0_VERSION})
+-      set(GSTREAMER_APP_VERSION ${ALIASOF_gstreamer-app-1.0_VERSION})
+-      set(GSTREAMER_RIFF_VERSION ${ALIASOF_gstreamer-riff-1.0_VERSION})
+-      set(GSTREAMER_PBUTILS_VERSION ${ALIASOF_gstreamer-pbutils-1.0_VERSION})
+-  endif()
+-
+-endif(WITH_GSTREAMER AND NOT WITH_GSTREAMER_0_10)
+-
+-# if gstreamer 1.x was not found, or we specified we wanted 0.10, try to find it
+-if(WITH_GSTREAMER_0_10 OR NOT HAVE_GSTREAMER)
+-  CHECK_MODULE(gstreamer-base-0.10 HAVE_GSTREAMER_BASE)
+-  CHECK_MODULE(gstreamer-video-0.10 HAVE_GSTREAMER_VIDEO)
+-  CHECK_MODULE(gstreamer-app-0.10 HAVE_GSTREAMER_APP)
+-  CHECK_MODULE(gstreamer-riff-0.10 HAVE_GSTREAMER_RIFF)
+-  CHECK_MODULE(gstreamer-pbutils-0.10 HAVE_GSTREAMER_PBUTILS)
+-
+-  if(HAVE_GSTREAMER_BASE AND HAVE_GSTREAMER_VIDEO AND HAVE_GSTREAMER_APP AND HAVE_GSTREAMER_RIFF AND HAVE_GSTREAMER_PBUTILS)
+-      set(HAVE_GSTREAMER TRUE)
+-      set(GSTREAMER_BASE_VERSION ${ALIASOF_gstreamer-base-0.10_VERSION})
+-      set(GSTREAMER_VIDEO_VERSION ${ALIASOF_gstreamer-video-0.10_VERSION})
+-      set(GSTREAMER_APP_VERSION ${ALIASOF_gstreamer-app-0.10_VERSION})
+-      set(GSTREAMER_RIFF_VERSION ${ALIASOF_gstreamer-riff-0.10_VERSION})
+-      set(GSTREAMER_PBUTILS_VERSION ${ALIASOF_gstreamer-pbutils-0.10_VERSION})
+-  endif()
+-endif(WITH_GSTREAMER_0_10 OR NOT HAVE_GSTREAMER)
+ 
+ # --- unicap ---
+ ocv_clear_vars(HAVE_UNICAP)
+diff -rupN opencv_src-original/modules/calib3d/src/calibinit.cpp opencv_src/modules/calib3d/src/calibinit.cpp
+--- opencv_src-original/modules/calib3d/src/calibinit.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/calib3d/src/calibinit.cpp	2015-06-09 16:58:25.000000000 +0200
+@@ -231,8 +231,7 @@ int cvFindChessboardCorners( const void*
+     CvCBQuad *quads = 0, **quad_group = 0;
+     CvCBCorner *corners = 0, **corner_group = 0;
+ 
+-    try
+-    {
++
+     int k = 0;
+     const int min_dilations = 0;
+     const int max_dilations = 7;
+@@ -550,15 +549,7 @@ int cvFindChessboardCorners( const void*
+         cvFindCornerSubPix( gray, out_corners, pattern_size.width*pattern_size.height,
+             cvSize(wsize, wsize), cvSize(-1,-1), cvTermCriteria(CV_TERMCRIT_EPS+CV_TERMCRIT_ITER, 15, 0.1));
+     }
+-    }
+-    catch(...)
+-    {
+-        cvFree(&quads);
+-        cvFree(&corners);
+-        cvFree(&quad_group);
+-        cvFree(&corner_group);
+-        throw;
+-    }
++   
+ 
+     cvFree(&quads);
+     cvFree(&corners);
+@@ -1992,14 +1983,9 @@ bool cv::findCirclesGrid( InputArray _im
+       void* oldCbkData;
+       ErrorCallback oldCbk = redirectError(quiet_error, 0, &oldCbkData);
+ #endif
+-      try
+-      {
++
+         isFound = boxFinder.findHoles();
+-      }
+-      catch (cv::Exception)
+-      {
+ 
+-      }
+ #if BE_QUIET
+       redirectError(oldCbk, oldCbkData);
+ #endif
+diff -rupN opencv_src-original/modules/contrib/src/inputoutput.cpp opencv_src/modules/contrib/src/inputoutput.cpp
+--- opencv_src-original/modules/contrib/src/inputoutput.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/contrib/src/inputoutput.cpp	2015-06-09 12:54:18.000000000 +0200
+@@ -6,7 +6,7 @@
+     #include <windows.h>
+     #include <tchar.h>
+ #else
+-    #include <dirent.h>
++    //#include <dirent.h>
+ #endif
+ 
+ namespace cv
+@@ -69,7 +69,7 @@ namespace cv
+                 FindClose(hFind);
+             }
+         #else
+-            (void)addPath;
++            /*(void)addPath;
+             DIR *dp;
+             struct dirent *dirp;
+             if((dp = opendir(path.c_str())) == NULL)
+@@ -88,7 +88,7 @@ namespace cv
+                             list.push_back(static_cast<std::string>(dirp->d_name));
+                 }
+             }
+-            closedir(dp);
++            closedir(dp);*/
+         #endif
+ 
+         return list;
+@@ -159,7 +159,7 @@ namespace cv
+             }
+ 
+         #else
+-            (void)addPath;
++           /* (void)addPath;
+             DIR *dp;
+             struct dirent *dirp;
+             if((dp = opendir(path_f.c_str())) == NULL)
+@@ -180,7 +180,7 @@ namespace cv
+                             list.push_back(static_cast<std::string>(dirp->d_name));
+                 }
+             }
+-            closedir(dp);
++            closedir(dp);*/
+         #endif
+ 
+         return list;
+diff -rupN opencv_src-original/modules/contrib/src/retina.cpp opencv_src/modules/contrib/src/retina.cpp
+--- opencv_src-original/modules/contrib/src/retina.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/contrib/src/retina.cpp	2015-06-09 17:01:11.000000000 +0200
+@@ -114,31 +114,16 @@ struct Retina::RetinaParameters Retina::
+ 
+ void Retina::setup(std::string retinaParameterFile, const bool applyDefaultSetupOnFailure)
+ {
+-    try
+-    {
++   
+         // opening retinaParameterFile in read mode
+         cv::FileStorage fs(retinaParameterFile, cv::FileStorage::READ);
+         setup(fs, applyDefaultSetupOnFailure);
+-    }catch(Exception &e)
+-    {
+-    std::cout<<"Retina::setup: wrong/unappropriate xml parameter file : error report :`n=>"<<e.what()<<std::endl;
+-    if (applyDefaultSetupOnFailure)
+-    {
+-            std::cout<<"Retina::setup: resetting retina with default parameters"<<std::endl;
+-        setupOPLandIPLParvoChannel();
+-        setupIPLMagnoChannel();
+-    }
+-        else
+-        {
+-        std::cout<<"=> keeping current parameters"<<std::endl;
+-        }
+-    }
++    
+ }
+ 
+ void Retina::setup(cv::FileStorage &fs, const bool applyDefaultSetupOnFailure)
+ {
+-    try
+-    {
++   
+         // read parameters file if it exists or apply default setup if asked for
+         if (!fs.isOpened())
+         {
+@@ -172,17 +157,7 @@ void Retina::setup(cv::FileStorage &fs,
+ 
+         setupIPLMagnoChannel(_retinaParameters.IplMagno.normaliseOutput, _retinaParameters.IplMagno.parasolCells_beta, _retinaParameters.IplMagno.parasolCells_tau, _retinaParameters.IplMagno.parasolCells_k, _retinaParameters.IplMagno.amacrinCellsTemporalCutFrequency,_retinaParameters.IplMagno.V0CompressionParameter, _retinaParameters.IplMagno.localAdaptintegration_tau, _retinaParameters.IplMagno.localAdaptintegration_k);
+ 
+-    }catch(Exception &e)
+-    {
+-        std::cout<<"Retina::setup: resetting retina with default parameters"<<std::endl;
+-        if (applyDefaultSetupOnFailure)
+-        {
+-            setupOPLandIPLParvoChannel();
+-            setupIPLMagnoChannel();
+-        }
+-        std::cout<<"Retina::setup: wrong/unappropriate xml parameter file : error report :`n=>"<<e.what()<<std::endl;
+-        std::cout<<"=> keeping current parameters"<<std::endl;
+-    }
++   
+ 
+     // report current configuration
+     std::cout<<printSetup()<<std::endl;
+@@ -311,7 +286,7 @@ void Retina::run(const cv::Mat &inputMat
+     const bool colorMode = _convertCvMat2ValarrayBuffer(inputMatToConvert, _inputBuffer);
+     // process the retina
+     if (!_retinaFilter->runFilter(_inputBuffer, colorMode, false, _retinaParameters.OPLandIplParvo.colorMode && colorMode, false))
+-        throw cv::Exception(-1, "Retina cannot be applied, wrong input buffer size", "Retina::run", "Retina.h", 0);
++    {}
+ }
+ 
+ void Retina::getParvo(cv::Mat &retinaOutput_parvo)
+@@ -346,7 +321,7 @@ void Retina::_init(const cv::Size inputS
+ {
+     // basic error check
+     if (inputSz.height*inputSz.width <= 0)
+-        throw cv::Exception(-1, "Bad retina size setup : size height and with must be superior to zero", "Retina::setup", "Retina.h", 0);
++    {}
+ 
+     unsigned int nbPixels=inputSz.height*inputSz.width;
+     // resize buffers if size does not match
+@@ -407,7 +382,7 @@ bool Retina::_convertCvMat2ValarrayBuffe
+ {
+     // first check input consistency
+     if (inputMatToConvert.empty())
+-        throw cv::Exception(-1, "Retina cannot be applied, input buffer is empty", "Retina::run", "Retina.h", 0);
++    {}
+ 
+     // retreive color mode from image input
+     int imageNumberOfChannels = inputMatToConvert.channels();
+diff -rupN opencv_src-original/modules/contrib/src/spinimages.cpp opencv_src/modules/contrib/src/spinimages.cpp
+--- opencv_src-original/modules/contrib/src/spinimages.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/contrib/src/spinimages.cpp	2015-06-09 17:01:50.000000000 +0200
+@@ -697,7 +697,7 @@ inline float cv::SpinImageModel::groupin
+ cv::SpinImageModel::SpinImageModel(const Mesh3D& _mesh) : mesh(_mesh) , out(0)
+ {
+      if (mesh.vtx.empty())
+-         throw Mesh3D::EmptyMeshException();
++     {}
+     defaultParams();
+ }
+ cv::SpinImageModel::SpinImageModel() : out(0) { defaultParams(); }
+@@ -1002,7 +1002,7 @@ private:
+  void cv::SpinImageModel::match(const SpinImageModel& scene, vector< vector<Vec2i> >& result)
+ {
+     if (mesh.vtx.empty())
+-        throw Mesh3D::EmptyMeshException();
++    {}
+ 
+     result.clear();
+ 
+diff -rupN opencv_src-original/modules/core/include/opencv2/core/operations.hpp opencv_src/modules/core/include/opencv2/core/operations.hpp
+--- opencv_src-original/modules/core/include/opencv2/core/operations.hpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/include/opencv2/core/operations.hpp	2015-06-09 17:17:18.000000000 +0200
+@@ -52,46 +52,10 @@
+ #ifdef __cplusplus
+ 
+ /////// exchange-add operation for atomic operations on reference counters ///////
+-#if defined __INTEL_COMPILER && !(defined WIN32 || defined _WIN32)   // atomic increment on the linux version of the Intel(tm) compiler
+-  #define CV_XADD(addr,delta) _InterlockedExchangeAdd(const_cast<void*>(reinterpret_cast<volatile void*>(addr)), delta)
+-#elif defined __GNUC__
+ 
+-  #if defined __clang__ && __clang_major__ >= 3 && !defined __ANDROID__ && !defined __EMSCRIPTEN__  && !defined(__CUDACC__)
+-    #ifdef __ATOMIC_SEQ_CST
+-        #define CV_XADD(addr, delta) __c11_atomic_fetch_add((_Atomic(int)*)(addr), (delta), __ATOMIC_SEQ_CST)
+-    #else
+-        #define CV_XADD(addr, delta) __atomic_fetch_add((_Atomic(int)*)(addr), (delta), 5)
+-    #endif
+-  #elif __GNUC__*10 + __GNUC_MINOR__ >= 42
+-
+-    #if !(defined WIN32 || defined _WIN32) && (defined __i486__ || defined __i586__ || \
+-        defined __i686__ || defined __MMX__ || defined __SSE__  || defined __ppc__) || \
+-        (defined __GNUC__ && defined _STLPORT_MAJOR) || \
+-        defined __EMSCRIPTEN__
+-
+-      #define CV_XADD __sync_fetch_and_add
+-    #else
+-      #include <ext/atomicity.h>
+-      #define CV_XADD __gnu_cxx::__exchange_and_add
+-    #endif
+-
+-  #else
+-    #include <bits/atomicity.h>
+-    #if __GNUC__*10 + __GNUC_MINOR__ >= 34
+-      #define CV_XADD __gnu_cxx::__exchange_and_add
+-    #else
+-      #define CV_XADD __exchange_and_add
+-    #endif
+-  #endif
+-
+-#elif defined WIN32 || defined _WIN32 || defined WINCE
+-  namespace cv { CV_EXPORTS int _interlockedExchangeAdd(int* addr, int delta); }
+-  #define CV_XADD cv::_interlockedExchangeAdd
+-
+-#else
+   static inline int CV_XADD(int* addr, int delta)
+   { int tmp = *addr; *addr += delta; return tmp; }
+-#endif
++
+ 
+ #include <limits>
+ 
+diff -rupN opencv_src-original/modules/core/src/glob.cpp opencv_src/modules/core/src/glob.cpp
+--- opencv_src-original/modules/core/src/glob.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/src/glob.cpp	2015-06-09 12:54:18.000000000 +0200
+@@ -131,13 +131,13 @@ namespace
+ 
+ }
+ #else
+-# include <dirent.h>
++//# include <dirent.h>
+ # include <sys/stat.h>
+ const char dir_separators[] = "/";
+ const char native_separator = '/';
+ #endif
+ 
+-static bool isDir(const cv::String& path, DIR* dir)
++/*static bool isDir(const cv::String& path, DIR* dir)
+ {
+ #if defined WIN32 || defined _WIN32 || defined WINCE
+     DWORD attributes;
+@@ -167,127 +167,127 @@ static bool isDir(const cv::String& path
+     int is_dir = S_ISDIR( stat_buf.st_mode);
+     return is_dir != 0;
+ #endif
+-}
+-
+-static bool wildcmp(const char *string, const char *wild)
+-{
+-    // Based on wildcmp written by Jack Handy - <A href="mailto:jakkhandy@hotmail.com">jakkhandy@hotmail.com</A>
+-    const char *cp = 0, *mp = 0;
+-
+-    while ((*string) && (*wild != '*'))
+-    {
+-        if ((*wild != *string) && (*wild != '?'))
+-        {
+-            return false;
+-        }
+-
+-        wild++;
+-        string++;
+-    }
+-
+-    while (*string)
+-    {
+-        if (*wild == '*')
+-        {
+-            if (!*++wild)
+-            {
+-                return true;
+-            }
+-
+-            mp = wild;
+-            cp = string + 1;
+-        }
+-        else if ((*wild == *string) || (*wild == '?'))
+-        {
+-            wild++;
+-            string++;
+-        }
+-        else
+-        {
+-            wild = mp;
+-            string = cp++;
+-        }
+-    }
+-
+-    while (*wild == '*')
+-    {
+-        wild++;
+-    }
++}*/
+ 
+-    return *wild == 0;
+-}
++// static bool wildcmp(const char *string, const char *wild)
++// {
++//     // Based on wildcmp written by Jack Handy - <A href="mailto:jakkhandy@hotmail.com">jakkhandy@hotmail.com</A>
++//     const char *cp = 0, *mp = 0;
++// 
++//     while ((*string) && (*wild != '*'))
++//     {
++//         if ((*wild != *string) && (*wild != '?'))
++//         {
++//             return false;
++//         }
++// 
++//         wild++;
++//         string++;
++//     }
++// 
++//     while (*string)
++//     {
++//         if (*wild == '*')
++//         {
++//             if (!*++wild)
++//             {
++//                 return true;
++//             }
++// 
++//             mp = wild;
++//             cp = string + 1;
++//         }
++//         else if ((*wild == *string) || (*wild == '?'))
++//         {
++//             wild++;
++//             string++;
++//         }
++//         else
++//         {
++//             wild = mp;
++//             string = cp++;
++//         }
++//     }
++// 
++//     while (*wild == '*')
++//     {
++//         wild++;
++//     }
++// 
++//     return *wild == 0;
++// }
+ 
+ static void glob_rec(const cv::String& directory, const cv::String& wildchart, std::vector<cv::String>& result, bool recursive)
+ {
+-    DIR *dir;
+-    struct dirent *ent;
+-
+-    if ((dir = opendir (directory.c_str())) != 0)
+-    {
+-        /* find all the files and directories within directory */
+-        try
+-        {
+-            while ((ent = readdir (dir)) != 0)
+-            {
+-                const char* name = ent->d_name;
+-                if((name[0] == 0) || (name[0] == '.' && name[1] == 0) || (name[0] == '.' && name[1] == '.' && name[2] == 0))
+-                    continue;
+-
+-                cv::String path = directory + native_separator + name;
+-
+-                if (isDir(path, dir))
+-                {
+-                    if (recursive)
+-                        glob_rec(path, wildchart, result, recursive);
+-                }
+-                else
+-                {
+-                    if (wildchart.empty() || wildcmp(name, wildchart.c_str()))
+-                        result.push_back(path);
+-                }
+-            }
+-        }
+-        catch (...)
+-        {
+-            closedir(dir);
+-            throw;
+-        }
+-        closedir(dir);
+-    }
+-    else CV_Error(CV_StsObjectNotFound, cv::format("could not open directory: %s", directory.c_str()));
++//     DIR *dir;
++//     struct dirent *ent;
++// 
++//     if ((dir = opendir (directory.c_str())) != 0)
++//     {
++//         /* find all the files and directories within directory */
++//         try
++//         {
++//             while ((ent = readdir (dir)) != 0)
++//             {
++//                 const char* name = ent->d_name;
++//                 if((name[0] == 0) || (name[0] == '.' && name[1] == 0) || (name[0] == '.' && name[1] == '.' && name[2] == 0))
++//                     continue;
++// 
++//                 cv::String path = directory + native_separator + name;
++// 
++//                 if (isDir(path, dir))
++//                 {
++//                     if (recursive)
++//                         glob_rec(path, wildchart, result, recursive);
++//                 }
++//                 else
++//                 {
++//                     if (wildchart.empty() || wildcmp(name, wildchart.c_str()))
++//                         result.push_back(path);
++//                 }
++//             }
++//         }
++//         catch (...)
++//         {
++//             closedir(dir);
++//             throw;
++//         }
++//         closedir(dir);
++//     }
++//     else CV_Error(CV_StsObjectNotFound, cv::format("could not open directory: %s", directory.c_str()));
+ }
+ 
+ void cv::glob(String pattern, std::vector<String>& result, bool recursive)
+ {
+-    result.clear();
+-    String path, wildchart;
+-
+-    if (isDir(pattern, 0))
+-    {
+-        if(strchr(dir_separators, pattern[pattern.size() - 1]) != 0)
+-        {
+-            path = pattern.substr(0, pattern.size() - 1);
+-        }
+-        else
+-        {
+-            path = pattern;
+-        }
+-    }
+-    else
+-    {
+-        size_t pos = pattern.find_last_of(dir_separators);
+-        if (pos == String::npos)
+-        {
+-            wildchart = pattern;
+-            path = ".";
+-        }
+-        else
+-        {
+-            path = pattern.substr(0, pos);
+-            wildchart = pattern.substr(pos + 1);
+-        }
+-    }
+-
+-    glob_rec(path, wildchart, result, recursive);
+-    std::sort(result.begin(), result.end());
++//     result.clear();
++//     String path, wildchart;
++// 
++//     if (isDir(pattern, 0))
++//     {
++//         if(strchr(dir_separators, pattern[pattern.size() - 1]) != 0)
++//         {
++//             path = pattern.substr(0, pattern.size() - 1);
++//         }
++//         else
++//         {
++//             path = pattern;
++//         }
++//     }
++//     else
++//     {
++//         size_t pos = pattern.find_last_of(dir_separators);
++//         if (pos == String::npos)
++//         {
++//             wildchart = pattern;
++//             path = ".";
++//         }
++//         else
++//         {
++//             path = pattern.substr(0, pos);
++//             wildchart = pattern.substr(pos + 1);
++//         }
++//     }
++// 
++//     glob_rec(path, wildchart, result, recursive);
++//     std::sort(result.begin(), result.end());
+ }
+diff -rupN opencv_src-original/modules/core/src/matrix.cpp opencv_src/modules/core/src/matrix.cpp
+--- opencv_src-original/modules/core/src/matrix.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/src/matrix.cpp	2015-06-09 15:51:04.000000000 +0200
+@@ -219,18 +219,8 @@ void Mat::create(int d, const int* _size
+         else
+         {
+ #ifdef HAVE_TGPU
+-           try
+-            {
+                 allocator->allocate(dims, size, _type, refcount, datastart, data, step.p);
+-                CV_Assert( step[dims-1] == (size_t)CV_ELEM_SIZE(flags) );
+-            }catch(...)
+-            {
+-                allocator = 0;
+-                size_t totalSize = alignSize(step.p[0]*size.p[0], (int)sizeof(*refcount));
+-                data = datastart = (uchar*)fastMalloc(totalSize + (int)sizeof(*refcount));
+-                refcount = (int*)(data + totalSize);
+-                *refcount = 1;
+-            }
++           
+ #else
+             allocator->allocate(dims, size, _type, refcount, datastart, data, step.p);
+             CV_Assert( step[dims-1] == (size_t)CV_ELEM_SIZE(flags) );
+diff -rupN opencv_src-original/modules/core/src/persistence.cpp opencv_src/modules/core/src/persistence.cpp
+--- opencv_src-original/modules/core/src/persistence.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/src/persistence.cpp	2015-06-09 15:51:16.000000000 +0200
+@@ -4268,13 +4268,8 @@ icvReadSeq( CvFileStorage* fs, CvFileNod
+             flags |= CV_SEQ_FLAG_HOLE;
+         if( !strstr(flags_str, "untyped") )
+         {
+-            try
+-            {
+                 flags |= icvDecodeSimpleFormat(dt);
+-            }
+-            catch(...)
+-            {
+-            }
++            
+         }
+     }
+ 
+diff -rupN opencv_src-original/modules/core/src/rand.cpp opencv_src/modules/core/src/rand.cpp
+--- opencv_src-original/modules/core/src/rand.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/src/rand.cpp	2015-06-09 12:54:18.000000000 +0200
+@@ -776,28 +776,28 @@ RNG& theRNG()
+ #endif //HAVE_WINRT
+ #else
+ 
+-static pthread_key_t tlsRNGKey = 0;
+-static pthread_once_t tlsRNGKeyOnce = PTHREAD_ONCE_INIT;
++//static pthread_key_t tlsRNGKey = 0;
++//static pthread_once_t tlsRNGKeyOnce = PTHREAD_ONCE_INIT;
+ 
+ static void deleteRNG(void* data)
+ {
+-    delete (RNG*)data;
++  //  delete (RNG*)data;
+ }
+ 
+ static void makeRNGKey()
+ {
+-    int errcode = pthread_key_create(&tlsRNGKey, deleteRNG);
+-    CV_Assert(errcode == 0);
++    //int errcode = pthread_key_create(&tlsRNGKey, deleteRNG);
++    //CV_Assert(errcode == 0);
+ }
+ 
+ RNG& theRNG()
+ {
+-    pthread_once(&tlsRNGKeyOnce, makeRNGKey);
+-    RNG* rng = (RNG*)pthread_getspecific(tlsRNGKey);
++    //pthread_once(&tlsRNGKeyOnce, makeRNGKey);
++    RNG* rng = NULL;//(RNG*)pthread_getspecific(tlsRNGKey);
+     if( !rng )
+     {
+         rng = new RNG;
+-        pthread_setspecific(tlsRNGKey, rng);
++        //pthread_setspecific(tlsRNGKey, rng);
+     }
+     return *rng;
+ }
+diff -rupN opencv_src-original/modules/core/src/system.cpp opencv_src/modules/core/src/system.cpp
+--- opencv_src-original/modules/core/src/system.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/src/system.cpp	2015-06-09 16:00:42.000000000 +0200
+@@ -571,7 +571,6 @@ void error( const Exception& exc )
+         *p = 0;
+     }
+ 
+-    throw exc;
+ }
+ 
+ CvErrorCallback
+@@ -939,14 +938,14 @@ struct Mutex::Impl
+ 
+ struct Mutex::Impl
+ {
+-    Impl() { pthread_mutex_init(&sl, 0); refcount = 1; }
+-    ~Impl() { pthread_mutex_destroy(&sl); }
++    Impl() { /*pthread_mutex_init(&sl, 0);*/ refcount = 1; }
++    ~Impl() { /*pthread_mutex_destroy(&sl);*/ }
+ 
+-    void lock() { pthread_mutex_lock(&sl); }
+-    bool trylock() { return pthread_mutex_trylock(&sl) == 0; }
+-    void unlock() { pthread_mutex_unlock(&sl); }
++    void lock() { /*pthread_mutex_lock(&sl);*/ }
++    bool trylock() { return false;/*pthread_mutex_trylock(&sl) == 0;*/ }
++    void unlock() { /*pthread_mutex_unlock(&sl);*/ }
+ 
+-    pthread_mutex_t sl;
++    //pthread_mutex_t sl;
+     int refcount;
+ };
+ 
+@@ -1088,8 +1087,8 @@ BOOL WINAPI DllMain(HINSTANCE, DWORD fdw
+ #endif
+ 
+ #else
+-    static pthread_key_t tlsKey = 0;
+-    static pthread_once_t tlsKeyOnce = PTHREAD_ONCE_INIT;
++//     static pthread_key_t tlsKey = 0;
++//     static pthread_once_t tlsKeyOnce = PTHREAD_ONCE_INIT;
+ 
+     static void deleteTLSStorage(void* data)
+     {
+@@ -1098,18 +1097,18 @@ BOOL WINAPI DllMain(HINSTANCE, DWORD fdw
+ 
+     static void makeKey()
+     {
+-        int errcode = pthread_key_create(&tlsKey, deleteTLSStorage);
+-        CV_Assert(errcode == 0);
++//         int errcode = pthread_key_create(&tlsKey, deleteTLSStorage);
++//         CV_Assert(errcode == 0);
+     }
+ 
+     inline TLSStorage* TLSStorage::get()
+     {
+-        pthread_once(&tlsKeyOnce, makeKey);
+-        TLSStorage* d = (TLSStorage*)pthread_getspecific(tlsKey);
++//         pthread_once(&tlsKeyOnce, makeKey);
++        TLSStorage* d = NULL;/*(TLSStorage*)pthread_getspecific(tlsKey);*/
+         if( !d )
+         {
+             d = new TLSStorage;
+-            pthread_setspecific(tlsKey, d);
++//             pthread_setspecific(tlsKey, d);
+         }
+         return d;
+     }
+@@ -1150,14 +1149,8 @@ public:
+         TLSDataContainer* k = tlsContainers_[key];
+         if (!k)
+             return;
+-        try
+-        {
+             k->deleteDataInstance(data);
+-        }
+-        catch (...)
+-        {
+-            CV_DbgAssert(k == NULL); // Debug this!
+-        }
++        
+     }
+ };
+ 
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/all_indices.h opencv_src/modules/flann/include/opencv2/flann/all_indices.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/all_indices.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/all_indices.h	2015-06-09 16:25:07.000000000 +0200
+@@ -80,7 +80,7 @@ struct index_creator
+             nnIndex = new LshIndex<Distance>(dataset, params, distance);
+             break;
+         default:
+-            throw FLANNException("Unknown index type");
++	    break;
+         }
+ 
+         return nnIndex;
+@@ -109,7 +109,7 @@ struct index_creator<False,VectorSpace,D
+             nnIndex = new LshIndex<Distance>(dataset, params, distance);
+             break;
+         default:
+-            throw FLANNException("Unknown index type");
++	    break;
+         }
+ 
+         return nnIndex;
+@@ -135,7 +135,7 @@ struct index_creator<False,False,Distanc
+             nnIndex = new LshIndex<Distance>(dataset, params, distance);
+             break;
+         default:
+-            throw FLANNException("Unknown index type");
++	    break;
+         }
+ 
+         return nnIndex;
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/any.h opencv_src/modules/flann/include/opencv2/flann/any.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/any.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/any.h	2015-06-09 16:02:48.000000000 +0200
+@@ -245,7 +245,7 @@ public:
+     template<typename T>
+     T& cast()
+     {
+-        if (policy->type() != typeid(T)) throw anyimpl::bad_any_cast();
++        
+         T* r = reinterpret_cast<T*>(policy->get_value(&object));
+         return *r;
+     }
+@@ -254,7 +254,7 @@ public:
+     template<typename T>
+     const T& cast() const
+     {
+-        if (policy->type() != typeid(T)) throw anyimpl::bad_any_cast();
++        
+         T* r = reinterpret_cast<T*>(policy->get_value(const_cast<void **>(&object)));
+         return *r;
+     }
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/flann_base.hpp opencv_src/modules/flann/include/opencv2/flann/flann_base.hpp
+--- opencv_src-original/modules/flann/include/opencv2/flann/flann_base.hpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/flann_base.hpp	2015-06-09 16:03:55.000000000 +0200
+@@ -81,10 +81,10 @@ NNIndex<Distance>* load_saved_index(cons
+     }
+     IndexHeader header = load_header(fin);
+     if (header.data_type != Datatype<ElementType>::type()) {
+-        throw FLANNException("Datatype of saved index is different than of the one to be created.");
++        
+     }
+     if ((size_t(header.rows) != dataset.rows)||(size_t(header.cols) != dataset.cols)) {
+-        throw FLANNException("The index saved belongs to a different dataset");
++        
+     }
+ 
+     IndexParams params;
+@@ -138,7 +138,7 @@ public:
+     {
+         FILE* fout = fopen(filename.c_str(), "wb");
+         if (fout == NULL) {
+-            throw FLANNException("Cannot open file");
++            
+         }
+         save_header(fout, *nnIndex_);
+         saveIndex(fout);
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/hdf5.h opencv_src/modules/flann/include/opencv2/flann/hdf5.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/hdf5.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/hdf5.h	2015-06-09 16:03:24.000000000 +0200
+@@ -44,7 +44,7 @@ namespace
+ template<typename T>
+ hid_t get_hdf5_type()
+ {
+-    throw FLANNException("Unsupported type for IO operations");
++    
+ }
+ 
+ template<>
+@@ -70,7 +70,7 @@ hid_t get_hdf5_type<double>() { return H
+ }
+ 
+ 
+-#define CHECK_ERROR(x,y) if ((x)<0) throw FLANNException((y));
++#define CHECK_ERROR(x,y) if ((x)<0) 
+ 
+ template<typename T>
+ void save_to_file(const cvflann::Matrix<T>& dataset, const std::string& filename, const std::string& name)
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/hierarchical_clustering_index.h opencv_src/modules/flann/include/opencv2/flann/hierarchical_clustering_index.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/hierarchical_clustering_index.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/hierarchical_clustering_index.h	2015-06-09 16:04:11.000000000 +0200
+@@ -301,7 +301,7 @@ public:
+             chooseCenters = &HierarchicalClusteringIndex::chooseCentersKMeanspp;
+         }
+         else {
+-            throw FLANNException("Unknown algorithm for choosing initial centers.");
++            
+         }
+ 
+         trees_ = get_param(params,"trees",4);
+@@ -384,7 +384,7 @@ public:
+     void buildIndex()
+     {
+         if (branching_<2) {
+-            throw FLANNException("Branching factor must be at least 2");
++         
+         }
+ 
+         free_elements();
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/index_testing.h opencv_src/modules/flann/include/opencv2/flann/index_testing.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/index_testing.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/index_testing.h	2015-06-09 16:02:36.000000000 +0200
+@@ -92,7 +92,7 @@ float search_with_ground_truth(NNIndex<D
+     if (matches.cols<size_t(nn)) {
+         Logger::info("matches.cols=%d, nn=%d\n",matches.cols,nn);
+ 
+-        throw FLANNException("Ground truth is not computed for as many neighbors as requested");
++        
+     }
+ 
+     KNNResultSet<DistanceType> resultSet(nn+skipMatches);
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/kmeans_index.h opencv_src/modules/flann/include/opencv2/flann/kmeans_index.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/kmeans_index.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/kmeans_index.h	2015-06-09 16:03:10.000000000 +0200
+@@ -304,9 +304,6 @@ public:
+         else if (centers_init_==FLANN_CENTERS_KMEANSPP) {
+             chooseCenters = &KMeansIndex::chooseCentersKMeanspp;
+         }
+-        else {
+-            throw FLANNException("Unknown algorithm for choosing initial centers.");
+-        }
+         cb_index_ = 0.4f;
+ 
+     }
+@@ -367,9 +364,7 @@ public:
+      */
+     void buildIndex()
+     {
+-        if (branching_<2) {
+-            throw FLANNException("Branching factor must be at least 2");
+-        }
++        
+ 
+         indices_ = new int[size_];
+         for (size_t i=0; i<size_; ++i) {
+@@ -466,9 +461,7 @@ public:
+     int getClusterCenters(Matrix<DistanceType>& centers)
+     {
+         int numClusters = centers.rows;
+-        if (numClusters<1) {
+-            throw FLANNException("Number of clusters must be at least 1");
+-        }
++        
+ 
+         DistanceType variance;
+         KMeansNodePtr* clusters = new KMeansNodePtr[numClusters];
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/object_factory.h opencv_src/modules/flann/include/opencv2/flann/object_factory.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/object_factory.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/object_factory.h	2015-06-09 16:03:32.000000000 +0200
+@@ -71,7 +71,7 @@ public:
+         typename ObjectRegistry::const_iterator iter = object_registry.find(id);
+ 
+         if (iter == object_registry.end()) {
+-            throw CreatorNotFound();
++            
+         }
+ 
+         return iter->second;
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/params.h opencv_src/modules/flann/include/opencv2/flann/params.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/params.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/params.h	2015-06-09 16:31:11.000000000 +0200
+@@ -75,8 +75,9 @@ T get_param(const IndexParams& params, s
+         return it->second.cast<T>();
+     }
+     else {
+-        throw FLANNException(std::string("Missing parameter '")+name+std::string("' in the parameters given"));
++	return it->second.cast<T>();  
+     }
++    
+ }
+ 
+ inline void print_params(const IndexParams& params, std::ostream& stream)
+diff -rupN opencv_src-original/modules/flann/include/opencv2/flann/saving.h opencv_src/modules/flann/include/opencv2/flann/saving.h
+--- opencv_src-original/modules/flann/include/opencv2/flann/saving.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/include/opencv2/flann/saving.h	2015-06-09 16:24:30.000000000 +0200
+@@ -109,13 +109,7 @@ inline IndexHeader load_header(FILE* str
+     IndexHeader header;
+     size_t read_size = fread(&header,sizeof(header),1,stream);
+ 
+-    if (read_size!=(size_t)1) {
+-        throw FLANNException("Invalid index file, cannot read");
+-    }
+-
+-    if (strcmp(header.signature,FLANN_SIGNATURE_)!=0) {
+-        throw FLANNException("Invalid index file, wrong signature");
+-    }
++    
+ 
+     return header;
+ 
+@@ -148,7 +142,7 @@ void load_value(FILE* stream, T& value,
+ {
+     size_t read_cnt = fread(&value, sizeof(value), count, stream);
+     if (read_cnt != count) {
+-        throw FLANNException("Cannot read from file");
++        
+     }
+ }
+ 
+@@ -157,12 +151,12 @@ void load_value(FILE* stream, cvflann::M
+ {
+     size_t read_cnt = fread(&value, sizeof(value), 1, stream);
+     if (read_cnt != 1) {
+-        throw FLANNException("Cannot read from file");
++        
+     }
+     value.data = new T[value.rows*value.cols];
+     read_cnt = fread(value.data, sizeof(T), value.rows*value.cols, stream);
+     if (read_cnt != (size_t)(value.rows*value.cols)) {
+-        throw FLANNException("Cannot read from file");
++        
+     }
+ }
+ 
+@@ -173,12 +167,12 @@ void load_value(FILE* stream, std::vecto
+     size_t size;
+     size_t read_cnt = fread(&size, sizeof(size_t), 1, stream);
+     if (read_cnt!=1) {
+-        throw FLANNException("Cannot read from file");
++        
+     }
+     value.resize(size);
+     read_cnt = fread(&value[0], sizeof(T), size, stream);
+     if (read_cnt != size) {
+-        throw FLANNException("Cannot read from file");
++        
+     }
+ }
+ 
+diff -rupN opencv_src-original/modules/flann/src/miniflann.cpp opencv_src/modules/flann/src/miniflann.cpp
+--- opencv_src-original/modules/flann/src/miniflann.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/flann/src/miniflann.cpp	2015-06-09 16:35:43.000000000 +0200
+@@ -104,90 +104,7 @@ void IndexParams::getAll(std::vector<std
+     for( ; it != it_end; ++it )
+     {
+         names.push_back(it->first);
+-        try
+-        {
+-            std::string val = it->second.cast<std::string>();
+-            types.push_back(CV_USRTYPE1);
+-            strValues.push_back(val);
+-            numValues.push_back(-1);
+-        continue;
+-        }
+-        catch (...) {}
+-
+-        strValues.push_back(it->second.type().name());
+-
+-        try
+-        {
+-            double val = it->second.cast<double>();
+-            types.push_back( CV_64F );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
+-        try
+-        {
+-            float val = it->second.cast<float>();
+-            types.push_back( CV_32F );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
+-        try
+-        {
+-            int val = it->second.cast<int>();
+-            types.push_back( CV_32S );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
+-        try
+-        {
+-            short val = it->second.cast<short>();
+-            types.push_back( CV_16S );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
+-        try
+-        {
+-            ushort val = it->second.cast<ushort>();
+-            types.push_back( CV_16U );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
+-        try
+-        {
+-            char val = it->second.cast<char>();
+-            types.push_back( CV_8S );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
+-        try
+-        {
+-            uchar val = it->second.cast<uchar>();
+-            types.push_back( CV_8U );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
+-        try
+-        {
+-            bool val = it->second.cast<bool>();
+-            types.push_back( CV_MAKETYPE(CV_USRTYPE1,2) );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
+-        try
+-        {
+-            cvflann::flann_algorithm_t val = it->second.cast<cvflann::flann_algorithm_t>();
+-            types.push_back( CV_MAKETYPE(CV_USRTYPE1,3) );
+-            numValues.push_back(val);
+-        continue;
+-        }
+-        catch (...) {}
++        
+ 
+ 
+         types.push_back(-1); // unknown type
+diff -rupN opencv_src-original/modules/highgui/src/agile_wrl.h opencv_src/modules/highgui/src/agile_wrl.h
+--- opencv_src-original/modules/highgui/src/agile_wrl.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/agile_wrl.h	2015-06-09 16:56:05.000000000 +0200
+@@ -192,21 +192,21 @@ struct UnwrapAgile<Agile<T, true>>
+         }
+ 
+     public:
+-        Agile() throw() : _object(nullptr), _contextToken(0)
++        Agile() : _object(nullptr), _contextToken(0)
+ #if _MSC_VER >= 1800
+             , _agileState(AgileState::Unknown)
+ #endif
+         {
+         }
+ 
+-        Agile(nullptr_t) throw() : _object(nullptr), _contextToken(0)
++        Agile(nullptr_t) : _object(nullptr), _contextToken(0)
+ #if _MSC_VER >= 1800
+             , _agileState(AgileState::Unknown)
+ #endif
+         {
+         }
+ 
+-        explicit Agile(TypeT object) throw() : _object(nullptr), _contextToken(0)
++        explicit Agile(TypeT object) : _object(nullptr), _contextToken(0)
+ #if _MSC_VER >= 1800
+             , _agileState(AgileState::Unknown)
+ #endif
+@@ -215,7 +215,7 @@ struct UnwrapAgile<Agile<T, true>>
+             SetObject(object);
+         }
+ 
+-        Agile(const Agile& object) throw() : _object(nullptr), _contextToken(0)
++        Agile(const Agile& object) : _object(nullptr), _contextToken(0)
+ #if _MSC_VER >= 1800
+             , _agileState(AgileState::Unknown)
+ #endif
+@@ -224,7 +224,7 @@ struct UnwrapAgile<Agile<T, true>>
+             SetObject(object.Get());
+         }
+ 
+-        Agile(Agile&& object) throw() : _object(nullptr), _contextToken(0)
++        Agile(Agile&& object) : _object(nullptr), _contextToken(0)
+ #if _MSC_VER >= 1800
+             , _agileState(AgileState::Unknown)
+ #endif
+@@ -427,60 +427,60 @@ struct UnwrapAgile<Agile<T, true>>
+         TypeT _object;
+ 
+     public:
+-        Agile() throw() : _object(nullptr)
++        Agile() : _object(nullptr)
+         {
+         }
+ 
+-        Agile(nullptr_t) throw() : _object(nullptr)
++        Agile(nullptr_t) : _object(nullptr)
+         {
+         }
+ 
+-        explicit Agile(TypeT object) throw() : _object(object)
++        explicit Agile(TypeT object) : _object(object)
+         {
+         }
+ 
+-        Agile(const Agile& object) throw() : _object(object._object)
++        Agile(const Agile& object) : _object(object._object)
+         {
+         }
+ 
+-        Agile(Agile&& object) throw() : _object(nullptr)
++        Agile(Agile&& object) : _object(nullptr)
+         {
+             Swap(object);
+         }
+ 
+-        ~Agile() throw()
++        ~Agile() 
+         {
+             Release();
+         }
+ 
+-        TypeT Get() const
++        TypeT Get() 
+         {
+             return _object;
+         }
+ 
+-        TypeT* GetAddressOf() throw()
++        TypeT* GetAddressOf() 
+         {
+             Release();
+             return &_object;
+         }
+ 
+-        TypeT* GetAddressOfForInOut() throw()
++        TypeT* GetAddressOfForInOut() 
+         {
+             return &_object;
+         }
+ 
+-        TypeT operator->() const throw()
++        TypeT operator->() 
+         {
+             return Get();
+         }
+ 
+-        Agile& operator=(nullptr_t) throw()
++        Agile& operator=(nullptr_t) 
+         {
+             Release();
+             return *this;
+         }
+ 
+-        Agile& operator=(TypeT object) throw()
++        Agile& operator=(TypeT object) 
+         {
+             if (_object != object)
+             {
+@@ -489,14 +489,14 @@ struct UnwrapAgile<Agile<T, true>>
+             return *this;
+         }
+ 
+-        Agile& operator=(Agile object) throw()
++        Agile& operator=(Agile object)
+         {
+             object.Swap(*this);
+             return *this;
+         }
+ 
+ #if _MSC_VER < 1800
+-        Agile& operator=(IUnknown* lp) throw()
++        Agile& operator=(IUnknown* lp) 
+         {
+             Release();
+             // bump ref count
+@@ -512,7 +512,7 @@ struct UnwrapAgile<Agile<T, true>>
+ #endif
+ 
+         // Release the interface and set to NULL
+-        void Release() throw()
++        void Release() 
+         {
+             _object = nullptr;
+         }
+@@ -522,17 +522,17 @@ struct UnwrapAgile<Agile<T, true>>
+             std::swap(_object, object._object);
+         }
+ 
+-        bool operator==(nullptr_t) const throw()
++        bool operator==(nullptr_t) 
+         {
+             return _object == nullptr;
+         }
+ 
+-        bool operator==(const Agile& other) const throw()
++        bool operator==(const Agile& other) 
+         {
+             return _object == other._object;
+         }
+ 
+-        bool operator<(const Agile& other) const throw()
++        bool operator<(const Agile& other) 
+         {
+             return reinterpret_cast<void*>(_object) < reinterpret_cast<void*>(other._object);
+         }
+@@ -541,25 +541,25 @@ struct UnwrapAgile<Agile<T, true>>
+ #pragma warning(pop)
+ 
+     template<class U>
+-    bool operator==(nullptr_t, const Agile<U>& a) throw()
++    bool operator==(nullptr_t, const Agile<U>& a) 
+     {
+         return a == nullptr;
+     }
+ 
+     template<class U>
+-    bool operator!=(const Agile<U>& a, nullptr_t) throw()
++    bool operator!=(const Agile<U>& a, nullptr_t) 
+     {
+         return !(a == nullptr);
+     }
+ 
+     template<class U>
+-    bool operator!=(nullptr_t, const Agile<U>& a) throw()
++    bool operator!=(nullptr_t, const Agile<U>& a) 
+     {
+         return !(a == nullptr);
+     }
+ 
+     template<class U>
+-    bool operator!=(const Agile<U>& a, const Agile<U>& b) throw()
++    bool operator!=(const Agile<U>& a, const Agile<U>& b) 
+     {
+         return !(a == b);
+     }
+diff -rupN opencv_src-original/modules/highgui/src/bitstrm.cpp opencv_src/modules/highgui/src/bitstrm.cpp
+--- opencv_src-original/modules/highgui/src/bitstrm.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/bitstrm.cpp	2015-06-09 16:55:05.000000000 +0200
+@@ -97,7 +97,6 @@ void  RBaseStream::readBlock()
+     {
+         if( m_block_pos == 0 && m_current < m_end )
+             return;
+-        throw RBS_THROW_EOS;
+     }
+ 
+     fseek( m_file, m_block_pos, SEEK_SET );
+@@ -105,8 +104,7 @@ void  RBaseStream::readBlock()
+     m_end = m_start + readed;
+     m_current = m_start;
+ 
+-    if( readed == 0 || m_current >= m_end )
+-        throw RBS_THROW_EOS;
++    
+ }
+ 
+ 
+diff -rupN opencv_src-original/modules/highgui/src/cap_cmu.cpp opencv_src/modules/highgui/src/cap_cmu.cpp
+--- opencv_src-original/modules/highgui/src/cap_cmu.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/cap_cmu.cpp	2015-06-09 16:45:48.000000000 +0200
+@@ -269,11 +269,9 @@ bool CvCaptureCAM_CMU::open( int _index
+ 
+         ////////////////////////////////////////////////////////////////////////////////////////////////////////
+         // create all cameras
+-        try
+-        {
++
+             // create camera0
+-            if( CMU_theCamera[0].CheckLink() != CAM_SUCCESS )
+-                throw 1;
++            CMU_theCamera[0].CheckLink();
+ 
+             // we have one pin per camera
+             CMU_numCameras = CMU_theCamera[0].GetNumberCameras();
+@@ -282,21 +280,12 @@ bool CvCaptureCAM_CMU::open( int _index
+             for(int i = 1; i < CMU_numCameras && i<CMU_MAX_CAMERAS; i++ )
+             {
+                 CMU_useCameraFlags[i] = false;
+-                if (CMU_theCamera[i].CheckLink() != CAM_SUCCESS)
+-                    throw 1;
++                CMU_theCamera[i].CheckLink();
+             }
+-        }
+-        catch (...)
+-        {
+-            // free any allocated cameras
+-            // ...
+-            CMU_numCameras = 0;
+-            return false;
+-        }
++
+     }
+ 
+-    try
+-    {
++
+         CvSize size;
+ 
+         // pick first unused camera
+@@ -311,14 +300,11 @@ bool CvCaptureCAM_CMU::open( int _index
+         }
+ 
+         // no empty camera found
+-        if (_index==-1)
+-            throw 1;
+ 
+-        if (CMU_theCamera[_index].SelectCamera(_index) != CAM_SUCCESS)
+-            throw 2;
+ 
+-        if (CMU_theCamera[_index].InitCamera() != CAM_SUCCESS)
+-            throw 3;
++       CMU_theCamera[_index].SelectCamera(_index);
++
++        CMU_theCamera[_index].InitCamera();
+ 
+         // set initial format -- try to pick best frame rate first, then color, then size
+         bool found_format = false;
+@@ -346,9 +332,7 @@ bool CvCaptureCAM_CMU::open( int _index
+         if(!found_format){
+             CMU_theCamera[_index].SetVideoFormat(7);
+             CMU_theCamera[_index].SetVideoMode(0);
+-            if(CMU_theCamera[_index].StartImageAcquisition() != CAM_SUCCESS){
+-                // no format found
+-                throw 9;
++            CMU_theCamera[_index].StartImageAcquisition();
+             }
+         }
+ 
+@@ -361,11 +345,7 @@ bool CvCaptureCAM_CMU::open( int _index
+         // successfully activated camera
+         CMU_numActiveCameras++;
+         CMU_useCameraFlags[_index] = true;
+-    }
+-    catch ( int )
+-    {
+-        return false;
+-    }
++   
+ 
+     return true;
+ }
+diff -rupN opencv_src-original/modules/highgui/src/cap_dshow.cpp opencv_src/modules/highgui/src/cap_dshow.cpp
+--- opencv_src-original/modules/highgui/src/cap_dshow.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/cap_dshow.cpp	2015-06-09 16:40:32.000000000 +0200
+@@ -3367,16 +3367,10 @@ CvCapture* cvCreateCameraCapture_DShow(
+ {
+     CvCaptureCAM_DShow* capture = new CvCaptureCAM_DShow;
+ 
+-    try
+-    {
++
+         if( capture->open( index ))
+             return capture;
+-    }
+-    catch(...)
+-    {
+-        delete capture;
+-        throw;
+-    }
++
+ 
+     delete capture;
+     return 0;
+diff -rupN opencv_src-original/modules/highgui/src/cap_giganetix.cpp opencv_src/modules/highgui/src/cap_giganetix.cpp
+--- opencv_src-original/modules/highgui/src/cap_giganetix.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/cap_giganetix.cpp	2015-06-09 16:39:43.000000000 +0200
+@@ -79,11 +79,9 @@ wrprInitGigEVisionAPI()
+   CV_FUNCNAME("wrprInitGigEVisionAPI");
+   __BEGIN__;
+ 
+-  try {
++  
+     gige::InitGigEVisionAPI ();
+-  } catch(...) {
+-    CV_ERROR(CV_StsError, "GigEVisionAPI: initialization (InitGigEVisionAPI()) failed.\n");
+-  }
++  
+   __END__;
+   return true;
+ }
+@@ -103,12 +101,9 @@ wrprExitGigEVisionAPI()
+   CV_FUNCNAME("wrprExitGigEVisionAPI");
+   __BEGIN__;
+ 
+-  try {
++  
+     gige::ExitGigEVisionAPI ();
+-  } catch(...) {
+-    CV_ERROR(CV_StsError, "GigEVisionAPI: finalization (ExitGigEVisionAPI()) failed.\n");
+-    return false;
+-  }
++  
+   __END__;
+   return true;
+ }
+@@ -131,11 +126,9 @@ wrprGetGigEVisionAPI()
+   CV_FUNCNAME("wrprGetGigEVisionAPI");
+   __BEGIN__;
+ 
+-  try {
++  
+     b_ret = gige::GetGigEVisionAPI ();
+-  } catch(...) {
+-    CV_ERROR(CV_StsError, "GigEVisionAPI: API instance (from GetGigEVisionAPI()) failed.\n");
+-  }
++  
+ 
+   __END__;
+ 
+@@ -168,12 +161,9 @@ wrprUnregisterCallback( const gige::IGig
+   {
+     if(eventHandler != NULL)
+     {
+-      try {
++     
+         b_ret = ((gige::IGigEVisionAPIInterface*)api)->UnregisterCallback (eventHandler);
+-      } catch(...) {
+-        CV_ERROR(CV_StsError, "GigEVisionAPI: API unregister callback function (from UnregisterCallback()) failed.\n");
+-        b_ret = false;
+-      }
++      
+     }
+   }
+   __END__;
+@@ -200,12 +190,9 @@ wrprDeviceIsConnect( gige::IDevice& devi
+ 
+   if(b_ret)
+   {
+-    try {
++   
+       b_ret = device->IsConnected ();
+-    } catch (...) {
+-      CV_ERROR(CV_StsError, "GigEVisionAPI: API device connection state (from IsConnected()) failed.\n");
+-      b_ret = false;
+-    }
++    
+   }
+   __END__;
+ 
+@@ -232,12 +219,9 @@ wrprDeviceIsValid( gige::IDevice& device
+ 
+   if(b_ret)
+   {
+-    try {
++    
+       b_ret = device.IsValid ();
+-    } catch (...) {
+-      CV_ERROR(CV_StsError, "GigEVisionAPI: API device validation state (from IsValid()) failed.\n");
+-      b_ret = false;
+-    }
++    
+   }
+   __END__;
+ 
+@@ -264,12 +248,9 @@ wrprDeviceDisconnect ( gige::IDevice& de
+ 
+   if(b_ret)
+   {
+-    try {
++  
+       device->Disconnect ();
+-    } catch (...) {
+-      CV_ERROR(CV_StsError, "GigEVisionAPI: API device disconnect (from Disconnect()) failed.\n");
+-      b_ret = false;
+-    }
++   
+   }
+ 
+   __END__;
+@@ -465,7 +446,7 @@ CvCaptureCAM_Giganetix::grabImage ()
+         m_rawImagePixelType = newPixelType;
+         m_monocrome = GvspGetBitsPerPixel((GVSP_PIXEL_TYPES)newPixelType) == IPL_DEPTH_8U;
+ 
+-        try {
++       
+           if (m_monocrome)
+           {
+             //TODO - For Mono & Color BayerRGB raw pixel types
+@@ -495,10 +476,7 @@ CvCaptureCAM_Giganetix::grabImage ()
+             }
+             m_raw_image->imageData = (char*)(imageInfo->GetRawData ());
+           }
+-        } catch (...) {
+-          CV_ERROR(CV_StsError, "Giganetix: failed to queue a buffer on device\n");
+-          close ();
+-        }
++        
+       } else {
+         //TODO - all other pixel types
+         m_raw_image = 0;
+diff -rupN opencv_src-original/modules/highgui/src/cap_msmf.cpp opencv_src/modules/highgui/src/cap_msmf.cpp
+--- opencv_src-original/modules/highgui/src/cap_msmf.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/cap_msmf.cpp	2015-06-09 16:40:42.000000000 +0200
+@@ -4026,16 +4026,10 @@ HRESULT CvCaptureFile_MSMF::getSourceDur
+ CvCapture* cvCreateCameraCapture_MSMF( int index )
+ {
+     CvCaptureCAM_MSMF* capture = new CvCaptureCAM_MSMF;
+-    try
+-    {
++
+         if( capture->open( index ))
+             return capture;
+-    }
+-    catch(...)
+-    {
+-        delete capture;
+-        throw;
+-    }
++
+     delete capture;
+     return 0;
+ }
+@@ -4043,8 +4037,7 @@ CvCapture* cvCreateCameraCapture_MSMF( i
+ CvCapture* cvCreateFileCapture_MSMF (const char* filename)
+ {
+     CvCaptureFile_MSMF* capture = new CvCaptureFile_MSMF;
+-    try
+-    {
++
+         if( capture->open(filename) )
+             return capture;
+         else
+@@ -4052,12 +4045,7 @@ CvCapture* cvCreateFileCapture_MSMF (con
+             delete capture;
+             return NULL;
+         }
+-    }
+-    catch(...)
+-    {
+-        delete capture;
+-        throw;
+-    }
++
+ }
+ 
+ //
+diff -rupN opencv_src-original/modules/highgui/src/cap_msmf.hpp opencv_src/modules/highgui/src/cap_msmf.hpp
+--- opencv_src-original/modules/highgui/src/cap_msmf.hpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/cap_msmf.hpp	2015-06-09 16:54:41.000000000 +0200
+@@ -386,7 +386,7 @@ MAKE_MAP(MFSTREAMSINK_MARKER_TYPE) Strea
+ #define _ContextCallback Concurrency::details::_ContextCallback
+ #define BEGIN_CALL_IN_CONTEXT(hr, var, ...) hr = S_OK;\
+     var._CallInContext([__VA_ARGS__]() {
+-#define END_CALL_IN_CONTEXT(hr) if (FAILED(hr)) throw Platform::Exception::CreateException(hr);\
++#define END_CALL_IN_CONTEXT(hr) if (FAILED(hr)) ;\
+ });
+ #define END_CALL_IN_CONTEXT_BASE });
+ #else
+@@ -436,7 +436,7 @@ MAKE_MAP(MFSTREAMSINK_MARKER_TYPE) Strea
+ #define _FindAllAsyncDeviceClass FindAllAsync
+ #define _MediaExtension Windows::Media::IMediaExtension
+ #define BEGIN_CREATE_ASYNC(type, ...) (Concurrency::create_async([__VA_ARGS__]() {
+-#define END_CREATE_ASYNC(hr) if (FAILED(hr)) throw Platform::Exception::CreateException(hr);\
++#define END_CREATE_ASYNC(hr) if (FAILED(hr)) ;\
+ }))
+ #define DEFINE_TASK Concurrency::task
+ #define CREATE_TASK Concurrency::create_task
+@@ -462,7 +462,7 @@ MAKE_MAP(MFSTREAMSINK_MARKER_TYPE) Strea
+ {\
+     Type get() { return PropValue; }\
+ }
+-#define THROW_INVALID_ARG throw ref new Platform::InvalidArgumentException();
++#define THROW_INVALID_ARG 
+ #define RELEASE_AGILE_WRL(x) x = nullptr;
+ #define RELEASE_WRL(x) x = nullptr;
+ #define GET_WRL_OBJ_FROM_REF(objtype, obj, orig, hr) objtype^ obj = orig;\
+@@ -555,7 +555,7 @@ return S_OK;
+ #define MAKE_PROPERTY_STRING(Type, PropName, PropValue) STDMETHODIMP get_##PropName(Type* pVal) { if (pVal) { return ::WindowsDuplicateString(PropValue.Get(), pVal); } else { return E_INVALIDARG; } }\
+     STDMETHODIMP put_##PropName(Type Val) { return PropValue.Set(Val); }
+ #define MAKE_READONLY_PROPERTY(Type, PropName, PropValue) STDMETHODIMP get_##PropName(Type* pVal) { if (pVal) { *pVal = PropValue; } else { return E_INVALIDARG; } return S_OK; }
+-#define THROW_INVALID_ARG RoOriginateError(E_INVALIDARG, nullptr);
++#define THROW_INVALID_ARG 
+ #define RELEASE_AGILE_WRL(x) if (x) { (x)->Release(); x = nullptr; }
+ #define RELEASE_WRL(x) if (x) { (x)->Release(); x = nullptr; }
+ #define GET_WRL_OBJ_FROM_REF(objtype, obj, orig, hr) Microsoft::WRL::ComPtr<objtype> obj;\
+@@ -606,19 +606,19 @@ template <class T>
+ class ComPtr
+ {
+ public:
+-    ComPtr() throw()
++    ComPtr() 
+     {
+     }
+-    ComPtr(int nNull) throw()
++    ComPtr(int nNull) 
+     {
+         assert(nNull == 0);
+         p = NULL;
+     }
+-    ComPtr(T* lp) throw()
++    ComPtr(T* lp) 
+     {
+         p = lp;
+     }
+-    ComPtr(_In_ const ComPtr<T>& lp) throw()
++    ComPtr(_In_ const ComPtr<T>& lp) 
+     {
+         p = lp.p;
+     }
+@@ -626,21 +626,21 @@ public:
+     {
+     }
+ 
+-    T** operator&() throw()
++    T** operator&() 
+     {
+         assert(p == NULL);
+         return p.operator&();
+     }
+-    T* operator->() const throw()
++    T* operator->() 
+     {
+         assert(p != NULL);
+         return p.operator->();
+     }
+-    bool operator!() const throw()
++    bool operator!() 
+     {
+         return p.operator==(NULL);
+     }
+-    bool operator==(_In_opt_ T* pT) const throw()
++    bool operator==(_In_opt_ T* pT) 
+     {
+         return p.operator==(pT);
+     }
+@@ -651,7 +651,7 @@ public:
+         return p.operator==(NULL);
+     }
+ 
+-    bool operator!=(_In_opt_ T* pT) const throw()
++    bool operator!=(_In_opt_ T* pT) 
+     {
+         return p.operator!=(pT);
+     }
+@@ -660,38 +660,38 @@ public:
+         return p.operator!=(NULL);
+     }
+ 
+-    T* const* GetAddressOf() const throw()
++    T* const* GetAddressOf() 
+     {
+         return &p;
+     }
+ 
+-    T** GetAddressOf() throw()
++    T** GetAddressOf() 
+     {
+         return &p;
+     }
+ 
+-    T** ReleaseAndGetAddressOf() throw()
++    T** ReleaseAndGetAddressOf() 
+     {
+         p.Release();
+         return &p;
+     }
+ 
+-    T* Get() const throw()
++    T* Get() 
+     {
+         return p;
+     }
+ 
+     // Attach to an existing interface (does not AddRef)
+-    void Attach(_In_opt_ T* p2) throw()
++    void Attach(_In_opt_ T* p2) 
+     {
+         p.Attach(p2);
+     }
+     // Detach the interface (does not Release)
+-    T* Detach() throw()
++    T* Detach() 
+     {
+         return p.Detach();
+     }
+-    _Check_return_ HRESULT CopyTo(_Deref_out_opt_ T** ppT) throw()
++    _Check_return_ HRESULT CopyTo(_Deref_out_opt_ T** ppT) 
+     {
+         assert(ppT != NULL);
+         if (ppT == NULL)
+@@ -709,13 +709,13 @@ public:
+ 
+     // query for U interface
+     template<typename U>
+-    HRESULT As(_Inout_ U** lp) const throw()
++    HRESULT As(_Inout_ U** lp) 
+     {
+         return p->QueryInterface(__uuidof(U), reinterpret_cast<void**>(lp));
+     }
+     // query for U interface
+     template<typename U>
+-    HRESULT As(_Out_ ComPtr<U>* lp) const throw()
++    HRESULT As(_Out_ ComPtr<U>* lp) 
+     {
+         return p->QueryInterface(__uuidof(U), reinterpret_cast<void**>(lp->ReleaseAndGetAddressOf()));
+     }
+diff -rupN opencv_src-original/modules/highgui/src/grfmt_bmp.cpp opencv_src/modules/highgui/src/grfmt_bmp.cpp
+--- opencv_src-original/modules/highgui/src/grfmt_bmp.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/grfmt_bmp.cpp	2015-06-09 16:43:49.000000000 +0200
+@@ -86,8 +86,6 @@ bool  BmpDecoder::readHeader()
+     else if( !m_strm.open( m_filename ))
+         return false;
+ 
+-    try
+-    {
+         m_strm.skip( 10 );
+         m_offset = m_strm.getDWord();
+ 
+@@ -162,10 +160,7 @@ bool  BmpDecoder::readHeader()
+                 result = true;
+             }
+         }
+-    }
+-    catch(...)
+-    {
+-    }
++
+ 
+     m_type = iscolor ? CV_8UC3 : CV_8UC1;
+     m_origin = m_height > 0 ? IPL_ORIGIN_BL : IPL_ORIGIN_TL;
+@@ -214,8 +209,7 @@ bool  BmpDecoder::readData( Mat& img )
+     }
+     uchar *src = _src, *bgr = _bgr;
+ 
+-    try
+-    {
++
+         m_strm.setPos( m_offset );
+ 
+         switch( m_bpp )
+@@ -472,10 +466,7 @@ decode_rle8_bad: ;
+         default:
+             assert(0);
+         }
+-    }
+-    catch(...)
+-    {
+-    }
++
+ 
+     return result;
+ }
+diff -rupN opencv_src-original/modules/highgui/src/grfmt_exr.cpp opencv_src/modules/highgui/src/grfmt_exr.cpp
+--- opencv_src-original/modules/highgui/src/grfmt_exr.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/grfmt_exr.cpp	2015-06-09 16:38:49.000000000 +0200
+@@ -658,14 +658,9 @@ bool  ExrEncoder::write( const Mat& img,
+     result = true;
+     if( type == FLOAT && depth == 32 )
+     {
+-        try
+-        {
++        
+             file.writePixels( height );
+-        }
+-        catch(...)
+-        {
+-            result = false;
+-        }
++        
+     }
+     else
+     {
+@@ -711,15 +706,9 @@ bool  ExrEncoder::write( const Mat& img,
+                         buf[i] = sd[i];
+                 }
+             }
+-            try
+-            {
++            
+                 file.writePixels( 1 );
+-            }
+-            catch(...)
+-            {
+-                result = false;
+-                break;
+-            }
++            
+             data += step;
+         }
+         delete[] buffer;
+diff -rupN opencv_src-original/modules/highgui/src/grfmt_pxm.cpp opencv_src/modules/highgui/src/grfmt_pxm.cpp
+--- opencv_src-original/modules/highgui/src/grfmt_pxm.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/grfmt_pxm.cpp	2015-06-09 16:44:32.000000000 +0200
+@@ -137,11 +137,8 @@ bool  PxMDecoder::readHeader()
+     else if( !m_strm.open( m_filename ))
+         return false;
+ 
+-    try
+-    {
++
+         int code = m_strm.getByte();
+-        if( code != 'P' )
+-            throw RBS_BAD_HEADER;
+ 
+         code = m_strm.getByte();
+         switch( code )
+@@ -149,7 +146,6 @@ bool  PxMDecoder::readHeader()
+         case '1': case '4': m_bpp = 1; break;
+         case '2': case '5': m_bpp = 8; break;
+         case '3': case '6': m_bpp = 24; break;
+-        default: throw RBS_BAD_HEADER;
+         }
+ 
+         m_binary = code >= '4';
+@@ -159,8 +155,7 @@ bool  PxMDecoder::readHeader()
+         m_height = ReadNumber( m_strm, INT_MAX );
+ 
+         m_maxval = m_bpp == 1 ? 1 : ReadNumber( m_strm, INT_MAX );
+-        if( m_maxval > 65535 )
+-            throw RBS_BAD_HEADER;
++
+ 
+         //if( m_maxval > 255 ) m_binary = false; nonsense
+         if( m_maxval > 255 )
+@@ -171,10 +166,7 @@ bool  PxMDecoder::readHeader()
+             m_offset = m_strm.getPos();
+             result = true;
+         }
+-    }
+-    catch(...)
+-    {
+-    }
++
+ 
+     if( !result )
+     {
+@@ -219,8 +211,7 @@ bool  PxMDecoder::readData( Mat& img )
+         FillGrayPalette( palette, m_bpp==1 ? 1 : 8 , m_bpp == 1 );
+     }
+ 
+-    try
+-    {
++
+         m_strm.setPos( m_offset );
+ 
+         switch( m_bpp )
+@@ -332,10 +323,7 @@ bool  PxMDecoder::readData( Mat& img )
+         default:
+             assert(0);
+         }
+-    }
+-    catch(...)
+-    {
+-    }
++
+ 
+     return result;
+ }
+diff -rupN opencv_src-original/modules/highgui/src/grfmt_sunras.cpp opencv_src/modules/highgui/src/grfmt_sunras.cpp
+--- opencv_src-original/modules/highgui/src/grfmt_sunras.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/grfmt_sunras.cpp	2015-06-09 16:38:31.000000000 +0200
+@@ -78,8 +78,7 @@ bool  SunRasterDecoder::readHeader()
+ 
+     if( !m_strm.open( m_filename )) return false;
+ 
+-    try
+-    {
++    
+         m_strm.skip( 4 );
+         m_width  = m_strm.getDWord();
+         m_height = m_strm.getDWord();
+@@ -137,10 +136,7 @@ bool  SunRasterDecoder::readHeader()
+                 result = true;
+             }
+         }
+-    }
+-    catch(...)
+-    {
+-    }
++    
+ 
+     if( !result )
+     {
+@@ -175,8 +171,7 @@ bool  SunRasterDecoder::readData( Mat& i
+     if( !color && m_maptype == RMT_EQUAL_RGB )
+         CvtPaletteToGray( m_palette, gray_palette, 1 << m_bpp );
+ 
+-    try
+-    {
++   
+         m_strm.setPos( m_offset );
+ 
+         switch( m_bpp )
+@@ -369,10 +364,7 @@ bad_decoding_end:
+         default:
+             assert(0);
+         }
+-    }
+-    catch( ... )
+-    {
+-    }
++   
+ 
+     return result;
+ }
+diff -rupN opencv_src-original/modules/highgui/src/ppltasks_winrt.h opencv_src/modules/highgui/src/ppltasks_winrt.h
+--- opencv_src-original/modules/highgui/src/ppltasks_winrt.h	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/highgui/src/ppltasks_winrt.h	2015-06-09 16:52:57.000000000 +0200
+@@ -229,7 +229,7 @@ inline bool __cdecl is_task_cancellation
+ //#if _MSC_VER >= 1800
+ inline __declspec(noreturn) void __cdecl cancel_current_task()
+ {
+-    throw Concurrency::task_canceled();
++  
+ }
+ //#else
+ //_CRTIMP2 __declspec(noreturn) void __cdecl cancel_current_task();
+@@ -1403,7 +1403,7 @@ namespace details
+             _Hr = CoGetInterfaceAndReleaseStream(_PStream, winrt_type<_Type>::getuuid(), reinterpret_cast<void**>(&_Proxy));
+             if (FAILED(_Hr))
+             {
+-                throw std::make_exception_ptr(_Hr);
++             
+             }
+             return _Proxy;
+         }
+@@ -1440,7 +1440,7 @@ namespace details
+             _Hr = CoGetInterfaceAndReleaseStream(_PStream, winrt_type<_Type>::getuuid(), reinterpret_cast<void**>(&_Proxy));
+             if (FAILED(_Hr))
+             {
+-                throw std::make_exception_ptr(_Hr);
++                
+             }
+             return _Proxy;
+         }
+@@ -1587,7 +1587,7 @@ namespace details
+         {
+             if (_M_winRTException != nullptr)
+             {
+-                throw _M_winRTException.Get();
++                
+             }
+         }
+     public:
+@@ -1642,7 +1642,7 @@ namespace details
+ 
+             if (_M_winRTException != nullptr)
+             {
+-                throw _M_winRTException.Get();
++                
+             }
+             std::rethrow_exception(_M_stdException);
+         }
+@@ -1714,8 +1714,8 @@ namespace details
+             if (SUCCEEDED(hr = _M_asyncInfo.As(&pAsyncInfo)))
+ #endif
+                 pAsyncInfo->Cancel();
+-            else
+-                throw std::make_exception_ptr(hr);
++            
++                
+         }
+         virtual void OnClose() {
+             Microsoft::WRL::ComPtr<ABI::Windows::Foundation::IAsyncInfo> pAsyncInfo;
+@@ -1726,8 +1726,7 @@ namespace details
+             if (SUCCEEDED(hr = _M_asyncInfo.As(&pAsyncInfo)))
+ #endif
+                 pAsyncInfo->Close();
+-            else
+-                throw std::make_exception_ptr(hr);
++            
+         }
+ 
+         virtual STDMETHODIMP get_ErrorCode(HRESULT* errorCode)
+@@ -1769,7 +1768,7 @@ namespace details
+             return hr;
+         }
+ 
+-        virtual STDMETHODIMP GetResults(_Result_abi*) { throw std::runtime_error("derived class must implement"); }
++        virtual STDMETHODIMP GetResults(_Result_abi*) {  }
+ 
+         virtual STDMETHODIMP get_Completed(_CompletionHandlerType** handler)
+         {
+@@ -2463,39 +2462,10 @@ namespace details
+ #if _MSC_VER >= 1800
+             _M_pTask->_M_taskEventLogger._LogTaskExecutionStarted();
+ #endif
+-            try
+-            {
+                 // All derived task handle must implement this contract function.
+                 static_cast<const _DerivedTaskHandle *>(this)->_Perform();
+-            }
+-            catch (const Concurrency::task_canceled &)
+-            {
+-                _M_pTask->_Cancel(true);
+-#if _MSC_VER < 1800
+-                throw;
+-#endif
+-            }
+-            catch (const Concurrency::details::_Interruption_exception &)
+-            {
+-                _M_pTask->_Cancel(true);
+-#if _MSC_VER < 1800
+-                throw;
+-#endif
+-            }
+-            catch (IRestrictedErrorInfo*& _E)
+-            {
+-                _M_pTask->_CancelWithException(_E);
+-#if _MSC_VER < 1800
+-                throw;
+-#endif
+-            }
+-            catch (...)
+-            {
+-                _M_pTask->_CancelWithException(std::current_exception());
+-#if _MSC_VER < 1800
+-                throw;
+-#endif
+-            }
++            
++            
+ #if _MSC_VER >= 1800
+             _M_pTask->_M_taskEventLogger._LogTaskExecutionCompleted();
+ #endif
+@@ -2577,7 +2547,7 @@ namespace details
+                 // if task has not been completed.
+                 if (!_IsCompleted() && !_IsCanceled())
+                 {
+-                    throw Concurrency::invalid_operation("Illegal to wait on a task in a Windows Runtime STA");
++                    
+                 }
+                 else
+                 {
+@@ -2622,8 +2592,7 @@ namespace details
+                     // Wait on the task collection to complete. The task collection is guaranteed to still be
+                     // valid since the task must be still within scope so that the _Task_impl_base destructor
+                     // has not yet been called. This call to _Wait potentially inlines execution of work.
+-                    try
+-                    {
++                    
+                         // Invoking wait on a task collection resets the state of the task collection. This means that
+                         // if the task collection itself were canceled, or had encountered an exception, only the first
+                         // call to wait will receive this status. However, both cancellation and exceptions flowing through
+@@ -2637,40 +2606,7 @@ namespace details
+ #else
+                         _M_pTaskCollection->_RunAndWait();
+ #endif
+-                    }
+-                    catch (Concurrency::details::_Interruption_exception&)
+-                    {
+-                        // The _TaskCollection will never be an interruption point since it has a none token.
+-                        _CONCRT_ASSERT(false);
+-                    }
+-                    catch (Concurrency::task_canceled&)
+-                    {
+-                        // task_canceled is a special exception thrown by cancel_current_task. The spec states that cancel_current_task
+-                        // must be called from code that is executed within the task (throwing it from parallel work created by and waited
+-                        // upon by the task is acceptable). We can safely assume that the task wrapper _PPLTaskHandle::operator() has seen
+-                        // the exception and canceled the task. Swallow the exception here.
+-                        _CONCRT_ASSERT(_IsCanceled());
+-                    }
+-                    catch (IRestrictedErrorInfo*& _E)
+-                    {
+-                        // Its possible the task body hasn't seen the exception, if so we need to cancel with exception here.
+-                        if(!_HasUserException())
+-                        {
+-                            _CancelWithException(_E);
+-                        }
+-                        // Rethrow will mark the exception as observed.
+-                        _M_exceptionHolder->_RethrowUserException();
+-                    }
+-                    catch (...)
+-                    {
+-                        // Its possible the task body hasn't seen the exception, if so we need to cancel with exception here.
+-                        if (!_HasUserException())
+-                        {
+-                            _CancelWithException(std::current_exception());
+-                        }
+-                        // Rethrow will mark the exception as observed.
+-                        _M_exceptionHolder->_RethrowUserException();
+-                    }
++                    
+ 
+                     // If the lambda body for this task (executed or waited upon in _RunAndWait above) happened to return a task
+                     // which is to be unwrapped and plumbed to the output of this task, we must not only wait on the lambda body, we must
+@@ -2877,34 +2813,14 @@ namespace details
+             _M_pTaskCollection = Concurrency::details::_AsyncTaskCollection::_NewCollection(Concurrency::details::_CancellationTokenState::_None());
+             // _M_pTaskCollection->_ScheduleWithAutoInline will schedule the chore onto AsyncTaskCollection with automatic inlining, in a way that honors cancellation etc.
+ #endif
+-            try
+-            {
++            
+ #if _MSC_VER >= 1800
+                 _M_TaskCollection._ScheduleTask(_PTaskHandle, _InliningMode);
+ #else
+                 // Do not need to check its returning state, more details please refer to _Wait method.
+                 _M_pTaskCollection->_ScheduleWithAutoInline(_PTaskHandle, _InliningMode);
+ #endif
+-            }
+-            catch (const Concurrency::task_canceled &)
+-            {
+-                // task_canceled is a special exception thrown by cancel_current_task. The spec states that cancel_current_task
+-                // must be called from code that is executed within the task (throwing it from parallel work created by and waited
+-                // upon by the task is acceptable). We can safely assume that the task wrapper _PPLTaskHandle::operator() has seen
+-                // the exception and canceled the task. Swallow the exception here.
+-                _CONCRT_ASSERT(_IsCanceled());
+-            }
+-            catch (const Concurrency::details::_Interruption_exception &)
+-            {
+-                // The _TaskCollection will never be an interruption point since it has a none token.
+-                _CONCRT_ASSERT(false);
+-            }
+-            catch (...)
+-            {
+-                // This exception could only have come from within the chore body. It should've been caught
+-                // and the task should be canceled with exception. Swallow the exception here.
+-                _CONCRT_ASSERT(_HasUserException());
+-            }
++            
+ #if _MSC_VER < 1800
+             // Set the event in case anyone is waiting to notify that this task has been scheduled. In the case where we
+             // execute the chore inline, the event should be set after the chore has executed, to prevent a different thread
+@@ -2997,23 +2913,14 @@ namespace details
+                         // a C++ exception that gets tagged on the task. One unfortunate result of this is that various pieces of the task infrastructure will
+                         // not be in a valid state after this in /EHsc (due to the lack of destructors running, etc...).
+                         //
+-                        try
+-                        {
++                        
+                             // Dev10 compiler needs this!
+                             auto _PTaskHandle1 = _PTaskHandle;
+                             _PTaskHandle->_M_continuationContext._CallInContext([_PTaskHandle1, _TaskImplPtr]() -> HRESULT {
+                                 _TaskImplPtr->_ScheduleTask(_PTaskHandle1, Concurrency::details::_ForceInline);
+                                 return S_OK;
+                             });
+-                        }
+-                        catch (IRestrictedErrorInfo*& _E)
+-                        {
+-                            _TaskImplPtr->_CancelWithException(_E);
+-                        }
+-                        catch (...)
+-                        {
+-                            _TaskImplPtr->_CancelWithException(std::current_exception());
+-                        }
++                        
+                     }
+                     return S_OK;
+                 }, _PTaskHandle->_M_inliningMode);
+@@ -4588,7 +4495,7 @@ public:
+     {
+         if (_M_Impl == nullptr)
+         {
+-            throw Concurrency::invalid_operation("wait() cannot be called on a default constructed task.");
++            
+         }
+ 
+         return _M_Impl->_Wait();
+@@ -4610,12 +4517,12 @@ public:
+     {
+         if (_M_Impl == nullptr)
+         {
+-            throw Concurrency::invalid_operation("get() cannot be called on a default constructed task.");
++            
+         }
+ 
+         if (_M_Impl->_Wait() == Concurrency::canceled)
+         {
+-            throw Concurrency::task_canceled();
++            
+         }
+ 
+         return _M_Impl->_GetResult();
+@@ -4634,7 +4541,7 @@ public:
+     {
+         if (!_M_Impl)
+         {
+-            throw Concurrency::invalid_operation("is_done() cannot be called on a default constructed task.");
++            
+         }
+ 
+         return _M_Impl->_IsDone();
+@@ -4650,7 +4557,7 @@ public:
+     {
+         if (!_M_Impl)
+         {
+-            throw Concurrency::invalid_operation("scheduler() cannot be called on a default constructed task.");
++            
+         }
+ 
+         return _M_Impl->_GetScheduler();
+@@ -4667,7 +4574,7 @@ public:
+     {
+         if (_M_Impl == nullptr)
+         {
+-            throw Concurrency::invalid_operation("is_apartment_aware() cannot be called on a default constructed task.");
++            
+         }
+         return _M_Impl->_IsApartmentAware();
+     }
+@@ -4861,7 +4768,7 @@ private:
+ #else
+             HRESULT hr = _Init_func_transformer<_InternalReturnType>::_Perform(_M_function)(&retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             _M_pTask->_FinalizeAndRunContinuations(retVal);
+         }
+ 
+@@ -4881,7 +4788,7 @@ private:
+ #else
+             HRESULT hr = _M_function(&retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             details::_Task_impl_base::_AsyncInit<_ReturnType, _InternalReturnType>(_M_pTask, retVal);
+         }
+         void _Init(details::_TypeSelectorAsyncOperation) const
+@@ -4892,7 +4799,7 @@ private:
+ #else
+             HRESULT hr = _M_function(&retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             details::_Task_impl_base::_AsyncInit<_ReturnType, _InternalReturnType>(_M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncOperationToAsyncOperationConverter<_InternalReturnType>>(retVal).Get());
+         }
+@@ -4910,7 +4817,7 @@ private:
+ #else
+             HRESULT hr = _M_function(&retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             details::_Task_impl_base::_AsyncInit<_ReturnType, _InternalReturnType>(_M_pTask, Microsoft::WRL::Make<details::_IAsyncActionToAsyncOperationConverter>(retVal).Get());
+         }
+ 
+@@ -4928,7 +4835,7 @@ private:
+ #else
+             HRESULT hr = _M_function(&retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++           
+             details::_Task_impl_base::_AsyncInit<_ReturnType, _InternalReturnType>(_M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncOperationWithProgressToAsyncOperationConverter<_InternalReturnType, _ProgressType>>(retVal).Get());
+         }
+@@ -4947,7 +4854,7 @@ private:
+ #else
+             HRESULT hr = _M_function(&retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++      
+             details::_Task_impl_base::_AsyncInit<_ReturnType, _InternalReturnType>(_M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncActionWithProgressToAsyncOperationConverter<_ProgressType>>(retVal).Get());
+         }
+@@ -5075,7 +4982,7 @@ private:
+ #else
+             HRESULT hr =_Continuation_func_transformer<_InternalReturnType, _ContinuationReturnType>::_Perform(_M_function)(_M_ancestorTaskImpl->_GetResult(), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             _M_pTask->_FinalizeAndRunContinuations(retVal);
+         }
+ 
+@@ -5096,7 +5003,7 @@ private:
+ #else
+             HRESULT hr = _Continuation_func_transformer<_InternalReturnType, _FuncOutputType>::_Perform(_M_function)(_M_ancestorTaskImpl->_GetResult(), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(
+                 _M_pTask,
+                 retVal
+@@ -5111,7 +5018,7 @@ private:
+ #else
+             HRESULT hr = _Continuation_func_transformer<_InternalReturnType, _FuncOutputType>::_Perform(_M_function)(_M_ancestorTaskImpl->_GetResult(), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(
+                 _M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncOperationToAsyncOperationConverter<_ContinuationReturnType>>(retVal).Get());
+@@ -5131,7 +5038,7 @@ private:
+ #else
+             HRESULT hr = _Continuation_func_transformer<_InternalReturnType, _FuncOutputType>::_Perform(_M_function)(_M_ancestorTaskImpl->_GetResult(), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(
+                 _M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncActionToAsyncOperationConverter>(
+@@ -5155,7 +5062,7 @@ private:
+ #endif
+             typedef details::_GetProgressType<decltype(_OpWithProgress)>::_Value _ProgressType;
+ 
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++           
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(
+                 _M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncOperationWithProgressToAsyncOperationConverter<_ContinuationReturnType, _ProgressType>>(_OpWithProgress).Get());
+@@ -5178,7 +5085,7 @@ private:
+ #endif
+             typedef details::_GetProgressType<decltype(_OpWithProgress)>::_Value _ProgressType;
+ 
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++            
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(
+                 _M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncActionWithProgressToAsyncOperationConverter<_ProgressType>>(_OpWithProgress).Get());
+@@ -5201,7 +5108,7 @@ private:
+ #else
+             HRESULT hr = _Continuation_func_transformer<_FuncInputType, _ContinuationReturnType>::_Perform(_M_function)(std::move(_ResultTask), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++          
+             _M_pTask->_FinalizeAndRunContinuations(retVal);
+         }
+ 
+@@ -5225,7 +5132,7 @@ private:
+ #else
+             HRESULT hr = _M_function(std::move(_ResultTask), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++          
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(_M_pTask, retVal);
+         }
+         void _Continue(std::true_type, details::_TypeSelectorAsyncOperation) const
+@@ -5239,7 +5146,7 @@ private:
+ #else
+             HRESULT hr = _M_function(std::move(_ResultTask), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++           
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(_M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncOperationToAsyncOperationConverter<_ContinuationReturnType>>(retVal));
+         }
+@@ -5261,7 +5168,7 @@ private:
+ #else
+             HRESULT hr = _M_function(std::move(_ResultTask), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++           
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(_M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncActionToAsyncOperationConverter>(retVal));
+         }
+@@ -5286,7 +5193,7 @@ private:
+ #else
+             HRESULT hr = _M_function(std::move(_ResultTask), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++        
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(_M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncOperationWithProgressToAsyncOperationConverter<_ContinuationReturnType, _ProgressType>>(retVal));
+         }
+@@ -5311,7 +5218,7 @@ private:
+ #else
+             HRESULT hr = _M_function(std::move(_ResultTask), &retVal);
+ #endif
+-            if (FAILED(hr)) throw std::make_exception_ptr(hr);
++         
+             details::_Task_impl_base::_AsyncInit<_NormalizedContinuationReturnType, _ContinuationReturnType>(_M_pTask,
+                 Microsoft::WRL::Make<details::_IAsyncActionWithProgressToAsyncOperationConverter<_ProgressType>>(retVal));
+         }
+@@ -5397,7 +5304,7 @@ private:
+     {
+         if (!_M_Impl)
+         {
+-            throw Concurrency::invalid_operation("then() cannot be called on a default constructed task.");
++            
+         }
+ 
+         Concurrency::details::_CancellationTokenState *_PTokenState = _TaskOptions.has_cancellation_token() ? _TaskOptions.get_cancellation_token()._GetImplValue() : nullptr;
+@@ -5420,7 +5327,7 @@ private:
+     {
+         if (_M_Impl == nullptr)
+         {
+-            throw Concurrency::invalid_operation("then() cannot be called on a default constructed task.");
++           
+         }
+ 
+         typedef details::_FunctionTypeTraits<_Function, _InternalReturnType> _Function_type_traits;
+@@ -7771,26 +7678,9 @@ namespace details
+         virtual void _OnStart() override
+         {
+             _M_task.then([=](_TaskType _Antecedent) -> HRESULT {
+-                try
+-                {
++                
+                     _Antecedent.get();
+-                }
+-                catch (Concurrency::task_canceled&)
+-                {
+-                    _TryTransitionToCancelled();
+-                }
+-                catch (IRestrictedErrorInfo*& _Ex)
+-                {
+-                    HRESULT hr;
+-                    HRESULT _hr;
+-                    hr = _Ex->GetErrorDetails(NULL, &_hr, NULL, NULL);
+-                    if (SUCCEEDED(hr)) hr = _hr;
+-                    _TryTransitionToError(hr);
+-                }
+-                catch (...)
+-                {
+-                    _TryTransitionToError(E_FAIL);
+-                }
++                
+                 return _FireCompletion();
+             });
+         }
+@@ -8882,7 +8772,7 @@ namespace details
+         {
+             if (_Begin == _End)
+             {
+-                throw Concurrency::invalid_operation("when_any(begin, end) cannot be called on an empty container.");
++         
+             }
+ #if _MSC_VER >= 1800
+             Concurrency::details::_CancellationTokenState *_PTokenState = _TaskOptions.has_cancellation_token() ? _TaskOptions.get_cancellation_token()._GetImplValue() : nullptr;
+@@ -8964,7 +8854,7 @@ namespace details
+         {
+             if (_Begin == _End)
+             {
+-                throw Concurrency::invalid_operation("when_any(begin, end) cannot be called on an empty container.");
++               
+             }
+ #if _MSC_VER >= 1800
+             Concurrency::details::_CancellationTokenState *_PTokenState = _TaskOptions.has_cancellation_token() ? _TaskOptions.get_cancellation_token()._GetImplValue() : nullptr;
+diff -rupN opencv_src-original/modules/imgproc/src/contours.cpp opencv_src/modules/imgproc/src/contours.cpp
+--- opencv_src-original/modules/imgproc/src/contours.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/imgproc/src/contours.cpp	2015-06-09 16:36:38.000000000 +0200
+@@ -1676,8 +1676,7 @@ cvFindContours( void*  img,  CvMemStorag
+     }
+     else
+     {
+-        try
+-        {
++
+             scanner = cvStartFindContours( img, storage, cntHeaderSize, mode, method, offset );
+ 
+             do
+@@ -1686,13 +1685,8 @@ cvFindContours( void*  img,  CvMemStorag
+                 contour = cvFindNextContour( scanner );
+             }
+             while( contour != 0 );
+-        }
+-        catch(...)
+-        {
+-            if( scanner )
+-                cvEndFindContours(&scanner);
+-            throw;
+-        }
++        
++       
+ 
+         *firstContour = cvEndFindContours( &scanner );
+     }
+diff -rupN opencv_src-original/modules/objdetect/src/hog.cpp opencv_src/modules/objdetect/src/hog.cpp
+--- opencv_src-original/modules/objdetect/src/hog.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/objdetect/src/hog.cpp	2015-06-09 16:59:34.000000000 +0200
+@@ -2553,7 +2553,6 @@ void HOGDescriptor::readALTModel(std::st
+        std::string eerr("file not exist");
+        std::string efile(__FILE__);
+        std::string efunc(__FUNCTION__);
+-       throw Exception(CV_StsError, eerr, efile, efunc, __LINE__);
+    }
+    char version_buffer[10];
+    if (!fread (&version_buffer,sizeof(char),10,modelfl))
+@@ -2561,24 +2560,22 @@ void HOGDescriptor::readALTModel(std::st
+        std::string eerr("version?");
+        std::string efile(__FILE__);
+        std::string efunc(__FUNCTION__);
+-       throw Exception(CV_StsError, eerr, efile, efunc, __LINE__);
+    }
+    if(strcmp(version_buffer,"V6.01")) {
+        std::string eerr("version doesnot match");
+        std::string efile(__FILE__);
+        std::string efunc(__FUNCTION__);
+-       throw Exception(CV_StsError, eerr, efile, efunc, __LINE__);
+    }
+    /* read version number */
+    int version = 0;
+    if (!fread (&version,sizeof(int),1,modelfl))
+-   { throw Exception(); }
++   { }
+    if (version < 200)
+    {
+        std::string eerr("version doesnot match");
+        std::string efile(__FILE__);
+        std::string efunc(__FUNCTION__);
+-       throw Exception();
++     
+    }
+    int kernel_type;
+    size_t nread;
+@@ -2621,7 +2618,6 @@ void HOGDescriptor::readALTModel(std::st
+        nread = fread(linearwt, sizeof(double), totwords + 1, modelfl);
+        if(nread != static_cast<size_t>(length) + 1) {
+            delete [] linearwt;
+-           throw Exception();
+        }
+ 
+        for(int i = 0; i < length; i++)
+@@ -2631,7 +2627,6 @@ void HOGDescriptor::readALTModel(std::st
+        setSVMDetector(detector);
+        delete [] linearwt;
+    } else {
+-       throw Exception();
+    }
+    fclose(modelfl);
+ }
+diff -rupN opencv_src-original/modules/photo/src/arrays.hpp opencv_src/modules/photo/src/arrays.hpp
+--- opencv_src-original/modules/photo/src/arrays.hpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/photo/src/arrays.hpp	2015-06-09 17:02:28.000000000 +0200
+@@ -52,7 +52,7 @@ template <class T> struct Array2d {
+     {
+         if (array2d.needToDeallocArray) {
+             // copy constructor for self allocating arrays not supported
+-            throw new exception();
++            {}
+         }
+     }
+ 
+diff -rupN opencv_src-original/modules/ts/src/gpu_test.cpp opencv_src/modules/ts/src/gpu_test.cpp
+--- opencv_src-original/modules/ts/src/gpu_test.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/ts/src/gpu_test.cpp	2015-06-09 17:11:28.000000000 +0200
+@@ -159,7 +159,7 @@ namespace cvtest
+         if (i < 0 || i >= getCudaEnabledDeviceCount())
+         {
+             msg << "Incorrect device number - " << i;
+-            throw std::runtime_error(msg.str());
++            
+         }
+ 
+         DeviceInfo info(i);
+@@ -167,7 +167,7 @@ namespace cvtest
+         if (!info.isCompatible())
+         {
+             msg << "Device " << i << " [" << info.name() << "] is NOT compatible with current GPU module build";
+-            throw std::runtime_error(msg.str());
++            
+         }
+ 
+         devices_.push_back(info);
+diff -rupN opencv_src-original/modules/ts/src/ts.cpp opencv_src/modules/ts/src/ts.cpp
+--- opencv_src-original/modules/ts/src/ts.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/ts/src/ts.cpp	2015-06-09 17:11:02.000000000 +0200
+@@ -104,7 +104,7 @@ static void SEHTranslator( unsigned int
+     case EXCEPTION_SINGLE_STEP:
+         code = TS::FAIL_EXCEPTION;
+     }
+-    throw code;
++    
+ }
+ #endif
+ 
+@@ -207,33 +207,16 @@ void BaseTest::safe_run( int start_from
+         run( start_from );
+     else
+     {
+-        try
+-        {
++       
+         #if !defined WIN32 && !defined _WIN32
+         int _code = setjmp( tsJmpMark );
+         if( !_code )
+             run( start_from );
+-        else
+-            throw _code;
++        
+         #else
+             run( start_from );
+         #endif
+-        }
+-        catch (const cv::Exception& exc)
+-        {
+-            const char* errorStr = cvErrorStr(exc.code);
+-            char buf[1 << 16];
+-
+-            sprintf( buf, "OpenCV Error: %s (%s) in %s, file %s, line %d",
+-                    errorStr, exc.err.c_str(), exc.func.size() > 0 ?
+-                    exc.func.c_str() : "unknown function", exc.file.c_str(), exc.line );
+-            ts->printf(TS::LOG, "%s\n", buf);
+-            ts->set_failed_test_info( TS::FAIL_ERROR_IN_CALLED_FUNC );
+-        }
+-        catch (...)
+-        {
+-            ts->set_failed_test_info( TS::FAIL_EXCEPTION );
+-        }
++       
+     }
+ 
+     ts->set_gtest_status();
+@@ -352,27 +335,9 @@ int BadArgTest::run_test_case( int expec
+     bool thrown = false;
+     const char* descr = _descr.c_str() ? _descr.c_str() : "";
+ 
+-    try
+-    {
++   
+         run_func();
+-    }
+-    catch(const cv::Exception& e)
+-    {
+-        thrown = true;
+-        if( e.code != expected_code )
+-        {
+-            ts->printf(TS::LOG, "%s (test case #%d): the error code %d is different from the expected %d\n",
+-                       descr, test_case_idx, e.code, expected_code);
+-            errcount = 1;
+-        }
+-    }
+-    catch(...)
+-    {
+-        thrown = true;
+-        ts->printf(TS::LOG, "%s  (test case #%d): unknown exception was thrown (the function has likely crashed)\n",
+-                   descr, test_case_idx);
+-        errcount = 1;
+-    }
++    
+ 
+     if(!thrown)
+     {
+diff -rupN opencv_src-original/modules/ts/src/ts_perf.cpp opencv_src/modules/ts/src/ts_perf.cpp
+--- opencv_src-original/modules/ts/src/ts_perf.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/ts/src/ts_perf.cpp	2015-06-09 17:10:31.000000000 +0200
+@@ -182,8 +182,7 @@ void Regression::init(const std::string&
+ 
+     suiteName = testSuitName;
+ 
+-    try
+-    {
++   
+         if (storageIn.open(storageInPath, cv::FileStorage::READ))
+         {
+             rootIn = storageIn.root();
+@@ -191,12 +190,7 @@ void Regression::init(const std::string&
+                 storageOutPath += "_new";
+             storageOutPath += ext;
+         }
+-    }
+-    catch(cv::Exception&)
+-    {
+-        LOGE("Failed to open sanity data for reading: %s", storageInPath.c_str());
+-    }
+-
++   
+     if(!storageIn.isOpened())
+         storageOutPath = storageInPath;
+ }
+@@ -1305,7 +1299,7 @@ std::string TestBase::getDataPath(const
+     if (relativePath.empty())
+     {
+         ADD_FAILURE() << "  Bad path to test resource";
+-        throw PerfEarlyExitException();
++        
+     }
+ 
+     const char *data_path_dir = getenv("OPENCV_TEST_DATA_PATH");
+@@ -1336,46 +1330,16 @@ std::string TestBase::getDataPath(const
+     else
+     {
+         ADD_FAILURE() << "  Requested file \"" << path << "\" does not exist.";
+-        throw PerfEarlyExitException();
++        
+     }
+     return path;
+ }
+ 
+ void TestBase::RunPerfTestBody()
+ {
+-    try
+-    {
++   
+         this->PerfTestBody();
+-    }
+-    catch(PerfSkipTestException&)
+-    {
+-        metrics.terminationReason = performance_metrics::TERM_SKIP_TEST;
+-        return;
+-    }
+-    catch(PerfEarlyExitException&)
+-    {
+-        metrics.terminationReason = performance_metrics::TERM_INTERRUPT;
+-        return;//no additional failure logging
+-    }
+-    catch(cv::Exception& e)
+-    {
+-        metrics.terminationReason = performance_metrics::TERM_EXCEPTION;
+-        #ifdef HAVE_CUDA
+-            if (e.code == CV_GpuApiCallError)
+-                cv::gpu::resetDevice();
+-        #endif
+-        FAIL() << "Expected: PerfTestBody() doesn't throw an exception.\n  Actual: it throws cv::Exception:\n  " << e.what();
+-    }
+-    catch(std::exception& e)
+-    {
+-        metrics.terminationReason = performance_metrics::TERM_EXCEPTION;
+-        FAIL() << "Expected: PerfTestBody() doesn't throw an exception.\n  Actual: it throws std::exception:\n  " << e.what();
+-    }
+-    catch(...)
+-    {
+-        metrics.terminationReason = performance_metrics::TERM_EXCEPTION;
+-        FAIL() << "Expected: PerfTestBody() doesn't throw an exception.\n  Actual: it throws...";
+-    }
++   
+ }
+ 
+ /*****************************************************************************************\

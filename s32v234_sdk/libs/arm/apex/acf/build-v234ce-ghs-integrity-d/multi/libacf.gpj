@@ -1,0 +1,39 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I../../../../../arm/apex/acf/include
+        -I../../../../../arm/apex/icp/include
+        -I../../../../../arm/utils/log       
+        -I../../../../../arm/apex/apex/user/include
+        -I../../../../../arm/utils/oal/user/include
+        -I../../../../../apu/common/include        
+        -I../../../../../x86/acf_offline/include        
+../../../../../arm/apex/acf/src/acf_apu_program_params.cpp
+../../../../../arm/apex/acf/src/acf_process.cpp          
+../../../../../arm/apex/acf/src/acf_process_apu.cpp      
+../../../../../arm/apex/acf/src/acf_common.cpp           
+../../../../../arm/apex/acf/src/resource_manager_apex.cpp
+../../../../../arm/apex/acf/src/resource_manager_private.cpp
+../../../../../arm/apex/acf/src/resource_manager_public.cpp 
+../../../../../arm/apex/acf/src/resource_manager_types.cpp  
+../../../../../arm/apex/acf/src/kernel_manager_host.cpp
+
+#../../../../../arm/apex/acf/src/kernel_manager_host.cpp        
+#../../../../../arm/apex/acf/src/resource_manager_types.cpp
+#../../../../../arm/apex/acf/src/resource_manager_public.cpp
+#../../../../../arm/apex/acf/src/resource_manager_private.cpp
+#../../../../../arm/apex/acf/src/resource_manager_apex.cpp
+#../../../../../arm/apex/acf/src/acf_common.cpp
+#../../../../../arm/apex/acf/src/acf_process_apu.cpp
+#../../../../../arm/apex/acf/src/acf_process.cpp
+#../../../../../arm/apex/acf/src/acf_apu_program_params.cpp
+
+
+
+
+
+
+

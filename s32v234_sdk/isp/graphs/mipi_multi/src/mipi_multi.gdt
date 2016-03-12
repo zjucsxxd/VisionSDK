@@ -1,0 +1,376 @@
+// ISP Graph "mipi_multi"
+Import "../../../inc/ipus_mem_map.h";
+Import "../../../inc/ipuv_mem_map.h";
+Import "../../../inc/mipi_mem_map.h";
+Import "../inc/iofiles.h";
+GraphLimits.NumLines = 720;
+		
+Node Debayer_0 {
+	SCALAR,
+	0,
+	//NUM_OUT_LINES
+360
+};
+Param Debayer_0 {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load Debayer_0 {
+	debayer_rgb_simple_interleaved
+	};
+
+
+
+Node Debayer_1 {
+	SCALAR,
+	1,
+	//NUM_OUT_LINES
+360
+};
+Param Debayer_1 {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load Debayer_1 {
+	debayer_rgb_simple_interleaved
+	};
+
+
+
+Node Debayer_2 {
+	SCALAR,
+	2,
+	//NUM_OUT_LINES
+360
+};
+Param Debayer_2 {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load Debayer_2 {
+	debayer_rgb_simple_interleaved
+	};
+
+
+Node MIPI {
+	MIPICSI0,
+	0
+};
+		Node FastDMA {
+			FDMA,
+			0
+		};
+
+		
+		
+		Buffer Debayer_0_Buffer_0 {
+			Debayer_0.out[0],
+	GENERIC_8,
+	//3840
+3840,
+	//8
+8,
+	//3840
+3840,
+	1
+		};
+		
+		Debayer_0_Buffer_0.readPixels = //3840
+3840;
+		
+		
+			Input FDMA_TO_DDR0 = FastDMA.A[0];
+			  FDMA_TO_DDR0.firstLine = //0
+0;
+			  FDMA_TO_DDR0.increment = 1;
+			
+			Connect {
+				Debayer_0_Buffer_0,
+				FDMA_TO_DDR0,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_0 {
+		FastDMA.out[0],
+	GENERIC_8,
+	//3840
+3840,
+	//NUM_OUT_LINES
+360,
+	//5760
+5760,
+	1
+	};
+	
+		FastDMA_Buffer_0.readPixels = //3840
+3840;
+	
+		
+	Connect { FastDMA_Buffer_0, DDR, 0 };
+	
+
+		
+		
+
+		
+		
+	
+
+		
+		
+		Buffer MIPI_Buffer_0 {
+			MIPI.out[0],
+	GENERIC_16,
+	//1312
+1312,
+	//16
+16,
+	//2624
+2624,
+	1
+		};
+		
+		MIPI_Buffer_0.readPixels = //0
+0;
+		
+	Input Debayer_0_A_0 = Debayer_0.A[0];
+	  Debayer_0_A_0.firstLine = //0
+0;
+	  Debayer_0_A_0.pixels = //1288
+1288;
+	  Debayer_0_A_0.lineSkip = //0
+0;
+	  Debayer_0_A_0.increment = 2;
+	  Debayer_0_A_0.pixelSkip = //0
+0;
+	  Debayer_0_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI_Buffer_0, 
+  Debayer_0_A_0,
+  //2
+2};
+	Input Debayer_0_A_1 = Debayer_0.A[1];
+	  Debayer_0_A_1.firstLine = //1
+1;
+	  Debayer_0_A_1.pixels = //1288
+1288;
+	  Debayer_0_A_1.lineSkip = //0
+0;
+	  Debayer_0_A_1.increment = 2;
+	  Debayer_0_A_1.pixelSkip = //0
+0;
+	  Debayer_0_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI_Buffer_0, 
+  Debayer_0_A_1,
+  //2
+2};
+	Input Debayer_1_A_0 = Debayer_1.A[0];
+	  Debayer_1_A_0.firstLine = //0
+0;
+	  Debayer_1_A_0.pixels = //1288
+1288;
+	  Debayer_1_A_0.lineSkip = //0
+0;
+	  Debayer_1_A_0.increment = 2;
+	  Debayer_1_A_0.pixelSkip = //0
+0;
+	  Debayer_1_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI_Buffer_0, 
+  Debayer_1_A_0,
+  //2
+2};
+	Input Debayer_1_A_1 = Debayer_1.A[1];
+	  Debayer_1_A_1.firstLine = //1
+1;
+	  Debayer_1_A_1.pixels = //1288
+1288;
+	  Debayer_1_A_1.lineSkip = //0
+0;
+	  Debayer_1_A_1.increment = 2;
+	  Debayer_1_A_1.pixelSkip = //0
+0;
+	  Debayer_1_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI_Buffer_0, 
+  Debayer_1_A_1,
+  //2
+2};
+	Input Debayer_2_A_0 = Debayer_2.A[0];
+	  Debayer_2_A_0.firstLine = //0
+0;
+	  Debayer_2_A_0.pixels = //1288
+1288;
+	  Debayer_2_A_0.lineSkip = //0
+0;
+	  Debayer_2_A_0.increment = 2;
+	  Debayer_2_A_0.pixelSkip = //0
+0;
+	  Debayer_2_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI_Buffer_0, 
+  Debayer_2_A_0,
+  //2
+2};
+	Input Debayer_2_A_1 = Debayer_2.A[1];
+	  Debayer_2_A_1.firstLine = //1
+1;
+	  Debayer_2_A_1.pixels = //1288
+1288;
+	  Debayer_2_A_1.lineSkip = //0
+0;
+	  Debayer_2_A_1.increment = 2;
+	  Debayer_2_A_1.pixelSkip = //0
+0;
+	  Debayer_2_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI_Buffer_0, 
+  Debayer_2_A_1,
+  //2
+2};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_1_Buffer_0 {
+			Debayer_1.out[0],
+	GENERIC_8,
+	//3840
+3840,
+	//8
+8,
+	//3840
+3840,
+	1
+		};
+		
+		Debayer_1_Buffer_0.readPixels = //3840
+3840;
+		
+		
+			Input FDMA_TO_DDR1 = FastDMA.A[1];
+			  FDMA_TO_DDR1.firstLine = //0
+0;
+			  FDMA_TO_DDR1.increment = 1;
+			
+			Connect {
+				Debayer_1_Buffer_0,
+				FDMA_TO_DDR1,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_1 {
+		FastDMA.out[1],
+	GENERIC_8,
+	//3840
+3840,
+	//NUM_OUT_LINES
+360,
+	//5760
+5760,
+	1
+	};
+	
+		FastDMA_Buffer_1.readPixels = //3840
+3840;
+	
+		
+	Connect { FastDMA_Buffer_1, DDR, 0 };
+	
+
+		
+		
+
+		
+		
+	
+
+		
+		
+		Buffer Debayer_2_Buffer_0 {
+			Debayer_2.out[0],
+	GENERIC_8,
+	//3840
+3840,
+	//8
+8,
+	//3840
+3840,
+	1
+		};
+		
+		Debayer_2_Buffer_0.readPixels = //3840
+3840;
+		
+		
+			Input FDMA_TO_DDR2 = FastDMA.A[2];
+			  FDMA_TO_DDR2.firstLine = //0
+0;
+			  FDMA_TO_DDR2.increment = 1;
+			
+			Connect {
+				Debayer_2_Buffer_0,
+				FDMA_TO_DDR2,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_2 {
+		FastDMA.out[2],
+	GENERIC_8,
+	//3840
+3840,
+	//NUM_OUT_LINES
+360,
+	//5760
+5760,
+	1
+	};
+	
+		FastDMA_Buffer_2.readPixels = //3840
+3840;
+	
+		
+	Connect { FastDMA_Buffer_2, DDR, 0 };
+	
+
+		
+		
+
+		
+		
+	
+	

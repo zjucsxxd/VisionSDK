@@ -1,0 +1,9 @@
+#!gbuild
+#component integrity_os_modules_virtualdebug_module
+[Program]
+	-lnetdrivers
+	-lnetdebug
+	{ !isdefined(__INTEGRITY_SIMULATOR) } -lgipcdebug
+#	:optionsFile=${__OS_DIR}/target/optionalize-libdebug.opt
+virtualdebug_main.c
+#virtualdebug_module.int		[Module Integrate File]

@@ -1,0 +1,132 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="graphs">
+      <UniqueIdentifier>{7ba5071e-b4b4-4623-b9bc-e6f2d03ccba4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{8a3b0e7e-edcd-4ec9-bc73-33c79cf5b8db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{8442f6b8-0777-4fe4-86f1-f7d59ad8b62a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\apexcv_arithmetic_ref-impl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\arithmetic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\apexcv_arithmetic_func.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\include\apexcv_arithmetic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_arithmetic_ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\abs_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\absdiff_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\accumulate_16s_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\accumulate_squared_16s_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\accumulate_weighted_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\add_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\add_16s_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\and_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\and_16u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\and_32u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\clz_08s_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\clz_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\clz_16s_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\clz_16u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\magnitude_16s_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\not_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\or_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\or_16u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\or_32u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\sub_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\sub_16s_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\threshold_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\threshold_16u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\threshold_32u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\xor_08u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\xor_16u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\xor_32u_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_arithmetic_ref.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\all_arithmetic_graph_registrations.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\arithm_chunk_size_definitions.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_base_arithmetic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_arithmetic_func.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\apexcv_arithmetic.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

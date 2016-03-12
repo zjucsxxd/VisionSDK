@@ -1,0 +1,10 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I../../../../../arm/utils/oal/user/include
+	-I../../../../../arm/apex/icp/include
+../../../../../arm/apex/icp/src/icp_data.cpp
+../../../../../arm/apex/icp/src/icp_feature.cpp

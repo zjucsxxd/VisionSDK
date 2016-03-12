@@ -1,0 +1,10 @@
+do ..\..\..\os\debug\lauterbach\S32V234.cmm
+do ..\..\..\os\debug\lauterbach\S32V234-CA53.cmm
+data.load.elf neon_fftw_cv.elf
+
+y.spath.reset
+y.spath ../src
+y.spath ../../../libs/arm/io/uartlinflex_io/src
+
+d.list
+go main

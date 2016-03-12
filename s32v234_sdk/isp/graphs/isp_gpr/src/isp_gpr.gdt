@@ -1,0 +1,152 @@
+// ISP Graph "isp_gpr"
+Import "../../../inc/ipus_mem_map.h";
+Import "../../../inc/ipuv_mem_map.h";
+Import "../../../inc/mipi_mem_map.h";
+		
+Node Debayer_G {
+	SCALAR,
+	0,
+	//360
+360
+};
+Param Debayer_G {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (640 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00150000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00150000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load Debayer_G {
+	debayer_g
+	};
+
+
+Node MIPI {
+	MIPICSI0,
+	0
+};
+MIPI.inputLines = //729
+729;
+		Node FastDMA {
+			FDMA,
+			0
+		};
+
+		
+		
+		Buffer Debayer_G_Buffer_0 {
+			Debayer_G.out[0],
+	GENERIC_8,
+	//1920
+1920,
+	//4
+4,
+	//1920
+1920,
+	1
+		};
+		
+		Debayer_G_Buffer_0.readPixels = //1920
+1920;
+		
+		
+			Input FastDMA0 = FastDMA.A[0];
+			  FastDMA0.firstLine = //0
+0;
+			  FastDMA0.increment = 1;
+			
+			Connect {
+				Debayer_G_Buffer_0,
+				FastDMA0,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_0 {
+		FastDMA.out[0],
+	GENERIC_8,
+	//1920
+1920,
+	//360
+360,
+	//5760
+5760,
+	1
+	};
+	
+		FastDMA_Buffer_0.readPixels = //1920
+1920;
+	
+		
+	Connect { FastDMA_Buffer_0, DDR, 0 };
+	
+		
+		
+
+		
+		
+
+		
+		
+	
+
+		
+		
+		Buffer MIPI_Buffer_0 {
+			MIPI.out[0],
+	GENERIC_16,
+	//1312
+1312,
+	//32
+32,
+	//2624
+2624,
+	1
+		};
+		
+		MIPI_Buffer_0.readPixels = //0
+0;
+		
+	Input Debayer_G_A_0 = Debayer_G.A[0];
+	  Debayer_G_A_0.firstLine = //0
+0;
+	  Debayer_G_A_0.pixels = //1296
+1296;
+	  Debayer_G_A_0.lineSkip = //0
+0;
+	  Debayer_G_A_0.increment = 2;
+	  Debayer_G_A_0.pixelSkip = //0
+0;
+	  Debayer_G_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  MIPI_Buffer_0, 
+  Debayer_G_A_0,
+  //2
+2};
+	Input Debayer_G_A_1 = Debayer_G.A[1];
+	  Debayer_G_A_1.firstLine = //1
+1;
+	  Debayer_G_A_1.pixels = //1296
+1296;
+	  Debayer_G_A_1.lineSkip = //0
+0;
+	  Debayer_G_A_1.increment = 2;
+	  Debayer_G_A_1.pixelSkip = //0
+0;
+	  Debayer_G_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  MIPI_Buffer_0, 
+  Debayer_G_A_1,
+  //2
+2};
+		
+
+		
+		
+	

@@ -1,0 +1,21 @@
+# Input File for the Integrate utility for use with the INTEGRITY real-time
+#  operating system by Green Hills Software.
+# Before editing this file, refer to the Integrate Reference Manual.
+
+
+Kernel
+	Filename			DynamicDownload
+EndKernel
+
+AddressSpace				gdi_srv_as0
+	Arguments 			init
+	Filename			gdi_srv_as0
+#	MemoryPoolSize 			0xf0000
+	Language			C++
+	HeapSize			0x10000 + 640*480*3 + 640*480*4
+#	HeapSize			0x20000 + 1920*1080*4
+#	Task				Initial
+#		StartIt			True
+#		StackLength 		0x0020000
+#	EndTask
+EndAddressSpace

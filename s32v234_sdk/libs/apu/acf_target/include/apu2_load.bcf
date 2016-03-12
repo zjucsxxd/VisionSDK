@@ -1,0 +1,36 @@
+//
+_entry_point _main_init
+_symbol _main _after _main_init
+_symbol _main_init 0
+
+// MEMORY START SIZE (WORD ADDRESS & SIZE)
+_stack  DMb 0x0000 1536  // (0x600) 8-bit
+_stack  VMb 0x0000 256   //         16-bit
+
+// DMEM: ALWAYS RESERVED
+
+//-------------------------------------------------------------------------------
+//reserved SMEM regions following the stack (stack size = 1536 (0x600) bytes)
+//-------------------------------------------------------------------------------
+_symbol DMEM_SHARED  0x600   32
+_symbol DMEM_CMD_CNT 0x620   32
+_symbol DMEM_CMD_QUE 0x640 1984
+
+//SWT UTIL
+_symbol gSWT_RPT_DBASE_SIZE 0xE00    4
+_symbol gSWT_RPT_DBASE      0xE04    4
+_symbol gSWT_RPT_DBASE_BEG  0xE08    4
+_symbol gSWT_RPT_DBASE_END  0xE0C    4
+_symbol gSWT_RPT_DBASE_TBL  0xE10 1008
+
+//TOTAL RESERVED SIZE = stack + DMEM_SHARED + DMEM_CMD_CNT + DMEM_CMD_QUE + (SWT UTIL stuff)
+//                    = 1536  + 32          + 32           + 1984         + (4 + 4 + 4 + 4 + 1008) = 4608 (0x1200) bytes
+//-------------------------------------------------------------------------------
+
+_symbol    DMEM_KERNEL_NUM   0x10800     // 0x10800 - 11000, 2k words, 64 kernels
+_symbol    DMEM_KERNEL_DB    0x10804
+
+//CMEM: ALWAYS RESERVED
+_symbol    CID               256
+_symbol    CMEM_DEBUG        288
+//_symbol    CMEM_RESERVED     4096 _no_init// END OF CMEM

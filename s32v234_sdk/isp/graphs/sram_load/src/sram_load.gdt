@@ -1,0 +1,261 @@
+// ISP Graph "sram_load"
+		
+Node copy1 {
+	SCALAR,
+	1,
+	1080
+};
+Param copy1 {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1920 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10150000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x10150000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH1_CFG_OUT_OFF, 0x10000000 },
+};
+
+Load copy1 {
+sram_load
+};
+
+
+Node copy2 {
+	SCALAR,
+	2,
+	1080
+};
+Param copy2 {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1920 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10150000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x10150000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH1_CFG_OUT_OFF, 0x10000000 },
+};
+
+Load copy2 {
+sram_load3
+};
+
+		Node FastDMA {
+			FDMA,
+			0
+		};
+		DDRBuffer producerless_buffer_1 {
+			null,
+	GENERIC_8,
+	1920,
+	1080,
+	1920,
+	1
+		};
+		
+		
+			Input FastDMA_A_0 = FastDMA.A[0];
+			  FastDMA_A_0.firstLine = 0;
+			  FastDMA_A_0.increment = 1;
+			
+			Connect {
+				producerless_buffer_1,
+				FastDMA_A_0,
+				1};
+
+	Buffer FastDMA_Buffer_0 {
+		FastDMA.out[0],
+	GENERIC_8,
+	1920,
+	4,
+	1920,
+	1
+	};
+	
+		FastDMA_Buffer_0.readPixels = 1920;
+	
+	Input copy1_A_0 = copy1.A[0];
+	  copy1_A_0.firstLine = 0;
+	  copy1_A_0.pixels = 1920;
+	  copy1_A_0.lineSkip = 0;
+	  copy1_A_0.increment = 1;
+	  copy1_A_0.pixelSkip = 0;
+	  copy1_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  FastDMA_Buffer_0, 
+  copy1_A_0,
+  1};
+	Input copy1_A_1 = copy1.A[1];
+	  copy1_A_1.firstLine = 0;
+	  copy1_A_1.pixels = 1920;
+	  copy1_A_1.lineSkip = 0;
+	  copy1_A_1.increment = 1;
+	  copy1_A_1.pixelSkip = 0;
+	  copy1_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  FastDMA_Buffer_0, 
+  copy1_A_1,
+  1};
+	
+
+		
+		
+	
+
+		
+		
+		Buffer copy1_Buffer_0 {
+			copy1.out[0],
+	GENERIC_8,
+	1920,
+	4,
+	1920,
+	1
+		};
+		
+		copy1_Buffer_0.readPixels = 1920;
+		
+	Input copy2_A_0 = copy2.A[0];
+	  copy2_A_0.firstLine = 0;
+	  copy2_A_0.pixels = 1920;
+	  copy2_A_0.lineSkip = 0;
+	  copy2_A_0.increment = 1;
+	  copy2_A_0.pixelSkip = 0;
+	  copy2_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  copy1_Buffer_0, 
+  copy2_A_0,
+  1};
+		
+
+		
+		
+
+		
+		
+		Buffer copy1_Buffer_1 {
+			copy1.out[1],
+	GENERIC_8,
+	1920,
+	4,
+	1920,
+	1
+		};
+		
+		copy1_Buffer_1.readPixels = 1920;
+		
+	Input copy2_A_1 = copy2.A[1];
+	  copy2_A_1.firstLine = 0;
+	  copy2_A_1.pixels = 1920;
+	  copy2_A_1.lineSkip = 0;
+	  copy2_A_1.increment = 1;
+	  copy2_A_1.pixelSkip = 0;
+	  copy2_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  copy1_Buffer_1, 
+  copy2_A_1,
+  1};
+		
+
+		
+		
+
+		
+		
+		Buffer copy2_Buffer_0 {
+			copy2.out[0],
+	GENERIC_8,
+	5760,
+	4,
+	5760,
+	1
+		};
+		
+		copy2_Buffer_0.readPixels = 5760;
+		
+		
+			Input FastDMA_A_1 = FastDMA.A[1];
+			  FastDMA_A_1.firstLine = 0;
+			  FastDMA_A_1.increment = 1;
+			
+			Connect {
+				copy2_Buffer_0,
+				FastDMA_A_1,
+				1};
+
+	DDRBuffer FastDMA_Buffer_1 {
+		FastDMA.out[1],
+	GENERIC_8,
+	5760,
+	1080,
+	5760,
+	1
+	};
+	
+		FastDMA_Buffer_1.readPixels = 5760;
+	
+		
+	Connect { FastDMA_Buffer_1, DDR, 0 };
+	
+
+		
+		
+		
+
+		
+		
+
+		
+		
+		Buffer copy2_Buffer_1 {
+			copy2.out[1],
+	GENERIC_8,
+	5760,
+	4,
+	5760,
+	1
+		};
+		
+		copy2_Buffer_1.readPixels = 5760;
+		
+		
+			Input FastDMA_A_2 = FastDMA.A[2];
+			  FastDMA_A_2.firstLine = 0;
+			  FastDMA_A_2.increment = 1;
+			
+			Connect {
+				copy2_Buffer_1,
+				FastDMA_A_2,
+				1};
+
+	DDRBuffer FastDMA_Buffer_2 {
+		FastDMA.out[2],
+	GENERIC_8,
+	5760,
+	1080,
+	5760,
+	1
+	};
+	
+		FastDMA_Buffer_2.readPixels = 5760;
+	
+		
+	Connect { FastDMA_Buffer_2, DDR, 0 };
+	
+
+		
+		
+		
+
+		
+		
+	
+	
+	

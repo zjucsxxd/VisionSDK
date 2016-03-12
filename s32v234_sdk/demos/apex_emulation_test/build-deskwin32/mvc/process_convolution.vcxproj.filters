@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\graphs\apu_convolution_process.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\graphs\apu_convolution_apu_process_desc.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_convolution_graph.h">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_convolution_graph.hpp">
+      <Filter>graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_convolution_process.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{D45A8B35-AC39-446D-B9D6-D2E525DF3DC7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{68317AFD-F047-44F7-A827-129D1A0AE989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="graphs">
+      <UniqueIdentifier>{98F281C7-595E-4DA4-9C6A-5D04EDCA5229}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

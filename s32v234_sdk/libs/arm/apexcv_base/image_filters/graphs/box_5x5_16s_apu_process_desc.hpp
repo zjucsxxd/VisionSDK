@@ -1,0 +1,37 @@
+/******************************************************************************
+ *  (C) Copyright CogniVue Corporation. 2013 All right reserved.
+ * 
+ *  Confidential Information
+ *
+ *  All parts of the CogniVue Program Source are protected by copyright law
+ *  and all rights are reserved.
+ *  This documentation may not, in whole or in part, be copied, photocopied,
+ *  reproduced, translated, or reduced to any electronic medium or machine
+ *  readable form without prior consent, in writing, from CogniVue.
+ *
+ ******************************************************************************/
+  
+/*!*********************************************************************************
+*  @file box_5x5_16s_proc_desc.hpp
+*  @brief Process description for box 5x5 filter
+***********************************************************************************/
+ 
+#ifndef BOX_5X5_16S_APU_PROCESS_DESC_HPP
+#define BOX_5X5_16S_APU_PROCESS_DESC_HPP
+
+#include <acf_process_desc_apu.hpp>
+#include "box_3x3_16s_graph.hpp"
+#include "filter_chunk_size_definitions.h"
+#include "box_5x5_16s_graph.hpp"
+
+class box_5x5_16s_apu_process_desc : public ACF_Process_Desc_APU
+{
+public:
+   void Create()
+   {
+      Initialize(mGraph, "BOX_5X5_16S");
+   }
+   
+   box_5x5_16s_graph mGraph;
+};
+#endif

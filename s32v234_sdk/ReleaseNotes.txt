@@ -1,0 +1,280 @@
+==============================================================================
+
+  Freescale Semiconductor, Inc.
+  (c) Copyright 2015, Freescale Semiconductor, Inc.
+  ALL RIGHTS RESERVED.
+
+==============================================================================
+
+  CONTENT
+    Release Notes for Vision SDK for S32V234
+	Change log
+
+==============================================================================
+
+------------------------------------------------------------------------------
+2016-01-29 BLN_VISION_SDK_EAR_0.9.1
+------------------------------------------------------------------------------
+
+  - APEX Driver update
+  - OAL allocator fix (cache invalidation problems)
+  - ApexCV demos functional under Linux + Standalone
+  - INTEGRITY build available
+  - Linux BSP update to v5.1 (includes support for ISP on PCIe board)
+  - Fixed Sequencer clock frequency in U-boot 
+    (isp_chroma_key demo works also in Linux)
+
+------------------------------------------------------------------------------
+2015-12-07 BLN_VISION_SDK_EAR_0.9.0
+------------------------------------------------------------------------------
+
+  - ACF updated to version 1.9.0
+    o APEX Driver update
+    
+  - ApexCV Base and Pro libraries updated to 1.9.0
+    o Build for Linux and Standalone
+    
+  - ApexCV Base and Pro demos added for standalone:
+    o apexcv_pro_affine
+    o apexcv_pro_canny
+    o apexcv_pro_gftt
+    o apexcv_pro_hog
+    
+  - DCU output switched to double buffered HD resolution on both Linux and 
+    Standalone
+  - ISP Chroma Key preprocessed in HD resolution
+    
+Erratum
+  - Sequencer signals error in ISP_CHROMA_KEY on Linux.
+  - In case pure Linux BSP 5 U-boot is used (not the one from VSDK), demos with 
+    DCU output exhibit kernel crashes between board reboots.
+  - ISP demos not supported on PCIe board (xrdc config not in U-boot)
+  - ApexCV demos exhibit cache problems on Linux (not the ApexCV library)
+  
+------------------------------------------------------------------------------
+2015-11-09 BLN_VISION_SDK_EAR_0.8.2
+------------------------------------------------------------------------------
+
+  - ApexCV Base library added + test application
+	o Test app: demos/apexcv
+  - ApexCV Pro library added + test applications
+    o Test app: 
+	  demos/apexcv_pro_blockmatching
+	  demos/apexcv_pro_brief
+	  demos/apexcv_pro_harris
+	  demos/apexcv_pro_hough
+	  demos/apexcv_pro_image_pyramid
+	  demos/apexcv_pro_remap
+	  demos/apexcv_pro_resize
+	o ISP for Linux including drivers, libraries & demos
+  
+Erratum
+ - neon_fftw_cv demo needs FFTW 3.3.4 library, which is not part of the 
+   package. There is a prepared build for FFTW 3.3.4 after downloading it by
+   user.
+ - graphics output in Linux is only single buffered. Image tearing can be 
+   observed with moving objects in the scene.
+      
+------------------------------------------------------------------------------
+2015-10-09 BLN_VISION_SDK_EAR_0.8.1
+------------------------------------------------------------------------------
+  - INTEGRITY build added
+    o Makefile build available with or without APEX build
+	o MULTI project build available without APEX build
+	o Following demos ported to INTEGRITY:
+	  - apex_add
+	  - apex_downsample_upsample_cv
+	  - apex_emulation_test
+	  - apex_face_detection_cv
+	  - apex_fast9_cv
+	  - apex_gauss5x5_cv
+	  - apex_histogram_cv
+	  - apex_indirect_input_cv
+	  - apex_integral_image_cv
+	  - apex_orb_cv
+	  - apex_roi_cv
+	  - apexcl_bitonic_sort
+	  - apexcl_conformance_intops
+	  - apexcl_floyd_warshall
+	  - apexcl_median
+	  - apexcl_memory_model
+	  - hello
+	o Following armv8 NEON demos added:
+	  - neon_fftw_cv
+	  - neon_eigen_add
+  - update to ACF 1.8.3
+  - Update of VisionSDK_UserGuide.pdf
+
+------------------------------------------------------------------------------
+2015-08-19 BLN_VISION_SDK_EAR_0.8.0
+------------------------------------------------------------------------------
+  - First Linux release
+  - Added pre-built Linux contents (SD card load)
+	o u-boot elf file
+	o Linux kernel image
+	o root file system with libs and demos
+  - Following demos ported to Linux
+    o apex_add
+    o apex_dma
+    o apex_downsample_upsample_cv
+    o apex_face_detection_cv
+    o apex_fast9_cv
+    o apex_gauss5x5_cv
+    o apex_histogram_cv
+    o apex_indirect_input.cv
+    o apex_integral_image_cv
+    o apex_orb_cv
+    o apex_roi_cv
+  - Fixed standalone startup C++ global constructors init	
+  - Update of S32V234-EVB_SetupGuide.pdf
+  - Update of VisionSDK_UserGuide.pdf
+
+------------------------------------------------------------------------------
+2015-07-27 BLN_VISION_SDK_EAR_0.7.1
+------------------------------------------------------------------------------
+  - Interrupt service routine fix (stack error)
+  
+------------------------------------------------------------------------------
+2015-07-17 BLN_VISION_SDK_EAR_0.7.0
+------------------------------------------------------------------------------
+  - First Silicon release
+  - Working examples for S32V234 EVB (Standalone)
+  - Enabled build without APEX compiler (pre-build kernels for demos) (make APEX_PREBUILD=1 allsub)
+  - Added following demos:
+    o isp_chroma_key
+	o isp_csi_dcu
+	o isp_gpr
+	o isp_mipi_raw
+	o neon_gauss3x3_cv
+  - Sequencer graphs cross-build ONLY for Linux x64 OS
+  - Restructured APEX demos - deleted duplicate examples
+  - Removed support for ZC702 (Linux + Standalone)
+  - Added Lauterbach T32 script for running & debug of the demos
+  - Added S32V234-EVB_SetupGuide.pdf
+  - Update of VisionSDK_UserGuide.pdf
+  
+
+------------------------------------------------------------------------------
+2015-05-12 BLN_VISION_SDK_EAR_0.6.0
+------------------------------------------------------------------------------
+  - Device renamed to S32V234
+  - Library directory structure changed (added one level of classification)
+  - Directory structure cleanup
+  - New build trees:
+    - ZYNQ Standalone (no OS)
+	- S32V234 Standalone (no OS)
+	- S32V234 Linux
+  - New pre-build content:
+    - ZYNQ Standalone (no OS)
+	- S32V234 Standalone (no OS)
+  - Added new debugger script (Lauterbach) for ZYNQ Standalone
+  - Added cached/non-cached framebuffer switch into hdmi driver (default is cached/fast))
+  - Added ISP bitfile for proFPGA board
+  - New demo - APEX IRQ for ZYNQ Standalone
+  - VisionSDK_UserGuide documentation separated:
+    - VisionSDK_UserGuide describes SDK build & run in non-specific board configuration
+	- ZC702_InstallGuide describes ZYNQ ZC702 setup, installation & ZYNQ related OS build
+  
+  Errata:
+    - Resizer with HRSZ and FAST9 demos cause only left-half of image
+      being output on INTEGRITY OS.
+	- ORB demo for ZYNQ Standalone generates slightly different image than Linux version
+      possibly due to different handling by OpenCV (output is generated by OCV)
+  
+
+------------------------------------------------------------------------------
+2015-01-19 BLN_VISION_SDK_EAR_0.5.0
+------------------------------------------------------------------------------
+  - ACF updated
+    - Added functions for fast sequential processing without APEX init
+    - APU anx auxiliary x86 libraries merged for all build trees - common build
+    - Added full ROI support
+  - OpenCL updated
+    -Integer conformance tests at 100% pass
+  - APEX Driver updated
+    - DMEM FIFO configuration methods
+    - Data dump debug function
+    - Data trace debug function
+  - Large code revision with cleaning the build
+  - Added V4L camera grabbing library for fast camera input
+  - Added fast ARM NEON optimized functions for camera I/O
+  - Cleaned build tree files
+  - Build for INTEGRITY merged into one directory (common for MULTI and Makefile)
+    - Makefile for ACF called from MULTI automatically
+  - Added ROI functionality
+  - Added following demos:
+    - ROI functionality demo
+    - V4L Camera in/out
+    - OpenCL Integer operations conformance tests
+    - APEX Safety add
+  - OpenCV library updated to version 2.4.10
+  
+  Erratum:
+    - Resizer with HRSZ and FAST9 demos cause only left-half of image
+      being output on INTEGRITY OS.
+
+------------------------------------------------------------------------------
+2014-11-11 BLN_VISION_SDK_EAR_0.4.1
+------------------------------------------------------------------------------
+ - Emulation library update
+ - Fixed indirect inputs problem on profpga
+ - Updated built content to APEX 13R9
+ - Updated ACF
+ - OpenCV rebuilt to newer version
+ - INTEGRITY MULTI and makefile projects checked
+ - Framebuffer output speeded up by applying NEON optimization
+ - Removed all environment variable dependencies - all set in PATH
+
+------------------------------------------------------------------------------
+2014-10-03 BLN_VISION_SDK_EAR_0.4.0
+------------------------------------------------------------------------------
+ - Updated ACF and APEX Driver version
+ - APEX Kernel drectory restructured
+ - Changed build tree to allow independent APU programs & OpenCL
+ - Modified ZYNQ image in order to support HDMI output
+ - Added Linux image support for USB camera
+ - Added OpenCL support
+ - Added HDMI framebuffer driver
+ - Added FFMPEG for Integrity
+ - Added horizontal resizer support
+ - Added build tree for bare metal applications
+ - Added following demos:
+   - FAST9 RGB demos
+   - Lane Departure Warning
+   - USB camera and HDMI output demo
+   - ORB Homography 
+   
+
+------------------------------------------------------------------------------
+2014-04-30 BLN_VISION_SDK_EAR_0.3.0
+------------------------------------------------------------------------------
+- Added support for dual APEX
+- Updated built contents (mainly new bitfiles for ProFPGA and ZYNQ boards)
+- Changed /os/ directory structure to separate ARM and ARM64 tree
+- Added i.MX VS4 VLAB Linux support 
+  (Linux kernel/rootfs/u-boot, python scripts, build and install instructions)
+- Added INTEGRITY build chain using Makefile
+- Fixed SD-card mount on ZYNQ Linux with mounted NFS root file system
+- Fixed Resource Manager init function (must be added in application startup)
+- Added following demos:
+  - OCV Grab Image using ffmpeg
+  - Downsample/Upsample
+  - Rotate 180 deg.
+  - Image Histogram
+  - Parallel image addition
+  - ORB Image matching in video (dual APEX support)
+  
+
+------------------------------------------------------------------------------
+2014-03-28 BLN_VISION_SDK_EAR_0.2.0
+------------------------------------------------------------------------------
+- Added support for latest CogniVue ACF features (release Feb19, 2014)
+- Added sources of CGV libs to repo (not part of SDK)
+- Completed support for INTEGRITY OS on FPGA platform (OpenCV libs, 
+  boot components, example kernel and APEX driver projects)
+- renamed top level SDK folder
+- restructured libs folder, included ARM, APU and x86 libs
+- moved "kernels" into libs/apu/kernels
+- prepared build system for ARM v8 (64-bit architecture)
+- summed area table (integral image) example added
+- Cygwin package excluded from the SDK installer

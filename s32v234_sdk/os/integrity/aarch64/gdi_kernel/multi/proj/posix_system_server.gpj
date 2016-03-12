@@ -1,0 +1,9 @@
+#!gbuild
+#component integrity_os_modules_posix_system_server_virtual
+[Program]
+	-lposix_sys_server
+	-livfs
+	-DPSS_MAIN=1
+#	:optionsFile=${__OS_DIR}/target/optionalize-libdebug.opt
+#posix_system_server.int		[Module Integrate File]
+posix_sys_server_main.c

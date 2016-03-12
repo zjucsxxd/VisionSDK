@@ -1,0 +1,18 @@
+do ..\..\..\os\debug\lauterbach\S32V234.cmm
+do ..\..\..\os\debug\lauterbach\S32V234-CA53.cmm
+data.load.elf apex_gauss5x5_cv.elf
+
+y.spath.reset
+y.spath ../src
+y.spath ../../../libs/arm/io/sdi/src
+y.spath ../../../libs/arm/isp/sequencer/user/src
+y.spath ../../../libs/arm/isp/sequencer/kernel/src
+y.spath ../../../libs/arm/startup/v234ce_standalone/src
+y.spath ../../../libs/arm/isp/sram/kernel/src
+y.spath ../../../libs/arm/utils/oal/user/src/standalone
+y.spath ../../../libs/arm/io/frame_io/src
+y.spath ../../../libs/arm/io/dcu/src
+y.spath ../../../libs/arm/isp/csi/src
+
+d.list
+go startup

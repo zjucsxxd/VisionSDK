@@ -1,0 +1,25 @@
+#!gbuild
+#component integrity_os_modules_apex_driver
+[Library]
+	-lkernel
+	-lcore
+	-D__S32V234
+	-I$INTEGRITY_ROOT_PATH/modules/ghs/bspsrc/support
+	-I$INTEGRITY_ROOT_PATH/modules/ghs/bspsrc
+	-I${__BSP_DIR}
+	-I${__VISION_S32V234_SDK}/libs/apu/common/include
+	-I${__VISION_S32V234_SDK}/libs/apu/common/include/system
+	-I${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/include/functions
+	-I${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/include/integrity
+	-I${__VISION_S32V234_SDK}/libs/arm/apex/apex/user/include
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/integrity/apexdriver_dev.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/integrity/apexdriver_hw_reg_user.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/functions/apexdriver_cmem_if_hal.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/functions/apexdriver_global_hal.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/functions/apexdriver_stio_hal.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/functions/apexdriver_apu_hal.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/functions/apexdriver_apumk_hal_cmdque.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/functions/apexdriver_apumk_hal_comm.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/functions/apexdriver_mcdma_hal.c
+${__VISION_S32V234_SDK}/libs/arm/apex/apex/kernel/src/functions/apexdriver_seq_hal.c
+

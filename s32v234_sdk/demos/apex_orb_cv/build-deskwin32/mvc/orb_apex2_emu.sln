@@ -1,0 +1,76 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "orb_apex2_emu", "orb_apex2_emu.vcxproj", "{855B3E3B-89E7-4065-A87D-FD0F3E7C7E27}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filtering_kernels_apu", "..\..\..\..\kernels\apu\filtering_kernels\build-deskwin32\mvc\filtering_kernels_apu.vcxproj", "{862D917E-736B-406B-98B9-2BA5A15E4396}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filtering_kernels_acf", "..\..\..\..\kernels\apu\filtering_kernels\build-deskwin32\mvc\filtering_kernels_acf.vcxproj", "{F17DFB91-F468-45C1-B0EC-9520825317D0}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "APU_lib", "..\..\..\..\tools\emu\apu\build-deskwin32\mvc\APU_lib.vcxproj", "{FAA8B398-F947-4142-864A-AD16F87569FE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ACF_lib", "..\..\..\..\tools\emu\acf\build-deskwin32\mvc\ACF_lib.vcxproj", "{2180B2FD-44A1-4D04-B39E-DB2085617C79}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "feature_detection_kernels_acf", "..\..\..\..\kernels\apu\feature_detection_kernels\build-deskwin32\mvc\feature_detection_kernels_acf.vcxproj", "{2D590F92-C802-44FA-B887-97B1F4B6DB13}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "feature_detection_kernels_apu", "..\..\..\..\kernels\apu\feature_detection_kernels\build-deskwin32\mvc\feature_detection_kernels_apu.vcxproj", "{BEF5868D-334C-40D6-B0CD-050CD3C36F80}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "comparison_kernels_acf", "..\..\..\..\kernels\apu\comparison_kernels\build-deskwin32\mvc\comparison_kernels_acf.vcxproj", "{C0332039-B96A-4824-B815-597CD8739D02}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "comparison_kernels_apu", "..\..\..\..\kernels\apu\comparison_kernels\build-deskwin32\mvc\comparison_kernels_apu.vcxproj", "{AFEC36C0-D820-46EE-AF81-5AE51205A3E4}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "..\..\..\..\libs\arm\utils\common\build-deskwin32\mvc\common.vcxproj", "{89794E96-83E7-4D4F-B218-67E7323E3223}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{855B3E3B-89E7-4065-A87D-FD0F3E7C7E27}.Debug|Win32.ActiveCfg = Debug|Win32
+		{855B3E3B-89E7-4065-A87D-FD0F3E7C7E27}.Debug|Win32.Build.0 = Debug|Win32
+		{855B3E3B-89E7-4065-A87D-FD0F3E7C7E27}.Release|Win32.ActiveCfg = Release|Win32
+		{855B3E3B-89E7-4065-A87D-FD0F3E7C7E27}.Release|Win32.Build.0 = Release|Win32
+		{862D917E-736B-406B-98B9-2BA5A15E4396}.Debug|Win32.ActiveCfg = Debug|Win32
+		{862D917E-736B-406B-98B9-2BA5A15E4396}.Debug|Win32.Build.0 = Debug|Win32
+		{862D917E-736B-406B-98B9-2BA5A15E4396}.Release|Win32.ActiveCfg = Release|Win32
+		{862D917E-736B-406B-98B9-2BA5A15E4396}.Release|Win32.Build.0 = Release|Win32
+		{F17DFB91-F468-45C1-B0EC-9520825317D0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F17DFB91-F468-45C1-B0EC-9520825317D0}.Debug|Win32.Build.0 = Debug|Win32
+		{F17DFB91-F468-45C1-B0EC-9520825317D0}.Release|Win32.ActiveCfg = Release|Win32
+		{F17DFB91-F468-45C1-B0EC-9520825317D0}.Release|Win32.Build.0 = Release|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Debug|Win32.Build.0 = Debug|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Release|Win32.ActiveCfg = Release|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Release|Win32.Build.0 = Release|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Debug|Win32.Build.0 = Debug|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Release|Win32.ActiveCfg = Release|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Release|Win32.Build.0 = Release|Win32
+		{2D590F92-C802-44FA-B887-97B1F4B6DB13}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2D590F92-C802-44FA-B887-97B1F4B6DB13}.Debug|Win32.Build.0 = Debug|Win32
+		{2D590F92-C802-44FA-B887-97B1F4B6DB13}.Release|Win32.ActiveCfg = Release|Win32
+		{2D590F92-C802-44FA-B887-97B1F4B6DB13}.Release|Win32.Build.0 = Release|Win32
+		{BEF5868D-334C-40D6-B0CD-050CD3C36F80}.Debug|Win32.ActiveCfg = Debug|Win32
+		{BEF5868D-334C-40D6-B0CD-050CD3C36F80}.Debug|Win32.Build.0 = Debug|Win32
+		{BEF5868D-334C-40D6-B0CD-050CD3C36F80}.Release|Win32.ActiveCfg = Release|Win32
+		{BEF5868D-334C-40D6-B0CD-050CD3C36F80}.Release|Win32.Build.0 = Release|Win32
+		{C0332039-B96A-4824-B815-597CD8739D02}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C0332039-B96A-4824-B815-597CD8739D02}.Debug|Win32.Build.0 = Debug|Win32
+		{C0332039-B96A-4824-B815-597CD8739D02}.Release|Win32.ActiveCfg = Release|Win32
+		{C0332039-B96A-4824-B815-597CD8739D02}.Release|Win32.Build.0 = Release|Win32
+		{AFEC36C0-D820-46EE-AF81-5AE51205A3E4}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AFEC36C0-D820-46EE-AF81-5AE51205A3E4}.Debug|Win32.Build.0 = Debug|Win32
+		{AFEC36C0-D820-46EE-AF81-5AE51205A3E4}.Release|Win32.ActiveCfg = Release|Win32
+		{AFEC36C0-D820-46EE-AF81-5AE51205A3E4}.Release|Win32.Build.0 = Release|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Debug|Win32.ActiveCfg = Debug|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Debug|Win32.Build.0 = Debug|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Release|Win32.ActiveCfg = Release|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

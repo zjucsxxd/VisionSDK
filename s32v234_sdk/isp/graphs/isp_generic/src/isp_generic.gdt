@@ -1,0 +1,543 @@
+// ISP Graph "isp_generic"
+Import "../../../inc/ipus_mem_map.h";
+Import "../../../inc/ipuv_mem_map.h";
+Import "../../../inc/mipi_mem_map.h";
+Import "../inc/iofiles.h";
+GraphLimits.NumLines = NUM_LINES;
+		
+Node Debayer {
+	SCALAR,
+	1,
+	//NUM_MIPI
+727
+};
+Param Debayer {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH1_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH2_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load Debayer {
+	debayer_rgb_simple_planar
+	};
+
+
+
+Node YUV2RGB {
+	VECTOR,
+	0,
+	//NUM_LINES
+720
+};
+Param YUV2RGB {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000101 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x20050000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x20050080 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x20050080 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load YUV2RGB {
+	yuvplanar2bgrinterleaved
+	};
+
+
+
+Node RGB2YUV {
+	VECTOR,
+	1,
+	//NUM_MIPI
+727
+};
+Param RGB2YUV {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280<< 16) | 0x0 },
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10050080 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x10050080 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x10050080 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH1_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH2_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load RGB2YUV {
+	rgb2yuv_planar
+	};
+
+
+
+Node Generic3x3 {
+	SCALAR,
+	4,
+	//NUM_LINES
+720
+};
+Param Generic3x3 {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1},
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x21150080 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x21150080 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x21150080 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x20000000 },
+    { D_IPUS_SYN_S_CH1_CFG_OUT_OFF, 0x20000000 },
+    { D_IPUS_SYN_S_CH2_CFG_OUT_OFF, 0x20000000 },
+};
+
+
+	Load Generic3x3 {
+	generic_ipus3x3
+	};
+
+
+Node MIPI0 {
+	MIPICSI0,
+	0
+};
+		Node FastDMA {
+			FDMA,
+			0
+		};
+
+		
+		
+		Buffer YUV2RGB_Buffer_0 {
+			YUV2RGB.out[0],
+	GENERIC_8,
+	//3840
+3840,
+	//8
+8,
+	//3840
+3840,
+	1
+		};
+		
+		YUV2RGB_Buffer_0.readPixels = //3840
+3840;
+		
+		
+			Input FDMA_TO_DDR = FastDMA.A[0];
+			  FDMA_TO_DDR.firstLine = //0
+0;
+			  FDMA_TO_DDR.increment = 1;
+			
+			Connect {
+				YUV2RGB_Buffer_0,
+				FDMA_TO_DDR,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_0 {
+		FastDMA.out[0],
+	GENERIC_8,
+	//3840
+3840,
+	//NUM_LINES
+720,
+	//5760
+5760,
+	1
+	};
+	
+		FastDMA_Buffer_0.readPixels = //3840
+3840;
+	
+		
+	Connect { FastDMA_Buffer_0, DDR, 0 };
+	
+		
+		
+
+		
+		
+
+		
+		
+	
+
+		
+		
+		Buffer MIPI0_Buffer_0 {
+			MIPI0.out[0],
+	GENERIC_16,
+	//1296
+1296,
+	//230
+230,
+	//2592
+2592,
+	1
+		};
+		
+		MIPI0_Buffer_0.readPixels = //2624
+2624;
+		
+	Input Debayer_A_0 = Debayer.A[0];
+	  Debayer_A_0.firstLine = //0
+0;
+	  Debayer_A_0.pixels = //1296
+1296;
+	  Debayer_A_0.lineSkip = //0
+0;
+	  Debayer_A_0.increment = 1;
+	  Debayer_A_0.pixelSkip = //0
+0;
+	  Debayer_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI0_Buffer_0, 
+  Debayer_A_0,
+  //2
+2};
+	Input Debayer_A_1 = Debayer.A[1];
+	  Debayer_A_1.firstLine = //1
+1;
+	  Debayer_A_1.pixels = //1296
+1296;
+	  Debayer_A_1.lineSkip = //0
+0;
+	  Debayer_A_1.increment = 1;
+	  Debayer_A_1.pixelSkip = //0
+0;
+	  Debayer_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI0_Buffer_0, 
+  Debayer_A_1,
+  //2
+2};
+		
+
+		
+		
+
+		
+		
+		Buffer RGB2YUV_Buffer_0 {
+			RGB2YUV.out[0],
+	GENERIC_8,
+	//1280
+1280,
+	//16
+16,
+	//1280
+1280,
+	1
+		};
+		
+		RGB2YUV_Buffer_0.readPixels = //1280
+1280;
+		
+	Input Generic3x3_A_0 = Generic3x3.A[0];
+	  Generic3x3_A_0.firstLine = //0
+0;
+	  Generic3x3_A_0.pixels = //1280
+1280;
+	  Generic3x3_A_0.lineSkip = //0
+0;
+	  Generic3x3_A_0.increment = 1;
+	  Generic3x3_A_0.pixelSkip = //0
+0;
+	  Generic3x3_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  RGB2YUV_Buffer_0, 
+  Generic3x3_A_0,
+  //3
+3};
+	Input Generic3x3_A_1 = Generic3x3.A[1];
+	  Generic3x3_A_1.firstLine = //1
+1;
+	  Generic3x3_A_1.pixels = //1280
+1280;
+	  Generic3x3_A_1.lineSkip = //0
+0;
+	  Generic3x3_A_1.increment = 1;
+	  Generic3x3_A_1.pixelSkip = //0
+0;
+	  Generic3x3_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  RGB2YUV_Buffer_0, 
+  Generic3x3_A_1,
+  //3
+3};
+	Input Generic3x3_A_2 = Generic3x3.A[2];
+	  Generic3x3_A_2.firstLine = //2
+2;
+	  Generic3x3_A_2.pixels = //1280
+1280;
+	  Generic3x3_A_2.lineSkip = //0
+0;
+	  Generic3x3_A_2.increment = 1;
+	  Generic3x3_A_2.pixelSkip = //0
+0;
+	  Generic3x3_A_2.type = GENERIC_8;
+		
+		
+Connect {
+  RGB2YUV_Buffer_0, 
+  Generic3x3_A_2,
+  //3
+3};
+		
+
+		
+		
+
+		
+		
+		Buffer RGB2YUV_Buffer_1 {
+			RGB2YUV.out[1],
+	GENERIC_8,
+	//1280
+1280,
+	//16
+16,
+	//1280
+1280,
+	1
+		};
+		
+		RGB2YUV_Buffer_1.readPixels = //1280
+1280;
+		
+	Input YUV2RGB_A_1 = YUV2RGB.A[1];
+	  YUV2RGB_A_1.firstLine = //0
+0;
+	  YUV2RGB_A_1.pixels = //640
+640;
+	  YUV2RGB_A_1.lineSkip = //0
+0;
+	  YUV2RGB_A_1.increment = 1;
+	  YUV2RGB_A_1.pixelSkip = //0
+0;
+	  YUV2RGB_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  RGB2YUV_Buffer_1, 
+  YUV2RGB_A_1,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer RGB2YUV_Buffer_2 {
+			RGB2YUV.out[2],
+	GENERIC_8,
+	//1280
+1280,
+	//16
+16,
+	//1280
+1280,
+	1
+		};
+		
+		RGB2YUV_Buffer_2.readPixels = //1280
+1280;
+		
+	Input YUV2RGB_A_2 = YUV2RGB.A[2];
+	  YUV2RGB_A_2.firstLine = //0
+0;
+	  YUV2RGB_A_2.pixels = //640
+640;
+	  YUV2RGB_A_2.lineSkip = //0
+0;
+	  YUV2RGB_A_2.increment = 1;
+	  YUV2RGB_A_2.pixelSkip = //0
+0;
+	  YUV2RGB_A_2.type = GENERIC_8;
+		
+		
+Connect {
+  RGB2YUV_Buffer_2, 
+  YUV2RGB_A_2,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_Buffer_0 {
+			Debayer.out[0],
+	GENERIC_8,
+	//1280
+1280,
+	//4
+4,
+	//1280
+1280,
+	1
+		};
+		
+		Debayer_Buffer_0.readPixels = //1280
+1280;
+		
+	Input RGB2YUV_A_0 = RGB2YUV.A[0];
+	  RGB2YUV_A_0.firstLine = //0
+0;
+	  RGB2YUV_A_0.pixels = //1280
+1280;
+	  RGB2YUV_A_0.lineSkip = //0
+0;
+	  RGB2YUV_A_0.increment = 1;
+	  RGB2YUV_A_0.pixelSkip = //0
+0;
+	  RGB2YUV_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_Buffer_0, 
+  RGB2YUV_A_0,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_Buffer_1 {
+			Debayer.out[1],
+	GENERIC_8,
+	//1280
+1280,
+	//4
+4,
+	//1280
+1280,
+	1
+		};
+		
+		Debayer_Buffer_1.readPixels = //1280
+1280;
+		
+	Input RGB2YUV_A_1 = RGB2YUV.A[1];
+	  RGB2YUV_A_1.firstLine = //0
+0;
+	  RGB2YUV_A_1.pixels = //1280
+1280;
+	  RGB2YUV_A_1.lineSkip = //0
+0;
+	  RGB2YUV_A_1.increment = 1;
+	  RGB2YUV_A_1.pixelSkip = //0
+0;
+	  RGB2YUV_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_Buffer_1, 
+  RGB2YUV_A_1,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_Buffer_2 {
+			Debayer.out[2],
+	GENERIC_8,
+	//1280
+1280,
+	//4
+4,
+	//1280
+1280,
+	1
+		};
+		
+		Debayer_Buffer_2.readPixels = //1280
+1280;
+		
+	Input RGB2YUV_A_2 = RGB2YUV.A[2];
+	  RGB2YUV_A_2.firstLine = //0
+0;
+	  RGB2YUV_A_2.pixels = //1280
+1280;
+	  RGB2YUV_A_2.lineSkip = //0
+0;
+	  RGB2YUV_A_2.increment = 1;
+	  RGB2YUV_A_2.pixelSkip = //0
+0;
+	  RGB2YUV_A_2.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_Buffer_2, 
+  RGB2YUV_A_2,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer Generic3x3_Buffer_0 {
+			Generic3x3.out[0],
+	GENERIC_8,
+	//1280
+1280,
+	//16
+16,
+	//1280
+1280,
+	1
+		};
+		
+		Generic3x3_Buffer_0.readPixels = //1280
+1280;
+		
+	Input YUV2RGB_A_0 = YUV2RGB.A[0];
+	  YUV2RGB_A_0.firstLine = //0
+0;
+	  YUV2RGB_A_0.pixels = //1280
+1280;
+	  YUV2RGB_A_0.lineSkip = //0
+0;
+	  YUV2RGB_A_0.increment = 1;
+	  YUV2RGB_A_0.pixelSkip = //0
+0;
+	  YUV2RGB_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  Generic3x3_Buffer_0, 
+  YUV2RGB_A_0,
+  //1
+1};
+		
+
+		
+		
+	

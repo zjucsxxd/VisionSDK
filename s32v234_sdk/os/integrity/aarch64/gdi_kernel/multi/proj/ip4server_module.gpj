@@ -1,0 +1,8 @@
+#!gbuild
+#component integrity_os_modules_ip4_stack
+[Program]
+	-lip4
+	-lnetdrivers
+	-lnetdebug
+ghnet2_main.c
+

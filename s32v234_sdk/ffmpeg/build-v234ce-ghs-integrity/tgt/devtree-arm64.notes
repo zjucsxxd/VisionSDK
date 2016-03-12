@@ -1,0 +1,288 @@
+devtree-arm64 BSP
+
+This BSP supports the following boards:
+   APM X-Gene X-C1.
+   Nvidia TX-1.
+   Freescale s32v234-evb (see s32v234-evb.notes for board specific details).
+
+-------
+NOTES:
+
+Runmode HW breakpoints are not currently supported on this BSP.
+
+-------------------------------------------------------------------------------
+APM X-Gene X-C1
+-------------------------------------------------------------------------------
+The BSP supports the following components related to the X-gene:
+	Serial
+	PCIe
+
+ Probe Setup
+==============================
+ 1) Ensure that the probe is running firmware version 5.3 build 530636 or newer.
+ 2) Load the provided probe configuration:
+    > mpadmin -cfgload <probe> <rtos>/devtree-arm64/x-gene/x-c1.ghpcfg
+
+NOTE: The setup script (x-gene/x-c1.mbs) expects the target to be reset via
+      toggling of the reset line via probe GPIO pins.  This requires
+      modification to the target.  If this is not possible, the target can be
+      manually reset prior to loading via the probe.  Comment out the following
+      lines from the setup script if the board will be manually reset:
+
+===RESET CODE BEGIN====
+
+    // Let MULTI know what's going on
+    reset
+
+    // Reset the target.
+    target jp off
+    target iop pin1.value=0
+    wait -time 100
+    target iop pin1.value=1
+    wait -time 100
+    target iop pin1.value=0
+    wait -time 1000
+    target jp on
+
+    wait -time 10000
+    target jr
+
+===RESET CODE END====
+
+Loading Hang program from U-boot
+==============================
+To boot INTEGRITY on the X-gene from the probe, U-boot needs to load and boot
+a small hang program.  To set up the X-gene to automatically load the hang
+program, do the following:
+
+1) Manually reset X-C1
+2) Hit any key on serial console to enter U-boot
+3) (optional, but highly recommended) Save off environment if necessary
+4) Perform the following commands to program the hang:
+
+  setenv hang_self run hang_self11 hang_self12 hang_self13
+  setenv hang_self0 mw.l 0x4002000000 0xd82c591756190527
+  setenv hang_self1 mw.l 0x4002000008 0x04000000dbbe0955
+  setenv hang_self10 bootm 0x4002000000 - 0x4003000000
+  setenv hang_self11 run hang_self0 hang_self1 hang_self2 hang_self3
+  setenv hang_self12 run hang_self4 hang_self5 hang_self6 hang_self7
+  setenv hang_self13 run hang_self8 hang_self9 hang_self10
+  setenv hang_self2 mw.l 0x4002000010 0x0000080100000801
+  setenv hang_self3 mw.l 0x4002000018 0x00020205610b9e3b
+  setenv hang_self4 mw.l 0x4002000020 0x00000000676e6148
+  setenv hang_self5 mw.l 0x4002000028 0x0000000000000000
+  setenv hang_self6 mw.l 0x4002000030 0x0000000000000000
+  setenv hang_self7 mw.l 0x4002000038 0x0000000000000000
+  setenv hang_self8 mw.l 0x4002000040 0x14000000
+  setenv hang_self9 sf probe\; sf read ${fdt_addr_r} ${fdt_addr_f} ${fdt_size}
+
+5) Perform the following command to setup the bootargs (optional):
+  setenv ipaddr <IP address>
+  setenv netmask <Netmask address>
+  setenv gatewayip <Gateway address>
+  setenv dnsip <Nameserver address>
+  setenv hostname <hostname>
+  setenv intargs setenv bootargs device=0 ipaddr=\${ipaddr} netmask=\${netmask} gateway=\${gatewayip} nameserver=\${dnsip} hostname=\${hostname}
+
+6) Perform the following command to automatically setup bootargs and hang on
+   boot:
+
+  // Use if did optional step 5
+  setenv bootcmd "run intargs hang_self"
+
+  // Use if did not do optional step 5
+  setenv bootcmd "run hang_self"
+
+7) Save off environment
+  saveenv
+
+Upon rebooting the target, the board should boot into a hang:
+
+  U-Boot 2013.04-mustang_sw_1.11.09-beta (Mar 19 2014 - 10:48:06)
+
+  CPU0: APM ARM 64-bit Potenza Rev A3 2400MHz PCP 2400MHz
+       32 KB ICACHE, 32 KB DCACHE
+       SOC 2000MHz IOBAXI 400MHz AXI 250MHz AHB 200MHz GFC 125MHz
+  Boot from SPI-NOR
+  Board: Mustang - AppliedMicro APM883208-xNA24SPT Reference Board
+  I2C:   ready
+  DRAM:  ECC 16 GiB @ 1600MHz     
+  SF: Detected N25Q256 with page size 256 Bytes, total 32 MiB
+  MMC:   X-Gene SD/SDIO/eMMC: 0
+  PCIE0: (RC) X1 GEN-1 link up
+    00:00.0     - 19aa:e008 - Bridge device
+     01:00.0    - 8086:10d3 - Network controller
+  In:    serial
+  Out:   serial
+  Err:   serial
+  CPUs:  11111111
+  Net:   eth0 [PRIME]
+  Hit any key to stop autoboot:  0 
+  SF: Detected N25Q256 with page size 256 Bytes, total 32 MiB
+  SF: 32768 KiB N25Q256 at 0:0 is now current device
+  .SF: flash read success (65536 bytes @ 0x1000000)
+  ## Booting kernel from Legacy Image at 4002000000 ...
+     Image Name:   Hang
+     Image Type:   ARM Linux Kernel Image (uncompressed)
+     Data Size:    4 Bytes = 4 Bytes
+     Load Address: 01080000
+     Entry Point:  01080000
+     Verifying Checksum ... OK
+  ## Flattened Device Tree blob at 4003000000
+     Booting using the fdt blob at 0x0000004003000000
+     Loading Kernel Image ... OK
+  OK
+     Loading Device Tree to 0000004000ff5000, end 0000004000fff4df ... OK
+
+  Starting kernel ...
+
+  L3C: 8MB
+
+
+Updating devtree on x-gene
+==============================
+
+An updated device tree (x-gene/xgene.dtb) is included.  The device tree can be 
+updated by doing the following:
+
+
+Save the MULTI original dtb (optional, but highly recommended):
+---
+1) Manually reset X-C1
+2) Hit any key on serial console to enter U-boot
+3) Get current fdt_size by running the following in U-boot:
+
+  Mustang# print fdt_size
+
+3) load fdt into memory:
+
+  Mustang# sf probe 0; sf read ${fdt_addr_r} ${fdt_addr_f} ${fdt_size}
+
+4) Connect to target with MULTI
+5) Halt the target
+6) Dump original dtb
+
+  MULTI> memdump raw original.dtb 0x4000ff5000 <fdt_size>
+
+
+Updating the dtb:
+----
+1) Manually reset X-C1
+2) Hit any key on serial console to enter U-boot
+3) Get fdt_addr_r by running the following in U-boot:
+
+  Mustang# print fdt_addr_r
+
+3) Connect to target with MULTI
+4) Halt the target
+5) In the MULTI Pane, 'memload' the dtb:
+
+  MULTI> memload raw x-gene/xgene.dtb <fdt_addr_r>
+
+6) Continue target
+7) In U-boot console, update 'fdt_size' and invoke the 'update_fdt' command:
+
+  Mustang# setenv fdt_size <new_fdt_size>
+  Mustang# run update_fdt
+  Mustang# saveenv
+
+Ethernet on the X-gene
+==============================
+The onboard Ethernet is not currently supported.  Since PCIe is supported, a
+compatible Ethernet card can be inserted into the PCI slot to provide Ethernet
+support.  The BSP includes support for an INTEL i82544 Ethernet or family
+card.  The network settings passed in by U-boot's 'bootargs' are used to
+configure the Ethernet.
+
+NOTE: The Ethernet driver used on the xgene is a virtual Ethernet driver which
+does not update the MAC address in NetDevs[] and thus is not reflected by the
+'nc' command.  Doing a 'nc' command will report a MAC address of all 0s.
+
+NOTE: Network instability has been observed when using the x-gene with large
+number of receive UDP packet.
+
+
+
+-------------------------------------------------------------------------------
+Nvidia TX-1
+-------------------------------------------------------------------------------
+The BSP supports the following components related to the X-gene:
+	Serial
+	Probe Run Mode (PRM)
+
+ Probe Setup
+==============================
+ 1) Ensure that the probe is running firmware version 5.3 build 530636 or newer.
+ 2) Load the provided probe configuration:
+    > mpadmin -cfgload <probe> <rtos>/devtree-arm64/nv-tx1/nv-tx1.ghpcfg
+
+NOTE: The setup script (nv-tx1/nv-tx1.mbs) resets the TX-1 board using the
+      watchdog.  The watchdog reset will only work if the board has not yet
+      loaded Linux.  Once the board has been reset by the script, MULTI can
+      reset the board using the setup script continuously.  If Linux is loaded,
+      the board needs to be power cycled or manually reset by hitting the
+      'SYS_RESET' button.  Do the following to prevent Linux from
+      initially loading:
+
+1) Connect to target with MULTI
+2) Power cycle board or hit the 'SYS_RESET' button
+3) Perform the following commands:
+  MULTI> target jr
+  MULTI> target halt
+
+Step 3 needs to be performed before the bootloader hands off control to Linux
+
+NOTE: The setup script provided is written for the TX-1 board with revision 
+'2581' running the following bootloader:
+  [TegraBoot] (version 23.05.2015.04-embedded-32eb9234)
+Another revision of the TX-1 or bootloader may require changes to the setup 
+script.
+
+
+ Device Tree
+==============================
+The Probe setup script (nv-tx1/nv-tx1.mbs) loads a minimized dtb file
+(nv-tx1/tx1_minimal.dtb) into RAM before running INTEGRITY.  By default,
+the device tree is placed physically in RAM 0x10000 bytes before the physical
+start of kernel (_start in physical RAM).  This can be adjusted by modifying
+the following line in the setup script:
+
+    $devtree_phys = $PC - 0x10000
+
+Be wary of the placement of the device tree because it's placement can affect
+the size of the kernel/monolith loaded.
+
+The TX-1's minimized memory layout as specified by the dtb file contains a
+gap in the memory layout:
+
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0x0 0x80000000 0x0 0x71a00000 0x1 0x0 0x0 0x80000000>;
+	};
+
+The size of a Monolith that can be downloaded is limited by the size of the
+first contiguous memory range.
+
+
+Probe Run Mode (PRM)
+==============================
+The TX-1 supports PRM which allows an rtserv2 connection via the Probe.  To
+connect to a target via PRM, do the following in the MULTI Pane:
+connect rtserv2 <Probe IP>:2222
+
+
+-------------------------------------------------------------------------------
+General
+-------------------------------------------------------------------------------
+o Downloading Large Images with Green Hills Probe
+
+    In order to download a program to the target, the Green Hills Probe must
+    create temporary memory mappings. The default mapping will setup one
+    first level table descriptor (allowing a download of at most the 1 GiB).
+    To download a larger image, the user must modify the setup script to set
+    $NumFLTMaps to be number of first level table mappings to create.  Each
+    additional first level table will add 1GiB to the download size.
+
+    NOTE: The monolith that can be downloaded is limited by the size of the
+    first contiguous memory range.  For boards (like the TX-1) with gaps in
+    their memory range, changing $NumFLTMaps does not change this limitation.

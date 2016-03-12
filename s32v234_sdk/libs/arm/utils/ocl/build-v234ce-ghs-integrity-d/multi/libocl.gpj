@@ -1,0 +1,105 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-gcc
+	-include stdlib.h
+	--prototype_warnings
+	-w
+	-I../../include
+    -I../../include/CL
+    -I../../include/devices
+    -I../../../../utils/oal/user/include
+../../src/devices/bufalloc.c                
+../../src/devices/cpuinfo.c                 
+../../src/devices/devices.c                 
+../../src/clBuildProgram.c          
+../../src/clCreateBuffer.c          
+../../src/clCreateCommandQueue.c    
+../../src/clCreateContext.c         
+../../src/clCreateContextFromType.c 
+../../src/clCreateFromGLTexture2D.c 
+../../src/clCreateFromGLTexture3D.c 
+../../src/clCreateImage.c           
+../../src/clCreateImage2D.c         
+../../src/clCreateImage3D.c         
+../../src/clCreateKernel.c          
+../../src/clCreateKernelsInProgram.c
+../../src/clCreateProgramWithBinary.c
+../../src/clCreateProgramWithSource.c
+../../src/clCreateSampler.c         
+../../src/clCreateSubBuffer.c       
+../../src/clCreateUserEvent.c       
+../../src/clEnqueueBarrier.c        
+../../src/clEnqueueCopyBuffer.c     
+../../src/clEnqueueCopyBufferRect.c 
+../../src/clEnqueueCopyBufferToImage.c
+../../src/clEnqueueCopyImage.c      
+../../src/clEnqueueCopyImageToBuffer.c 
+../../src/clEnqueueFillImage.c      
+../../src/clEnqueueMapBuffer.c      
+../../src/clEnqueueMapBuffer.h      
+../../src/clEnqueueMapImage.c       
+../../src/clEnqueueMarker.c         
+../../src/clEnqueueMarkerWithWaitList.c
+../../src/clEnqueueNativeKernel.c   
+../../src/clEnqueueNDRangeKernel.c  
+../../src/clEnqueueReadBuffer.c     
+../../src/clEnqueueReadBufferRect.c 
+../../src/clEnqueueReadImage.c      
+../../src/clEnqueueTask.c           
+../../src/clEnqueueUnmapMemObject.c 
+../../src/clEnqueueWaitForEvents.c  
+../../src/clEnqueueWriteBuffer.c    
+../../src/clEnqueueWriteBufferRect.c
+../../src/clEnqueueWriteImage.c     
+../../src/clFinish.c                
+../../src/clFlush.c                 
+../../src/clGetCommandQueueInfo.c   
+../../src/clGetContextInfo.c        
+../../src/clGetDeviceIDs.c          
+../../src/clGetDeviceInfo.c         
+../../src/clGetEventInfo.c          
+../../src/clGetEventProfilingInfo.c 
+../../src/clGetExtensionFunctionAddress.c
+../../src/clGetImageInfo.c          
+../../src/clGetKernelInfo.c         
+../../src/clGetKernelArgInfo.c      
+../../src/clGetKernelWorkGroupInfo.c
+../../src/clGetMemObjectInfo.c      
+../../src/clGetPlatformIDs.c        
+../../src/clGetPlatformInfo.c       
+../../src/clGetProgramBuildInfo.c   
+../../src/clGetProgramInfo.c        
+../../src/clGetSamplerInfo.c        
+../../src/clGetSupportedImageFormats.c 
+../../src/clIcdGetPlatformIDsKHR.c  
+../../src/clReleaseCommandQueue.c   
+../../src/clReleaseContext.c        
+../../src/clReleaseDevice.c         
+../../src/clReleaseEvent.c          
+../../src/clReleaseKernel.c         
+../../src/clReleaseMemObject.c      
+../../src/clReleaseProgram.c        
+../../src/clReleaseSampler.c        
+../../src/clRetainCommandQueue.c    
+../../src/clRetainContext.c         
+../../src/clRetainDevice.c          
+../../src/clRetainEvent.c           
+../../src/clRetainKernel.c          
+../../src/clRetainMemObject.c       
+../../src/clRetainProgram.c         
+../../src/clRetainSampler.c         
+../../src/clSetEventCallback.c      
+../../src/clSetKernelArg.c          
+../../src/clSetMemObjectDestructorCallback.c 
+../../src/clSetUserEventStatus.c    
+../../src/clUnloadCompiler.c        
+../../src/clWaitForEvents.c         
+../../src/pocl_image_util.c         
+../../src/pocl_mem_management.c     
+../../src/pocl_runtime_config.c     
+../../src/pocl_util.c               
+../../src/poclu_bswap.c

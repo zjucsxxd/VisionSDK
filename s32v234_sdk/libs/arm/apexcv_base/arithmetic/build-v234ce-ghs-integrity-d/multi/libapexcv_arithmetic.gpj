@@ -1,0 +1,24 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I..
+        -I../../../../../arm/apex/icp/include
+	-I../../../../../arm/apexcv_base/apexcv_core/include
+	-I../../../../../arm/apex/acf/include
+	-I../../../../../arm/utils/common/include
+	-I../../../../../arm/apex/apex/user/include
+	-I../../../../../arm/utils/oal/user/include
+        -I../../../../../../ocv/integrity-arm64/include
+	-I../../include
+	-I../../src
+	-I../../graphs
+../../../../../arm/apexcv_base/arithmetic/src/arithmetic.cpp
+../../../../../arm/apexcv_base/arithmetic/src/apexcv_arithmetic_ref-impl.cpp
+../../../../../arm/apexcv_base/arithmetic/src/apexcv_arithmetic_func.cpp
+
+
+
+

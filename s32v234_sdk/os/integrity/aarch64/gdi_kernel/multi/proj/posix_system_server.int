@@ -1,0 +1,21 @@
+# This file is not standalone- it is meant to be referenced by other int files with
+# the %include "<path>/posix_system_server.int"
+
+AddressSpace 				posix_system_server
+	Filename 			posix_system_server
+        # The MemoryPool is used to create all POSIX
+        #  address spaces, so it should be as big as possible.
+	#  The Kernel section of the parent integrate file
+	#  should reserve a sufficient amount of memory
+	#  by declaring MemoryPoolSize.
+#	MemoryPoolSize			LEFTOVER()
+	#MemoryPoolSize			0x2000000
+	MemoryPoolSize			. += LEFTOVER()
+        MaximumPriority 		255
+	MaximumWeight			2550
+	Language			C
+	Task				Initial
+		StartIt			true
+		TimeSlice		NONPREEMPTIBLE
+	EndTask	
+EndAddressSpace

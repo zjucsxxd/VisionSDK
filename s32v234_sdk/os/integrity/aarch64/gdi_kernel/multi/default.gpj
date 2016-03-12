@@ -1,0 +1,38 @@
+#!gbuild
+macro __BSP_DIR=${__OS_DIR}/${__BSP_NAME}
+macro __BSP_NAME=devtree-arm64
+macro __BUILD_DIR=%expand_path(.)
+macro __LIBS_DIR_BASE=${__OS_DIR}/libs
+macro __OS_DIR=${INTEGRITY_ROOT_PATH}
+macro __VISION_S32V234_SDK=%expand_path(../../../../..)
+macro __IS_64BIT=1
+macro __NO_LIBFLASH=1
+macro __NO_GTWS=1
+macro __NO_KERNEL_RELOC=1
+import INTEGRITY_ROOT_PATH
+primaryTarget=arm64_integrity.tgt
+customization=${__OS_DIR}/target/integrity.bod
+#component top_level_project
+[Project]
+	-bsp devtree-arm64
+	-G
+	-object_dir=objs
+	:sourceDir=.
+	:optionsFile=${__OS_DIR}/target/${__BSP_NAME}.opt
+	-os_dir ${__OS_DIR}
+	-DVLAB
+	-Itgt
+	-I$(__VISION_S32V234_SDK)/ocv/integrity-arm64/include
+	-L$(__VISION_S32V234_SDK)/ocv/integrity-arm64/lib
+	-L$(__VISION_S32V234_SDK)/ocv/integrity-arm64/share/OpenCV/3rdparty/lib
+	-L$(__VISION_S32V234_SDK)/libs/arm/io/gdi/build-v234ce-ghs-integrity-d
+	-L$(__VISION_S32V234_SDK)/libs/arm/utils/oal/build-v234ce-ghs-integrity-d
+	-L$(__VISION_S32V234_SDK)/libs/arm/utils/log/build-v234ce-ghs-integrity-d
+	-I$(__VISION_S32V234_SDK)/libs/arm/gdi/include
+	-I$(__VISION_S32V234_SDK)/libs/arm/io/gdi/vpd/include
+	-I$(__VISION_S32V234_SDK)/libs/arm/utils/oal/user/include
+	-I$(__VISION_S32V234_SDK)/libs/arm/utils/log/include 
+	:outputDir=${__BUILD_DIR}/work
+	:binDir=${__BUILD_DIR}/bin
+proj/gdi_kernel.gpj		[INTEGRITY Application]
+tgt/resources.gpj		[Project]

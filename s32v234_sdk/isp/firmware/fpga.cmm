@@ -1,0 +1,91 @@
+; (1) Host has to put M0+ into reset and release other (peripheral) resets
+; (2) execute this script
+; (3) host can now release M0+ core from reset and start messaging
+
+;Reset
+;sys.down
+;wait 1.
+
+SYStem.Option TRST off
+System.Option ResBreak off
+;SYSTEM.CPU cortexM0+
+SYStem.CPU S32V-CM0+
+system.config debugporttype jtag
+SYStem.CONFIG MEMORYACCESSPORT 0.
+SYSTEM.JTAGclock 1Mhz
+
+system.mode prepare
+
+;AREA
+;AREA.clear
+
+;per.p c:\t32\peripus0.per
+;per.p c:\t32\peripus1.per
+;per.p c:\t32\peripuv0.per
+;per.p c:\t32\peripuv1.per
+;per.p c:\t32\peripuv2.per
+;per.p c:\t32\peripuv3.per
+;per.p c:\t32\pervseq.per
+;menu.p c:\t32\menipu.men
+;per.reprogram peripus0.per
+
+y.reset
+cd ../../../isp/firmware
+y.spath src
+d.load.elf "build-seqm0-ghs-sa-d/sequencer.elf" /verify /plusvm /ghs; /nocode
+
+b.d
+
+b.s fatalError
+b.s SEQ_ErrHndl
+b.s SEQ_FdmaErrHndl
+b.s SEQ_DfltHndl
+b.s sendFrameEnd
+
+;b.s _reset /onchip
+b.s main /onchip
+;b.s ackHostMessage
+;b.s SEQ_HostOutAckHndl
+
+;b.s copyIpuKernelCode
+;b.s sendMessage2Host
+;b.s startDev
+;b.s startIDMA
+;b.s processMessage
+;b.s SEQ_HostMsgHndl
+;b.s SEQ_EngineHndl
+
+;b.s processIpuEvent
+;b.s processFdmaEvent
+
+;b.s initFDMAdev
+;b.s initIPUdev
+;b.s SEQ_EvntInit
+
+sys.option.dismode.thumb
+mode.hll
+setup.var %hex
+d.l
+v.frame
+r.view /spotlight
+
+SYStem.Mode Attach
+
+;Trace/MTB
+Trace.METHOD Onchip
+Trace.TBADDRESS 0x1FFFF000
+Trace.Size 0x1000
+Trace.Init
+D.S ESD:0xF0000000 %LE %Long 0
+Trace.List
+
+;R.S PRIMASK 1
+;R.S PC _reset
+
+;B::v.v %open.2 %hex %index gpGraph[0..9] 
+;B::v.v %hex %open.2 (SEQ_IpuCfg_t*)gpGraph[0] 
+;B::Var.View %open.2 %index %hex gpBuf[0..9] 
+;B::d.dump 0x1ffff000 /STRING
+;B::v.v %hex %open.2 (SEQ_IpuCfg_t*)gpGraph[0]
+;B::v.v %hex %open.2 (SEQ_FdmaCfg_t*)gpGraph[4] 
+;B::d.dump 0x40020000++37	; FDMA-Regs

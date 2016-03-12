@@ -1,0 +1,15 @@
+#!gbuild
+#component integrity_monolith
+[INTEGRITY Application]
+	:outputDir=${%option_value(:outputDir)}/proj
+	:binDir=${%option_value(:binDir)}/proj
+	-non_shared
+tgt/default.bsp
+gdi_kernel.int
+gdi_kernel_kernel.gpj		[Program]
+virtualdebug_module.gpj		[Program]
+ivfsserver_module.gpj		[Program]
+ip4server_module.gpj		[Program]
+posix_system_server.gpj		[Program]
+shm_manager.gpj		[Program]
+

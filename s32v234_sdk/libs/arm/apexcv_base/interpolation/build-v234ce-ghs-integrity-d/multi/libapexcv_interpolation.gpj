@@ -1,0 +1,21 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I..
+        -I../../src
+        -I../../graphs
+        -I../../../../../arm/apex/icp/include
+        -I../../../../../arm/apex/acf/include
+        -I../../../../../arm/utils/common/include
+        -I../../../../../arm/apex/apex/user/include
+        -I../../../../../arm/utils/oal/user/include
+        -I../../../../../arm/apexcv_base/apexcv_core/include
+    
+../../../../../arm/apexcv_base/interpolation/src/interpolation.cpp
+../../../../../arm/apexcv_base/interpolation/src/apexcv_interp_bilinear_grayscale.cpp
+../../../../../arm/apexcv_base/interpolation/src/apexcv_interp_linear_grayscale.cpp
+../../../../../arm/apexcv_base/interpolation/src/apexcv_interp_bicubic_grayscale.cpp
+../../../../../arm/apexcv_base/interpolation/src/apexcv_interpolation_ref.cpp

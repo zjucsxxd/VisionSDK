@@ -1,0 +1,9 @@
+#!gbuild
+#component integrity_dynamic_download
+[INTEGRITY Application]
+	-dynamic
+	-non_shared
+
+tgt/default.bsp
+gdi_srv.int
+gdi_srv_as0.gpj		[Program]

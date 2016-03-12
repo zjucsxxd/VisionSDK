@@ -1,0 +1,7 @@
+#!gbuild
+[Library]
+	-object_dir=objs/vpd
+	{optgroup=GhsCommonOptions} -o ${__VISION_S32V234_SDK}/libs/arm/io/gdi/vlab_vpd/build-v234ce-ghs-integrity-d/vpd.a
+	
+../src/vpd_func.cpp
+../include/vpd.h

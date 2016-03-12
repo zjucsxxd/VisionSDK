@@ -1,0 +1,12 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I../../../../../arm/utils/oal/user/include
+../../../../../arm/utils/oal/user/src/integrity/oal_semaphore.cpp
+../../../../../arm/utils/oal/user/src/integrity/oal_memory.cpp
+../../../../../arm/utils/oal/user/src/integrity/oal_interrupt.cpp
+../../../../../arm/utils/oal/user/src/integrity/oal_signal.cpp
+../../../../../arm/utils/oal/user/src/integrity/oal_not_implemented.cpp

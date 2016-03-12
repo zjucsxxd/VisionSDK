@@ -1,0 +1,409 @@
+diff -rupN opencv_original/modules/contrib/src/inputoutput.cpp opencv_src/modules/contrib/src/inputoutput.cpp
+--- opencv_original/modules/contrib/src/inputoutput.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/contrib/src/inputoutput.cpp	2015-04-22 10:14:40.857538135 +0200
+@@ -6,7 +6,7 @@
+     #include <windows.h>
+     #include <tchar.h>
+ #else
+-    #include <dirent.h>
++    //#include <dirent.h>
+ #endif
+ 
+ namespace cv
+@@ -69,7 +69,7 @@ namespace cv
+                 FindClose(hFind);
+             }
+         #else
+-            (void)addPath;
++            /*(void)addPath;
+             DIR *dp;
+             struct dirent *dirp;
+             if((dp = opendir(path.c_str())) == NULL)
+@@ -88,7 +88,7 @@ namespace cv
+                             list.push_back(static_cast<std::string>(dirp->d_name));
+                 }
+             }
+-            closedir(dp);
++            closedir(dp);*/
+         #endif
+ 
+         return list;
+@@ -159,7 +159,7 @@ namespace cv
+             }
+ 
+         #else
+-            (void)addPath;
++           /* (void)addPath;
+             DIR *dp;
+             struct dirent *dirp;
+             if((dp = opendir(path_f.c_str())) == NULL)
+@@ -180,7 +180,7 @@ namespace cv
+                             list.push_back(static_cast<std::string>(dirp->d_name));
+                 }
+             }
+-            closedir(dp);
++            closedir(dp);*/
+         #endif
+ 
+         return list;
+diff -rupN opencv_original/modules/core/src/glob.cpp opencv_src/modules/core/src/glob.cpp
+--- opencv_original/modules/core/src/glob.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/src/glob.cpp	2015-04-22 10:14:40.857538135 +0200
+@@ -131,13 +131,13 @@ namespace
+ 
+ }
+ #else
+-# include <dirent.h>
++//# include <dirent.h>
+ # include <sys/stat.h>
+ const char dir_separators[] = "/";
+ const char native_separator = '/';
+ #endif
+ 
+-static bool isDir(const cv::String& path, DIR* dir)
++/*static bool isDir(const cv::String& path, DIR* dir)
+ {
+ #if defined WIN32 || defined _WIN32 || defined WINCE
+     DWORD attributes;
+@@ -167,127 +167,127 @@ static bool isDir(const cv::String& path
+     int is_dir = S_ISDIR( stat_buf.st_mode);
+     return is_dir != 0;
+ #endif
+-}
+-
+-static bool wildcmp(const char *string, const char *wild)
+-{
+-    // Based on wildcmp written by Jack Handy - <A href="mailto:jakkhandy@hotmail.com">jakkhandy@hotmail.com</A>
+-    const char *cp = 0, *mp = 0;
+-
+-    while ((*string) && (*wild != '*'))
+-    {
+-        if ((*wild != *string) && (*wild != '?'))
+-        {
+-            return false;
+-        }
+-
+-        wild++;
+-        string++;
+-    }
+-
+-    while (*string)
+-    {
+-        if (*wild == '*')
+-        {
+-            if (!*++wild)
+-            {
+-                return true;
+-            }
+-
+-            mp = wild;
+-            cp = string + 1;
+-        }
+-        else if ((*wild == *string) || (*wild == '?'))
+-        {
+-            wild++;
+-            string++;
+-        }
+-        else
+-        {
+-            wild = mp;
+-            string = cp++;
+-        }
+-    }
+-
+-    while (*wild == '*')
+-    {
+-        wild++;
+-    }
++}*/
+ 
+-    return *wild == 0;
+-}
++// static bool wildcmp(const char *string, const char *wild)
++// {
++//     // Based on wildcmp written by Jack Handy - <A href="mailto:jakkhandy@hotmail.com">jakkhandy@hotmail.com</A>
++//     const char *cp = 0, *mp = 0;
++// 
++//     while ((*string) && (*wild != '*'))
++//     {
++//         if ((*wild != *string) && (*wild != '?'))
++//         {
++//             return false;
++//         }
++// 
++//         wild++;
++//         string++;
++//     }
++// 
++//     while (*string)
++//     {
++//         if (*wild == '*')
++//         {
++//             if (!*++wild)
++//             {
++//                 return true;
++//             }
++// 
++//             mp = wild;
++//             cp = string + 1;
++//         }
++//         else if ((*wild == *string) || (*wild == '?'))
++//         {
++//             wild++;
++//             string++;
++//         }
++//         else
++//         {
++//             wild = mp;
++//             string = cp++;
++//         }
++//     }
++// 
++//     while (*wild == '*')
++//     {
++//         wild++;
++//     }
++// 
++//     return *wild == 0;
++// }
+ 
+ static void glob_rec(const cv::String& directory, const cv::String& wildchart, std::vector<cv::String>& result, bool recursive)
+ {
+-    DIR *dir;
+-    struct dirent *ent;
+-
+-    if ((dir = opendir (directory.c_str())) != 0)
+-    {
+-        /* find all the files and directories within directory */
+-        try
+-        {
+-            while ((ent = readdir (dir)) != 0)
+-            {
+-                const char* name = ent->d_name;
+-                if((name[0] == 0) || (name[0] == '.' && name[1] == 0) || (name[0] == '.' && name[1] == '.' && name[2] == 0))
+-                    continue;
+-
+-                cv::String path = directory + native_separator + name;
+-
+-                if (isDir(path, dir))
+-                {
+-                    if (recursive)
+-                        glob_rec(path, wildchart, result, recursive);
+-                }
+-                else
+-                {
+-                    if (wildchart.empty() || wildcmp(name, wildchart.c_str()))
+-                        result.push_back(path);
+-                }
+-            }
+-        }
+-        catch (...)
+-        {
+-            closedir(dir);
+-            throw;
+-        }
+-        closedir(dir);
+-    }
+-    else CV_Error(CV_StsObjectNotFound, cv::format("could not open directory: %s", directory.c_str()));
++//     DIR *dir;
++//     struct dirent *ent;
++// 
++//     if ((dir = opendir (directory.c_str())) != 0)
++//     {
++//         /* find all the files and directories within directory */
++//         try
++//         {
++//             while ((ent = readdir (dir)) != 0)
++//             {
++//                 const char* name = ent->d_name;
++//                 if((name[0] == 0) || (name[0] == '.' && name[1] == 0) || (name[0] == '.' && name[1] == '.' && name[2] == 0))
++//                     continue;
++// 
++//                 cv::String path = directory + native_separator + name;
++// 
++//                 if (isDir(path, dir))
++//                 {
++//                     if (recursive)
++//                         glob_rec(path, wildchart, result, recursive);
++//                 }
++//                 else
++//                 {
++//                     if (wildchart.empty() || wildcmp(name, wildchart.c_str()))
++//                         result.push_back(path);
++//                 }
++//             }
++//         }
++//         catch (...)
++//         {
++//             closedir(dir);
++//             throw;
++//         }
++//         closedir(dir);
++//     }
++//     else CV_Error(CV_StsObjectNotFound, cv::format("could not open directory: %s", directory.c_str()));
+ }
+ 
+ void cv::glob(String pattern, std::vector<String>& result, bool recursive)
+ {
+-    result.clear();
+-    String path, wildchart;
+-
+-    if (isDir(pattern, 0))
+-    {
+-        if(strchr(dir_separators, pattern[pattern.size() - 1]) != 0)
+-        {
+-            path = pattern.substr(0, pattern.size() - 1);
+-        }
+-        else
+-        {
+-            path = pattern;
+-        }
+-    }
+-    else
+-    {
+-        size_t pos = pattern.find_last_of(dir_separators);
+-        if (pos == String::npos)
+-        {
+-            wildchart = pattern;
+-            path = ".";
+-        }
+-        else
+-        {
+-            path = pattern.substr(0, pos);
+-            wildchart = pattern.substr(pos + 1);
+-        }
+-    }
+-
+-    glob_rec(path, wildchart, result, recursive);
+-    std::sort(result.begin(), result.end());
++//     result.clear();
++//     String path, wildchart;
++// 
++//     if (isDir(pattern, 0))
++//     {
++//         if(strchr(dir_separators, pattern[pattern.size() - 1]) != 0)
++//         {
++//             path = pattern.substr(0, pattern.size() - 1);
++//         }
++//         else
++//         {
++//             path = pattern;
++//         }
++//     }
++//     else
++//     {
++//         size_t pos = pattern.find_last_of(dir_separators);
++//         if (pos == String::npos)
++//         {
++//             wildchart = pattern;
++//             path = ".";
++//         }
++//         else
++//         {
++//             path = pattern.substr(0, pos);
++//             wildchart = pattern.substr(pos + 1);
++//         }
++//     }
++// 
++//     glob_rec(path, wildchart, result, recursive);
++//     std::sort(result.begin(), result.end());
+ }
+diff -rupN opencv_original/modules/core/src/rand.cpp opencv_src/modules/core/src/rand.cpp
+--- opencv_original/modules/core/src/rand.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/src/rand.cpp	2015-04-22 10:14:40.857538135 +0200
+@@ -776,28 +776,28 @@ RNG& theRNG()
+ #endif //HAVE_WINRT
+ #else
+ 
+-static pthread_key_t tlsRNGKey = 0;
+-static pthread_once_t tlsRNGKeyOnce = PTHREAD_ONCE_INIT;
++//static pthread_key_t tlsRNGKey = 0;
++//static pthread_once_t tlsRNGKeyOnce = PTHREAD_ONCE_INIT;
+ 
+ static void deleteRNG(void* data)
+ {
+-    delete (RNG*)data;
++  //  delete (RNG*)data;
+ }
+ 
+ static void makeRNGKey()
+ {
+-    int errcode = pthread_key_create(&tlsRNGKey, deleteRNG);
+-    CV_Assert(errcode == 0);
++    //int errcode = pthread_key_create(&tlsRNGKey, deleteRNG);
++    //CV_Assert(errcode == 0);
+ }
+ 
+ RNG& theRNG()
+ {
+-    pthread_once(&tlsRNGKeyOnce, makeRNGKey);
+-    RNG* rng = (RNG*)pthread_getspecific(tlsRNGKey);
++    //pthread_once(&tlsRNGKeyOnce, makeRNGKey);
++    RNG* rng = NULL;//(RNG*)pthread_getspecific(tlsRNGKey);
+     if( !rng )
+     {
+         rng = new RNG;
+-        pthread_setspecific(tlsRNGKey, rng);
++        //pthread_setspecific(tlsRNGKey, rng);
+     }
+     return *rng;
+ }
+diff -rupN opencv_original/modules/core/src/system.cpp opencv_src/modules/core/src/system.cpp
+--- opencv_original/modules/core/src/system.cpp	2014-10-01 09:33:36.000000000 +0200
++++ opencv_src/modules/core/src/system.cpp	2015-04-22 10:14:40.861538135 +0200
+@@ -939,14 +939,14 @@ struct Mutex::Impl
+ 
+ struct Mutex::Impl
+ {
+-    Impl() { pthread_mutex_init(&sl, 0); refcount = 1; }
+-    ~Impl() { pthread_mutex_destroy(&sl); }
++    Impl() { /*pthread_mutex_init(&sl, 0);*/ refcount = 1; }
++    ~Impl() { /*pthread_mutex_destroy(&sl);*/ }
+ 
+-    void lock() { pthread_mutex_lock(&sl); }
+-    bool trylock() { return pthread_mutex_trylock(&sl) == 0; }
+-    void unlock() { pthread_mutex_unlock(&sl); }
++    void lock() { /*pthread_mutex_lock(&sl);*/ }
++    bool trylock() { return false;/*pthread_mutex_trylock(&sl) == 0;*/ }
++    void unlock() { /*pthread_mutex_unlock(&sl);*/ }
+ 
+-    pthread_mutex_t sl;
++    //pthread_mutex_t sl;
+     int refcount;
+ };
+ 
+@@ -1088,8 +1088,8 @@ BOOL WINAPI DllMain(HINSTANCE, DWORD fdw
+ #endif
+ 
+ #else
+-    static pthread_key_t tlsKey = 0;
+-    static pthread_once_t tlsKeyOnce = PTHREAD_ONCE_INIT;
++//     static pthread_key_t tlsKey = 0;
++//     static pthread_once_t tlsKeyOnce = PTHREAD_ONCE_INIT;
+ 
+     static void deleteTLSStorage(void* data)
+     {
+@@ -1098,18 +1098,18 @@ BOOL WINAPI DllMain(HINSTANCE, DWORD fdw
+ 
+     static void makeKey()
+     {
+-        int errcode = pthread_key_create(&tlsKey, deleteTLSStorage);
+-        CV_Assert(errcode == 0);
++//         int errcode = pthread_key_create(&tlsKey, deleteTLSStorage);
++//         CV_Assert(errcode == 0);
+     }
+ 
+     inline TLSStorage* TLSStorage::get()
+     {
+-        pthread_once(&tlsKeyOnce, makeKey);
+-        TLSStorage* d = (TLSStorage*)pthread_getspecific(tlsKey);
++//         pthread_once(&tlsKeyOnce, makeKey);
++        TLSStorage* d = NULL;/*(TLSStorage*)pthread_getspecific(tlsKey);*/
+         if( !d )
+         {
+             d = new TLSStorage;
+-            pthread_setspecific(tlsKey, d);
++//             pthread_setspecific(tlsKey, d);
+         }
+         return d;
+     }

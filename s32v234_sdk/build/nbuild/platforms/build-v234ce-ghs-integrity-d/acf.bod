@@ -1,0 +1,27 @@
+Commands {
+    Acf {
+        name="acf"
+	exec="%acf"
+	options={"SpecialOptions"}
+	specialOptions { runInDirectory="$(INPUTDIR)" }
+    }
+}
+
+FileTypes {
+    {
+	name="ACF Build"
+	showCommands="-v -nested_diagnostics -nested_commands -commands"
+	extensions={"h","c"}
+	command="acf"
+	outputType="SourceFile"
+	toolCommands="on"
+	showProgress="on"
+	commandLine="make MULTI_BUILD=\"on\" allsub"
+	progress="ACF program - this may take up to 20 minutes without no input. For more input, please execute make from command line. Building"
+	color="#c00000"
+        promoteToFirstPass=true
+        extraFiles={"*.h"}
+  
+
+    }
+}

@@ -1,0 +1,15 @@
+# This file is not standalone- it is meant to be referenced by other int files
+# with the %include "<path>/ip4server_module.int"
+
+
+AddressSpace			ip4server_module
+	Filename		ip4server_module
+	MemoryPoolSize		$__INTEGRITY_SERVICE_TcpipMemoryPoolSize
+	Language		C
+	HeapSize		$__INTEGRITY_SERVICE_TcpipHeapSize
+	
+        Task 			Initial
+                StartIt         true
+		StackLength     0x3P
+	EndTask
+EndAddressSpace

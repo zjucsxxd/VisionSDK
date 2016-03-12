@@ -1,0 +1,35 @@
+add
+
+menu
+(
+  popup "IPU's"
+  (
+    menuitem "[:chip]VSEQ"  "per pervseq ""VSEQ"""
+    menuitem "[:chip]IPUS0" "per peripus0 ""IPUS0"""
+    menuitem "[:chip]IPUS1" "per peripus1 ""IPUS1"""
+;    menuitem "[:chip]IPUS2" "per peripus2 ""IPUS2"""
+;    menuitem "[:chip]IPUS3" "per peripus3 ""IPUS3"""
+;    menuitem "[:chip]IPUS4" "per peripus4 ""IPUS4"""
+;    menuitem "[:chip]IPUS5" "per peripus5 ""IPUS5"""
+;    menuitem "[:chip]IPUS6" "per peripus6 ""IPUS6"""
+;    menuitem "[:chip]IPUS7" "per peripus7 ""IPUS7"""
+    menuitem "[:chip]IPUV0" "per peripuv0 ""IPUV0"""
+    menuitem "[:chip]IPUV1" "per peripuv1 ""IPUV1"""
+    menuitem "[:chip]IPUV2" "per peripuv2 ""IPUV2"""
+    menuitem "[:chip]IPUV3" "per peripuv3 ""IPUV3"""
+;;
+;    menuitem "[:chip]VSEQ"   "per.reprogram pervseq.per , " "VSEQ"  ""
+;    menuitem "[:chip]IPUS0"  "per.reprogram peripus0.per , " "IPUS0" ""
+;    menuitem "[:chip]IPUS1"  "per.reprogram peripus1.per , " "IPUS1" ""
+;    menuitem "[:chip]IPUS2"  "per.reprogram peripus2.per , " "IPUS2" ""
+;    menuitem "[:chip]IPUS3"  "per.reprogram peripus3.per , " "IPUS3" ""
+;    menuitem "[:chip]IPUS4"  "per.reprogram peripus4.per , " "IPUS4" ""
+;    menuitem "[:chip]IPUS5"  "per.reprogram peripus5.per , " "IPUS5" ""
+;    menuitem "[:chip]IPUS6"  "per.reprogram peripus6.per , " "IPUS6" ""
+;    menuitem "[:chip]IPUS7"  "per.reprogram peripus7.per , " "IPUS7" ""
+;    menuitem "[:chip]IPUV0"  "per.reprogram peripuv0.per , " "IPUV0" ""
+;    menuitem "[:chip]IPUV1"  "per.reprogram peripuv1.per , " "IPUV1" ""
+;    menuitem "[:chip]IPUV2"  "per.reprogram peripuv2.per , " "IPUV2" ""
+;    menuitem "[:chip]IPUV3"  "per.reprogram peripuv3.per , " "IPUV3" ""
+  )
+)

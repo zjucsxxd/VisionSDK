@@ -1,0 +1,15 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__VLAB
+	-I../../include/
+	{optgroup=GhsCommonOptions} -o ${__VISION_S32V234_SDK}/libs/arm/utils/oal/user/build-v234ce-ghs-integrity-d/liboal.a
+
+# imx6 Integrity version
+../../src/integrity_vlab_arm64/oal_semaphore.cpp
+../../src/integrity_vlab_arm64/oal_memory.cpp
+../../src/integrity_vlab_arm64/oal_process.cpp
+../../src/integrity_vlab_arm64/oal_task.cpp
+../../src/integrity_vlab_arm64/oal_file.cpp

@@ -1,0 +1,111 @@
+; (1) Host has to put M0+ into reset and release other (peripheral) resets
+; (2) execute this script
+; (3) host can now release M0+ core from reset and start messaging
+
+;Reset
+;sys.down
+;wait 1.
+
+SYStem.CPU S32V-CM0+
+
+system.mode prepare
+sys.option.imaskasm on
+sys.option.imaskhll on
+
+;AREA
+;AREA.clear
+
+;per.p c:\t32\peripus0.per
+;per.p c:\t32\peripus1.per
+;per.p c:\t32\peripus5.per
+;per.p c:\t32\peripuv0.per
+;per.p c:\t32\peripuv1.per
+;per.p c:\t32\peripuv2.per
+;per.p c:\t32\peripuv3.per
+;per.p c:\t32\pervseq.per
+;menu.p c:\t32\menipu.men
+;per.reprogram peripus0.per
+
+y.reset
+cd ../../isp/firmware
+y.spath src
+y.spath gcc
+d.load.elf "build-v234ce-gnu-sa-d/sequencer.elf" /verify /plusvm /nocode
+;d.load.elf "build-v234ce-gnu-sa-d/sequencer.elf" /verify /plusvm /ghs /nocode
+
+sys.option.dismode.thumb
+mode.hll
+setup.var %hex
+d.l
+v.frame
+r.view /spotlight
+
+SYStem.Mode Attach
+
+;Trace/MTB
+
+Trace.METHOD Onchip
+Trace.TBADDRESS 0x1FFFF000
+Trace.Size 0x1000
+Trace.Init
+D.S ESD:0xF0000000 %LE %Long 0
+Trace.List
+
+;R.S PRIMASK 1
+;R.S PC _reset
+
+;### breakpoints #######################################
+
+b.d
+
+b.s main
+
+b.s severeError
+b.s exception
+;b.s SEQ_FdmaErrHndl
+;b.s SEQ_ErrHndl
+
+;b.s SEQ_DfltHndl
+;b.s sendFrameEnd
+
+;b.s _reset /onchip
+;b.s ackHostMessage
+;b.s SEQ_HostOutAckHndl
+
+;b.s copyIpuKernelCode
+;b.s sendMessage2Host
+;b.s startDev
+;b.s startIDMA
+;b.s processMessage
+;b.s SEQ_HostMsgHndl
+;b.s SEQ_EngineHndl
+
+;b.s processIpuEvent
+;b.s processFdmaEvent
+
+;b.s initFDMAdev
+;b.s initIPUdev
+;b.s SEQ_EvntInit
+;b.s 0xE000E280 /o /w
+
+;#######################################################
+
+;v.v %open.2 %hex %index gpGraph[0..9] 
+;v.v %hex %open.2 (SEQ_IpuCfg_t*)gpGraph[1]
+;v.v %hex %open.2 (SEQ_MipiCfg_t*)gpGraph[0]
+;v.v %hex %open.2 (SEQ_FdmaCfg_t*)gpGraph[4] 
+;v.v %open.2 (SEQ_Buf_t*)0x200007ec 
+;d.dump 0x40020000++37	; FDMA-Regs
+;Var.View %open.2 %index %hex gpBuf[0..9] 
+;d.dump 0x1ffff000 /STRING
+
+;v.v %hex %open.3 (SEQ_Buf_t*)((SEQ_MipiCfg_t*)gpGraph[0]).mpOutBuf 
+;v.v %open.2 (SEQ_Buf_t*)((SEQ_FdmaCfg_t*)gpGraph[2])->mOutBuf[0].mpOutBuf
+;v.v %open.2 (SEQ_Buf_t*)((SEQ_FdmaCfg_t*)gpGraph[2])->mOutBuf[1].mpOutBuf
+;d.image ESD:0x3E8003E0 640. 495. /RGB888 /STRIDE 1920. 
+;v.v %open.2 %index sEvent
+;Var.View %open.2 %index lEventLog->mpRecords[0..10000] 
+
+do m0_win.cmm
+
+ENDDO

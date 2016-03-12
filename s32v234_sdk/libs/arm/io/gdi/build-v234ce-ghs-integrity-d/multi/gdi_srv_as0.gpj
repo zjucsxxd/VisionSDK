@@ -1,0 +1,23 @@
+#!gbuild
+#component integrity_virtual_address_space
+[Program]
+	-lzlib
+	-livfs
+	-lposix_sys_client
+	-lshm_client
+	-llibopencv_core.a
+	-llibopencv_imgproc.a
+	-llog_lib.a
+	-lliboal.a
+	-lgdi_lib.a
+	-lvpd.a
+	-DINTEGRITY
+
+	--exceptions
+	
+	-DARM
+tgt/INTEGRITY.ld
+../../include/gdi_srv.hpp
+../../src/gdi_srv.cpp
+$(__VISION_S32V234_SDK)\os\integrity\aarch64\gdi_kernel\multi\proj\shm_area.c
+#C:\Users\b46531\Documents\code\work_temp\imxvsx_sdk\os\integrity\arm64\gdi_kernel\multi\proj\shm_area.c

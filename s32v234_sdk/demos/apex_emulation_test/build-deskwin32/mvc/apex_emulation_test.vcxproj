@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5C4019CD-9A34-4B20-AC04-084DA35BD330}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>APU_lib_ACF_test</RootNamespace>
+  </PropertyGroup>
+  <!--Take care, this is added manually, won't show in the VS Interface -->
+  <ImportGroup Label="Macros" />
+  <PropertyGroup Label="UserMacros">
+    <MyProjectRoot>.\..\..\..\..\..\s32v234_sdk</MyProjectRoot>
+  </PropertyGroup>
+  <!-- End of manually added section -->
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\KernelDirectory.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\arithmetic_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\comparison_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\conversion_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\display_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\feature_detection_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\filtering_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\geometry_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\morphology_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\object_detection_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\optimization_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\resizing_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\statistics_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\ACF_Lib.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\Matrix.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\OpenCV_Debug.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\common.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\KernelDirectory.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\arithmetic_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\comparison_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\conversion_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\display_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\feature_detection_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\filtering_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\geometry_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\morphology_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\object_detection_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\optimization_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\resizing_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\statistics_kernels.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\ACF_Lib.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\Matrix.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\OpenCV_Release.props" />
+    <Import Project="..\..\..\..\build\mvc\property_sheets_vs\common.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\src;$(ProjectDir)\..\..\graphs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\src;$(ProjectDir)\..\..\graphs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MinimalRebuild>true</MinimalRebuild>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <ProjectReference>
+      <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\graphs\apu_downsample_upsample_apu_process_desc.hpp" />
+    <ClInclude Include="..\..\graphs\apu_downsample_upsample_graph.h" />
+    <ClInclude Include="..\..\graphs\apu_downsample_upsample_graph.hpp" />
+    <ClInclude Include="..\..\graphs\apu_fast9_apu_process_desc.hpp" />
+    <ClInclude Include="..\..\graphs\apu_fast9_color_apu_process_desc.hpp" />
+    <ClInclude Include="..\..\graphs\apu_fast9_color_graph.hpp" />
+    <ClInclude Include="..\..\graphs\apu_fast9_graph.h" />
+    <ClInclude Include="..\..\graphs\apu_fast9_graph.hpp" />
+    <ClInclude Include="..\..\graphs\apu_histogram_apu_process_desc.hpp" />
+    <ClInclude Include="..\..\graphs\apu_histogram_graph.h" />
+    <ClInclude Include="..\..\graphs\apu_histogram_graph.hpp" />
+    <ClInclude Include="..\..\graphs\apu_rotate_apu_process_desc.hpp" />
+    <ClInclude Include="..\..\graphs\apu_rotate_graph.h" />
+    <ClInclude Include="..\..\graphs\apu_rotate_graph.hpp" />
+    <ClInclude Include="..\..\src\chunk_size_definitions.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\apex_emulation_test.cpp" />
+    <ClCompile Include="..\..\src\chunk_size_definitions.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\kernels\apu\arithmetic_kernels\build-deskwin32\mvc\arithmetic_kernels_acf.vcxproj">
+      <Project>{935ada6e-b633-47c9-ba56-a776da2169fc}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\arithmetic_kernels\build-deskwin32\mvc\arithmetic_kernels_apu.vcxproj">
+      <Project>{50cc807d-cf2a-4df2-a6f9-7363622b4f55}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\comparison_kernels\build-deskwin32\mvc\comparison_kernels_acf.vcxproj">
+      <Project>{c0332039-b96a-4824-b815-597cd8739d02}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\comparison_kernels\build-deskwin32\mvc\comparison_kernels_apu.vcxproj">
+      <Project>{afec36c0-d820-46ee-af81-5ae51205a3e4}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\conversion_kernels\build-deskwin32\mvc\conversion_kernels_acf.vcxproj">
+      <Project>{4698253c-a912-430b-b11e-b85b3c52f6f5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\conversion_kernels\build-deskwin32\mvc\conversion_kernels_apu.vcxproj">
+      <Project>{6a7e6bfc-2b16-45e3-be22-d8b0ed4e085b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\display_kernels\build-deskwin32\mvc\display_kernels_acf.vcxproj">
+      <Project>{1cf138e9-fc61-4804-84c7-d952a877fc13}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\display_kernels\build-deskwin32\mvc\display_kernels_apu.vcxproj">
+      <Project>{745a37e3-c26b-4d4f-bbb7-2b0114544b0f}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\feature_detection_kernels\build-deskwin32\mvc\feature_detection_kernels_acf.vcxproj">
+      <Project>{2d590f92-c802-44fa-b887-97b1f4b6db13}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\feature_detection_kernels\build-deskwin32\mvc\feature_detection_kernels_apu.vcxproj">
+      <Project>{bef5868d-334c-40d6-b0cd-050cd3c36f80}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\filtering_kernels\build-deskwin32\mvc\filtering_kernels_acf.vcxproj">
+      <Project>{f17dfb91-f468-45c1-b0ec-9520825317d0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\filtering_kernels\build-deskwin32\mvc\filtering_kernels_apu.vcxproj">
+      <Project>{862d917e-736b-406b-98b9-2ba5a15e4396}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\geometry_kernels\build-deskwin32\mvc\geometry_kernels_acf.vcxproj">
+      <Project>{b377cbc4-f0f6-4a29-9092-99e5ccd0c8ee}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\geometry_kernels\build-deskwin32\mvc\geometry_kernels_apu.vcxproj">
+      <Project>{400c0104-3570-43c7-9cfc-e755bf99596b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\morphology_kernels\build-deskwin32\mvc\morphology_kernels_acf.vcxproj">
+      <Project>{765e24fe-26d5-48ce-8761-42f91a2e82a2}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\morphology_kernels\build-deskwin32\mvc\morphology_kernels_apu.vcxproj">
+      <Project>{cb87d927-dd88-4721-8069-e8378a3a75a6}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\object_detection_kernels\build-deskwin32\mvc\object_detection_kernels_acf.vcxproj">
+      <Project>{c28376b3-710b-4dce-94b2-4fa2ef5ce806}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\object_detection_kernels\build-deskwin32\mvc\object_detection_kernels_apu.vcxproj">
+      <Project>{05d2e36a-416c-4d9e-a1fd-d244cf1f1bc1}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\optimization_kernels\build-deskwin32\mvc\optimization_kernels_acf.vcxproj">
+      <Project>{91956bca-53bb-4f2b-b3ec-0826e3743641}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\optimization_kernels\build-deskwin32\mvc\optimization_kernels_apu.vcxproj">
+      <Project>{f3357646-5e5a-46d3-916c-4a94e0dcb1a7}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\resizing_kernels\build-deskwin32\mvc\resizing_kernels_acf.vcxproj">
+      <Project>{07e54c6e-4fe7-4f07-be99-ad0dcc5df42d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\resizing_kernels\build-deskwin32\mvc\resizing_kernels_apu.vcxproj">
+      <Project>{8649ac1e-f3e3-4f8f-8153-3a060a8afcf8}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\statistics_kernels\build-deskwin32\mvc\statistics_kernels_acf.vcxproj">
+      <Project>{7e674816-f819-4dda-b134-d0e84a26e44b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\kernels\apu\statistics_kernels\build-deskwin32\mvc\statistics_kernels_apu.vcxproj">
+      <Project>{95aa8913-7ec4-4221-b534-3a788cfd2665}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\libs\arm\utils\common\build-deskwin32\mvc\common.vcxproj">
+      <Project>{89794e96-83e7-4d4f-b218-67e7323e3223}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\libs\arm\utils\matrix\build-deskwin32\mvc\matrix.vcxproj">
+      <Project>{def4f8a0-8d39-4721-9f15-57d00bc14d3b}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\tools\emu\acf\build-deskwin32\mvc\ACF_lib.vcxproj">
+      <Project>{2180b2fd-44a1-4d04-b39e-db2085617c79}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\tools\emu\apu\build-deskwin32\mvc\APU_lib.vcxproj">
+      <Project>{faa8b398-f947-4142-864a-ad16f87569fe}</Project>
+    </ProjectReference>
+    <ProjectReference Include="process_convolution.vcxproj">
+      <Project>{29c0e22f-3784-4aa4-b4ef-0c1db9ef685d}</Project>
+    </ProjectReference>
+    <ProjectReference Include="process_gauss_3x3.vcxproj">
+      <Project>{d6302941-f090-4afb-9b4b-7364cad31ac0}</Project>
+    </ProjectReference>
+    <ProjectReference Include="process_gauss_5x5.vcxproj">
+      <Project>{0f260c81-8932-4c5b-a2fc-cc0df66070f5}</Project>
+    </ProjectReference>
+    <ProjectReference Include="process_sat.vcxproj">
+      <Project>{77c82170-f0e7-441b-9114-d4fd48923b1a}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,12 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I../../../../../arm//oal/user/include
+	-I../../../../../arm//log
+	-I../../../../../arm/icp/include
+	-I../../../../../arm/apex/user/include
+	-I../../../../../arm/utils/common/include
+../../../../../arm/utils/matrix/src/c_filter.cpp

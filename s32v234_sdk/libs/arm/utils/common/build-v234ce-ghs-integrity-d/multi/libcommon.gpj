@@ -1,0 +1,14 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I../../../../../arm//oal/user/include
+	-I../../../../../arm//log
+	-I../../../../../arm/icp/include
+	-I../../../../../arm/apex/user/include
+	-I../../../../../arm/utils/common/include
+        -I$__VISION_S32V234_SDK/ocv/integrity-arm64/include
+../../../../../arm/utils/common/src/time_measure.cpp
+../../../../../arm/utils/common/src/base_process_init.cpp

@@ -1,0 +1,51 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "APU_lib", "..\..\..\..\tools\emu\apu\build-deskwin32\mvc\APU_lib.vcxproj", "{FAA8B398-F947-4142-864A-AD16F87569FE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ACF_lib", "..\..\..\..\tools\emu\acf\build-deskwin32\mvc\ACF_lib.vcxproj", "{2180B2FD-44A1-4D04-B39E-DB2085617C79}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "roi_project", "roi_project.vcxproj", "{36A319DF-5740-4DB9-B7FE-7B1763A43E14}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common", "..\..\..\..\libs\arm\utils\common\build-deskwin32\mvc\common.vcxproj", "{89794E96-83E7-4D4F-B218-67E7323E3223}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filtering_kernels_apu", "..\..\..\..\kernels\apu\filtering_kernels\build-deskwin32\mvc\filtering_kernels_apu.vcxproj", "{862D917E-736B-406B-98B9-2BA5A15E4396}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "filtering_kernels_acf", "..\..\..\..\kernels\apu\filtering_kernels\build-deskwin32\mvc\filtering_kernels_acf.vcxproj", "{F17DFB91-F468-45C1-B0EC-9520825317D0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Debug|Win32.Build.0 = Debug|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Release|Win32.ActiveCfg = Release|Win32
+		{FAA8B398-F947-4142-864A-AD16F87569FE}.Release|Win32.Build.0 = Release|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Debug|Win32.Build.0 = Debug|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Release|Win32.ActiveCfg = Release|Win32
+		{2180B2FD-44A1-4D04-B39E-DB2085617C79}.Release|Win32.Build.0 = Release|Win32
+		{36A319DF-5740-4DB9-B7FE-7B1763A43E14}.Debug|Win32.ActiveCfg = Debug|Win32
+		{36A319DF-5740-4DB9-B7FE-7B1763A43E14}.Debug|Win32.Build.0 = Debug|Win32
+		{36A319DF-5740-4DB9-B7FE-7B1763A43E14}.Release|Win32.ActiveCfg = Release|Win32
+		{36A319DF-5740-4DB9-B7FE-7B1763A43E14}.Release|Win32.Build.0 = Release|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Debug|Win32.ActiveCfg = Debug|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Debug|Win32.Build.0 = Debug|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Release|Win32.ActiveCfg = Release|Win32
+		{89794E96-83E7-4D4F-B218-67E7323E3223}.Release|Win32.Build.0 = Release|Win32
+		{862D917E-736B-406B-98B9-2BA5A15E4396}.Debug|Win32.ActiveCfg = Debug|Win32
+		{862D917E-736B-406B-98B9-2BA5A15E4396}.Debug|Win32.Build.0 = Debug|Win32
+		{862D917E-736B-406B-98B9-2BA5A15E4396}.Release|Win32.ActiveCfg = Release|Win32
+		{862D917E-736B-406B-98B9-2BA5A15E4396}.Release|Win32.Build.0 = Release|Win32
+		{F17DFB91-F468-45C1-B0EC-9520825317D0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{F17DFB91-F468-45C1-B0EC-9520825317D0}.Debug|Win32.Build.0 = Debug|Win32
+		{F17DFB91-F468-45C1-B0EC-9520825317D0}.Release|Win32.ActiveCfg = Release|Win32
+		{F17DFB91-F468-45C1-B0EC-9520825317D0}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

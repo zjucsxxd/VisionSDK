@@ -1,0 +1,12 @@
+#!gbuild
+#component integrity_os_modules_oal_driver
+[Library]
+	-lkernel
+	-lcore
+	-I${__VISION_S32V234_SDK}/libs/arm/utils/oal/kernel/include
+	-I${__VISION_S32V234_SDK}/libs/arm/utils/oal/user/include
+	-D__S32V234
+	-I$INTEGRITY_ROOT_PATH/modules/ghs/bspsrc/support
+	-I$INTEGRITY_ROOT_PATH/modules/ghs/bspsrc
+	-I${__BSP_DIR}
+${__VISION_S32V234_SDK}/libs/arm/utils/oal/kernel/src/integrity/oal_dev.c

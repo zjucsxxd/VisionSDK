@@ -1,0 +1,40 @@
+#!gbuild
+#component integrity_virtual_address_space
+[Program]
+	-I../
+	-I../../graphs
+	-I$__VISION_S32V234_SDK/libs/arm/apex/apex/user/include
+	-I$__VISION_S32V234_SDK/libs/arm/apex/acf/include
+	-I$__VISION_S32V234_SDK/libs/arm/apex/icp/include
+	-I$__VISION_S32V234_SDK/libs/arm/utils/oal/user/include
+	-I$__VISION_S32V234_SDK/libs/arm/utils/common/include
+	-I$__VISION_S32V234_SDK/ocv/integrity-arm64/include
+	-I$__VISION_S32V234_SDK/kernels/apu/display_kernels/src
+	-I$__VISION_S32V234_SDK/kernels/apu/conversion_kernels/src
+	-I$__VISION_S32V234_SDK/kernels/apu/feature_detection_kernels/src
+	-I$__VISION_S32V234_SDK/kernels/apu/filtering_kernels/src
+	-I$__VISION_S32V234_SDK/kernels/apu/morphology_kernels/src
+
+	-L$__VISION_S32V234_SDK/ocv/integrity-arm64/lib
+	-L$__VISION_S32V234_SDK/ocv/integrity-arm64/share/OpenCV/3rdparty/lib
+
+	-lposix
+	-lhostio
+	-lIlmImf
+	-lzlib
+	-lopencv_core
+	-lopencv_highgui
+	-lopencv_imgproc
+	-lopencv_features2d
+	-lopencv_flann
+	-lopencv_objdetect
+../../src/indirect_input.cpp
+$__VISION_S32V234_SDK/libs/arm/apex/acf/build-v234ce-ghs-integrity-d/multi/libacf.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/icp/build-v234ce-ghs-integrity-d/multi/libicp.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/apex/user/build-v234ce-ghs-integrity-d/multi/libapexuser.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/utils/oal/build-v234ce-ghs-integrity-d/multi/liboal.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/utils/common/build-v234ce-ghs-integrity-d/multi/libcommon.gpj		[Library]
+$__VISION_S32V234_SDK/ocv/integrity-arm64/share/OpenCV/3rdparty/lib/liblibjasper.a		[Library]
+$__VISION_S32V234_SDK/ocv/integrity-arm64/share/OpenCV/3rdparty/lib/liblibjpeg.a		[Library]
+$__VISION_S32V234_SDK/ocv/integrity-arm64/share/OpenCV/3rdparty/lib/liblibpng.a		[Library]
+$__VISION_S32V234_SDK/ocv/integrity-arm64/share/OpenCV/3rdparty/lib/liblibtiff.a		[Library]

@@ -1,0 +1,13 @@
+#!gbuild
+#component integrity_dynamic_download
+[INTEGRITY Application]
+	-dynamic
+	-non_shared
+	--stdle
+	--exceptions
+	-I$__OS_DIR/modules/ghs/vfs_server
+	:sourceDir=$__OS_DIR/modules/ghs/vfs_server
+apex_gauss5x5_cv.gpj		[Program]
+ivfsserver_module.gpj		[Program]
+apex_gauss5x5_cv.int
+readme.txt [Text]

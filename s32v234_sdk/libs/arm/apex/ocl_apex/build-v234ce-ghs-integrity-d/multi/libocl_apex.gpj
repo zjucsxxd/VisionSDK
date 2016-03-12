@@ -1,0 +1,18 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	--std
+	--g++
+	-gcc
+	-I../../../../../arm/apex/ocl_apex/include
+    -I../../../../../arm/utils/ocl/include
+    -I../../../../../arm/apex/acf/include
+    -I../../../../../arm/utils/ocl/include/CL
+    -I../../../../../arm/utils/ocl/include/devices
+    -I../../../../../arm/utils/oal/user/include
+    -I../../../../../arm/apex/apex/user/include
+../../../../../arm/apex/ocl_apex/src/apex.cpp                                                                 
+../../../../../arm/apex/ocl_apex/src/acl_krnl_manager.cpp

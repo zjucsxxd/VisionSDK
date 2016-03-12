@@ -1,0 +1,12 @@
+#!gbuild
+#component integrity_kernel_monolith
+[Program]
+	-kernel
+	-lres
+	-lvload_kernel_helper
+	-ldebug_agent
+tgt/default.ld
+{comment} gdi_kernel_kernel.c
+global_table.c
+$__VISION_S32V234_SDK/libs/arm/utils/oal/kernel/build-v234ce-ghs-integrity-d/multi/liboaldriver.gpj		[Library]
+#$__VISION_S32V234_SDK\libs\arm\gdi\vlab_vpd\build-vpa53-ghs-multi-integrity\vpd_drv.gpj		[Library]

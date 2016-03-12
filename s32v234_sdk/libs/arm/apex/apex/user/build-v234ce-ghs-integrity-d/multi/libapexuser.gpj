@@ -1,0 +1,19 @@
+#!gbuild
+#component integrity_os_modules_apex_driver
+[Library]
+	-lkernel
+	-lcore
+	-I../../../../../../arm/apex/apex/kernel/include
+	-I../../../../../../arm/apex/apex/kernel/include/integrity
+	-I../../../../../../arm/apex/apex/kernel/include/functions
+        -I../../../../../../apu/common/include
+	-I../../../../../../apu/common/include/driver
+	-I../../../../../../apu/common/include/system
+	-D__S32V234
+../../../../../../arm/apex/apex/user/src/integrity/apex.cpp
+../../../../../../arm/apex/apex/user/src/integrity/apex_cmem_if_hal.cpp
+../../../../../../arm/apex/apex/user/src/integrity/apex_mcdma_hal.cpp
+../../../../../../arm/apex/apex/user/src/integrity/apex_global_hal.cpp
+../../../../../../arm/apex/apex/user/src/integrity/apex_apu_hal.cpp
+../../../../../../arm/apex/apex/user/src/integrity/apex_apu_microkernel_hal.cpp
+../../../../../../arm/apex/apex/user/src/integrity/apex_seq_hal.cpp

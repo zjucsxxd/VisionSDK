@@ -1,0 +1,9 @@
+#!gbuild
+[Library]
+	-object_dir=objs\vpd_drv
+	-I${__VISION_S32V234_SDK}/libs/arm/gdi/vlab_vpd/include
+	-I$INTEGRITY_ROOT_PATH/modules/ghs/bspsrc/support
+	{optgroup=GhsCommonOptions} -o ${__VISION_S32V234_SDK}/libs/arm/gdi/vlab_vpd/build-vpa53-ghs-multi-integrity/vpddriver.a
+	
+../src/vpd_driver.c
+../include/vpd_driver.h

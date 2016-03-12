@@ -1,0 +1,294 @@
+// ISP Graph "chroma_key"
+Import "../../../inc/ipus_mem_map.h";
+Import "../../../inc/ipuv_mem_map.h";
+Import "../../../inc/mipi_mem_map.h";
+Import "../inc/iofiles.h";
+		
+Node Debayer_RGB {
+	SCALAR,
+	6,
+	//NUM_LINES
+720
+};
+Param Debayer_RGB {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load Debayer_RGB {
+	debayer_rgb_simple_interleaved_chroma
+	};
+
+
+
+Node ChGain_Exposure {
+	SCALAR,
+	1,
+	//726
+726
+};
+Param ChGain_Exposure {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x00000000 },
+};
+
+
+	Load ChGain_Exposure {
+	exposure
+	};
+
+
+Node MIPI_SONY {
+	MIPICSI0,
+	0
+};
+MIPI_SONY.inputLines = //729
+729;
+
+Node CHROMA_KEY {
+	SCALAR,
+	0,
+	//NUM_LINES
+720
+};
+Param CHROMA_KEY {
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load CHROMA_KEY {
+	chroma_key
+	};
+
+
+		Node FastDMA {
+			FDMA,
+			0
+		};
+
+		
+		
+		Buffer CHROMA_KEY_Buffer_0 {
+			CHROMA_KEY.out[0],
+	GENERIC_8,
+	//OUT_BYTES
+3840,
+	//16
+16,
+	//OUT_BYTES
+3840,
+	1
+		};
+		
+		CHROMA_KEY_Buffer_0.readPixels = //OUT_BYTES
+3840;
+		
+		
+			Input RGB_to_DDR = FastDMA.A[0];
+			  RGB_to_DDR.firstLine = //0
+0;
+			  RGB_to_DDR.increment = 1;
+			
+			Connect {
+				CHROMA_KEY_Buffer_0,
+				RGB_to_DDR,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_0 {
+		FastDMA.out[0],
+	GENERIC_8,
+	//OUT_BYTES
+3840,
+	//NUM_LINES
+720,
+	//DISP_STRIDE
+5760,
+	1
+	};
+	
+		FastDMA_Buffer_0.readPixels = //OUT_BYTES
+3840;
+	
+		
+	Connect { FastDMA_Buffer_0, DDR, 0 };
+	
+		
+		
+
+		
+		
+
+		
+		
+	
+
+		
+		
+		Buffer ChGain_Exposure_Buffer_0 {
+			ChGain_Exposure.out[0],
+	GENERIC_16,
+	//MIPI_PIXELS
+1288,
+	//16
+16,
+	//MIPI_BYTES
+2576,
+	1
+		};
+		
+		ChGain_Exposure_Buffer_0.readPixels = //MIPI_PIXELS
+1288;
+		
+	Input Debayer_RGB_A_0 = Debayer_RGB.A[0];
+	  Debayer_RGB_A_0.firstLine = //0
+0;
+	  Debayer_RGB_A_0.pixels = //MIPI_PIXELS
+1288;
+	  Debayer_RGB_A_0.lineSkip = //0
+0;
+	  Debayer_RGB_A_0.increment = 1;
+	  Debayer_RGB_A_0.pixelSkip = //0
+0;
+	  Debayer_RGB_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  ChGain_Exposure_Buffer_0, 
+  Debayer_RGB_A_0,
+  //2
+2};
+	Input Debayer_RGB_A_1 = Debayer_RGB.A[1];
+	  Debayer_RGB_A_1.firstLine = //1
+1;
+	  Debayer_RGB_A_1.pixels = //MIPI_PIXELS
+1288;
+	  Debayer_RGB_A_1.lineSkip = //0
+0;
+	  Debayer_RGB_A_1.increment = 1;
+	  Debayer_RGB_A_1.pixelSkip = //0
+0;
+	  Debayer_RGB_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  ChGain_Exposure_Buffer_0, 
+  Debayer_RGB_A_1,
+  //2
+2};
+		
+
+		
+		
+
+		
+		
+		Buffer MIPI_SONY_Buffer_0 {
+			MIPI_SONY.out[0],
+	GENERIC_16,
+	//MIPI_PIXELS
+1288,
+	//16
+16,
+	//MIPI_BYTES
+2576,
+	1
+		};
+		
+		MIPI_SONY_Buffer_0.readPixels = //MIPI_PIXELS
+1288;
+		
+	Input ChGain_Exposure_A_0 = ChGain_Exposure.A[0];
+	  ChGain_Exposure_A_0.firstLine = //0
+0;
+	  ChGain_Exposure_A_0.pixels = //MIPI_PIXELS
+1288;
+	  ChGain_Exposure_A_0.lineSkip = //0
+0;
+	  ChGain_Exposure_A_0.increment = 1;
+	  ChGain_Exposure_A_0.pixelSkip = //0
+0;
+	  ChGain_Exposure_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI_SONY_Buffer_0, 
+  ChGain_Exposure_A_0,
+  //1
+1};
+	Input ChGain_Exposure_A_1 = ChGain_Exposure.A[1];
+	  ChGain_Exposure_A_1.firstLine = //1
+1;
+	  ChGain_Exposure_A_1.pixels = //MIPI_PIXELS
+1288;
+	  ChGain_Exposure_A_1.lineSkip = //0
+0;
+	  ChGain_Exposure_A_1.increment = 1;
+	  ChGain_Exposure_A_1.pixelSkip = //0
+0;
+	  ChGain_Exposure_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  MIPI_SONY_Buffer_0, 
+  ChGain_Exposure_A_1,
+  //2
+2};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_RGB_Buffer_0 {
+			Debayer_RGB.out[0],
+	GENERIC_8,
+	//OUT_BYTES
+3840,
+	//16
+16,
+	//OUT_BYTES
+3840,
+	1
+		};
+		
+		Debayer_RGB_Buffer_0.readPixels = //OUT_BYTES
+3840;
+		
+	Input CHROMA_KEY_A_0 = CHROMA_KEY.A[0];
+	  CHROMA_KEY_A_0.firstLine = //0
+0;
+	  CHROMA_KEY_A_0.pixels = //OUT_BYTES
+3840;
+	  CHROMA_KEY_A_0.lineSkip = //0
+0;
+	  CHROMA_KEY_A_0.increment = 1;
+	  CHROMA_KEY_A_0.pixelSkip = //0
+0;
+	  CHROMA_KEY_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_RGB_Buffer_0, 
+  CHROMA_KEY_A_0,
+  //1
+1};
+		
+
+		
+		
+	

@@ -1,0 +1,44 @@
+#!gbuild
+#component integrity_virtual_address_space
+[Program]
+	-I../
+	-I../../graphs
+	-I../../include
+	-I$__VISION_S32V234_SDK/libs/arm/apex/icp/include
+	-I$__VISION_S32V234_SDK/libs/arm/apex/acf/include
+	-I$__VISION_S32V234_SDK/libs/arm/apex/apex/user/include
+	-I$__VISION_S32V234_SDK/libs/arm/apexcv_base/apexcv_core/include
+	-I$__VISION_S32V234_SDK/libs/arm/apexcv_base/arithmetic/include
+	-I$__VISION_S32V234_SDK/libs/arm/apexcv_base/interpolation/include
+	-I$__VISION_S32V234_SDK/libs/arm/apexcv_base/color_conversion/include
+	-I$__VISION_S32V234_SDK/libs/arm/apexcv_base/image_filters/include
+	-I$__VISION_S32V234_SDK/libs/arm/apexcv_base/histogram/include
+	-I$__VISION_S32V234_SDK/libs/arm/apexcv_base/integral_image/include
+	-I$__VISION_S32V234_SDK/libs/arm/utils/oal/user/include
+	-I$__VISION_S32V234_SDK/libs/arm/utils/common/include	
+        -I$__VISION_S32V234_SDK/ocv/integrity-arm64/include
+	-lposix
+	-L$__VISION_S32V234_SDK/ocv/integrity-arm64/lib
+	-lopencv_core
+	-L$__VISION_S32V234_SDK/ocv/integrity-arm64/share/OpenCV/3rdparty/lib
+	-lzlib
+	-livfs
+../../src/main.cpp
+../../src/base_arithmetic.cpp
+../../src/base_color_conversion.cpp
+../../src/base_histogram.cpp
+../../src/base_integral_image.cpp
+../../src/base_interpolation.cpp
+../../src/base_image_filters.cpp
+$__VISION_S32V234_SDK/libs/arm/apexcv_base/apexcv_core/build-v234ce-ghs-integrity-d/multi/libapexcv_core.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apexcv_base/arithmetic/build-v234ce-ghs-integrity-d/multi/libapexcv_arithmetic.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apexcv_base/color_conversion/build-v234ce-ghs-integrity-d/multi/libapexcv_color_conversion.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apexcv_base/histogram/build-v234ce-ghs-integrity-d/multi/libapexcv_histogram.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apexcv_base/integral_image/build-v234ce-ghs-integrity-d/multi/libapexcv_integral_image.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apexcv_base/interpolation/build-v234ce-ghs-integrity-d/multi/libapexcv_interpolation.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apexcv_base/image_filters/build-v234ce-ghs-integrity-d/multi/libapexcv_image_filters.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/acf/build-v234ce-ghs-integrity-d/multi/libacf.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/icp/build-v234ce-ghs-integrity-d/multi/libicp.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/apex/apex/user/build-v234ce-ghs-integrity-d/multi/libapexuser.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/utils/oal/build-v234ce-ghs-integrity-d/multi/liboal.gpj		[Library]
+$__VISION_S32V234_SDK/libs/arm/utils/common/build-v234ce-ghs-integrity-d/multi/libcommon.gpj		[Library]

@@ -1,0 +1,1018 @@
+// ISP Graph "rgb_yuv_gs8"
+Import "../../../inc/ipus_mem_map.h";
+Import "../inc/iofiles.h";
+		
+Node ConvertYUV {
+	SCALAR,
+	3,
+	//NUM_OUT_LINES
+720
+};
+Param ConvertYUV {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (2560 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load ConvertYUV {
+	gamma_yuv444touyvy
+	};
+
+
+
+Node ChGain_Exposure {
+	SCALAR,
+	1,
+	//NUM_IN_LINES
+728
+};
+Param ChGain_Exposure {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1288 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x00000000 },
+};
+
+
+	Load ChGain_Exposure {
+	exposure_tonehdr
+	};
+
+
+
+Node Debayer_G {
+	SCALAR,
+	2,
+	//NUM_IN_M4
+724
+};
+Param Debayer_G {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1286 << 16) | 0x1},
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000300 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x00000000 },
+    { D_IPUS_SYN_S_CH1_CFG_OUT_OFF, 0x00010000 },
+};
+
+
+	Load Debayer_G {
+	debayer_g
+	};
+
+
+
+Node Debayer_BR {
+	SCALAR,
+	5,
+	//NUM_IN_M8
+720
+};
+Param Debayer_BR {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1284 << 16) | 0x1},
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_INBCFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x00098000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x00098000 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x00098000 },
+    { D_IPUS_SYN_S_CH0_CFG_INB_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH1_CFG_INB_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH2_CFG_INB_OFF, 0x00058000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH1_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH2_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load Debayer_BR {
+	debayer_br_advanced
+	};
+
+
+
+Node RGB_2_YUV {
+	VECTOR,
+	1,
+	//NUM_IN_M8
+720
+};
+Param RGB_2_YUV {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1284<< 16) | 0x0 },
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x10058000 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH1_CFG_OUT_OFF, 0x10000000 },
+    { D_IPUS_SYN_S_CH2_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load RGB_2_YUV {
+	rgb2yuv
+	};
+
+
+Node CAM0 {
+	MIPICSI0,
+	SONY224,
+	0
+};
+CAM0.inputLines = //NUM_CAM_LINES
+729;
+CAM0.cameras = //1
+1;
+
+Node ConvertRGB24 {
+	SCALAR,
+	0,
+	//NUM_OUT_LINES
+720
+};
+Param ConvertRGB24 {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load ConvertRGB24 {
+	planar444_to_interleaved
+	};
+
+
+
+Node Y_DOWNSCALE {
+	SCALAR,
+	6,
+	//NUM_OUT_Y_SCALED_LINES
+356
+};
+Param Y_DOWNSCALE {
+    { D_IPUS_SYN_HOST_XCFG_OFF, (1280 << 16) | 0x1 },
+    { D_IPUS_SYN_HOST_INACFG_OFF, 0x00000700 },
+    { D_IPUS_SYN_HOST_OUTCFG_OFF, 0x00000100 },
+    { D_IPUS_SYN_S_CH0_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH1_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH2_CFG_INA_OFF, 0x10054000 },
+    { D_IPUS_SYN_S_CH0_CFG_OUT_OFF, 0x10000000 },
+};
+
+
+	Load Y_DOWNSCALE {
+	scale2by1
+	};
+
+
+		Node FastDMA {
+			FDMA,
+			0
+		};
+	
+
+		
+		
+		Buffer ConvertYUV_Buffer_0 {
+			ConvertYUV.out[0],
+	GENERIC_8,
+	//NUM_OUT_YUV_BYTES
+2560,
+	//4
+4,
+	//NUM_OUT_YUV_BYTES
+2560,
+	1
+		};
+		
+		ConvertYUV_Buffer_0.readPixels = //NUM_OUT_YUV_BYTES
+2560;
+		
+		
+			Input YUV_TO_DDR = FastDMA.A[0];
+			  YUV_TO_DDR.firstLine = //0
+0;
+			  YUV_TO_DDR.increment = 1;
+			
+			Connect {
+				ConvertYUV_Buffer_0,
+				YUV_TO_DDR,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_0 {
+		FastDMA.out[0],
+	GENERIC_8,
+	//NUM_OUT_YUV_BYTES
+2560,
+	//NUM_OUT_LINES
+720,
+	//NUM_OUT_YUV_BYTES
+2560,
+	1
+	};
+	
+		FastDMA_Buffer_0.readPixels = //NUM_OUT_YUV_BYTES
+2560;
+	
+		
+	Connect { FastDMA_Buffer_0, DDR, 0 };
+	
+
+		
+		
+
+		
+		
+
+		
+		
+		Buffer ChGain_Exposure_Buffer_0 {
+			ChGain_Exposure.out[0],
+	GENERIC_16,
+	//1288
+1288,
+	//8
+8,
+	//2576
+2576,
+	1
+		};
+		
+		ChGain_Exposure_Buffer_0.readPixels = //1288
+1288;
+		
+	Input Debayer_G_A_0 = Debayer_G.A[0];
+	  Debayer_G_A_0.firstLine = //0
+0;
+	  Debayer_G_A_0.pixels = //1288
+1288;
+	  Debayer_G_A_0.lineSkip = //0
+0;
+	  Debayer_G_A_0.increment = 1;
+	  Debayer_G_A_0.pixelSkip = //0
+0;
+	  Debayer_G_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  ChGain_Exposure_Buffer_0, 
+  Debayer_G_A_0,
+  //1
+1};
+	Input Debayer_G_A_1 = Debayer_G.A[1];
+	  Debayer_G_A_1.firstLine = //1
+1;
+	  Debayer_G_A_1.pixels = //1288
+1288;
+	  Debayer_G_A_1.lineSkip = //0
+0;
+	  Debayer_G_A_1.increment = 1;
+	  Debayer_G_A_1.pixelSkip = //0
+0;
+	  Debayer_G_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  ChGain_Exposure_Buffer_0, 
+  Debayer_G_A_1,
+  //2
+2};
+	Input Debayer_G_A_2 = Debayer_G.A[2];
+	  Debayer_G_A_2.firstLine = //2
+2;
+	  Debayer_G_A_2.pixels = //1288
+1288;
+	  Debayer_G_A_2.lineSkip = //0
+0;
+	  Debayer_G_A_2.increment = 1;
+	  Debayer_G_A_2.pixelSkip = //0
+0;
+	  Debayer_G_A_2.type = GENERIC_16;
+		
+		
+Connect {
+  ChGain_Exposure_Buffer_0, 
+  Debayer_G_A_2,
+  //3
+3};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_G_Buffer_0 {
+			Debayer_G.out[0],
+	GENERIC_16,
+	//1286
+1286,
+	//8
+8,
+	//2576
+2576,
+	1
+		};
+		
+		Debayer_G_Buffer_0.readPixels = //1286
+1286;
+		
+	Input Debayer_BR_B_0 = Debayer_BR.B[0];
+	  Debayer_BR_B_0.firstLine = //0
+0;
+	  Debayer_BR_B_0.pixels = //1286
+1286;
+	  Debayer_BR_B_0.lineSkip = //0
+0;
+	  Debayer_BR_B_0.increment = 1;
+	  Debayer_BR_B_0.pixelSkip = //0
+0;
+	  Debayer_BR_B_0.type = GENERIC_16;
+		
+		
+Connect {
+  Debayer_G_Buffer_0, 
+  Debayer_BR_B_0,
+  //1
+1};
+	Input Debayer_BR_B_1 = Debayer_BR.B[1];
+	  Debayer_BR_B_1.firstLine = //1
+1;
+	  Debayer_BR_B_1.pixels = //1286
+1286;
+	  Debayer_BR_B_1.lineSkip = //0
+0;
+	  Debayer_BR_B_1.increment = 1;
+	  Debayer_BR_B_1.pixelSkip = //0
+0;
+	  Debayer_BR_B_1.type = GENERIC_16;
+		
+		
+Connect {
+  Debayer_G_Buffer_0, 
+  Debayer_BR_B_1,
+  //2
+2};
+	Input Debayer_BR_B_2 = Debayer_BR.B[2];
+	  Debayer_BR_B_2.firstLine = //2
+2;
+	  Debayer_BR_B_2.pixels = //1286
+1286;
+	  Debayer_BR_B_2.lineSkip = //0
+0;
+	  Debayer_BR_B_2.increment = 1;
+	  Debayer_BR_B_2.pixelSkip = //0
+0;
+	  Debayer_BR_B_2.type = GENERIC_16;
+		
+		
+Connect {
+  Debayer_G_Buffer_0, 
+  Debayer_BR_B_2,
+  //3
+3};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_G_Buffer_1 {
+			Debayer_G.out[1],
+	GENERIC_16,
+	//643
+643,
+	//8
+8,
+	//1286
+1286,
+	1
+		};
+		
+		Debayer_G_Buffer_1.readPixels = //643
+643;
+		
+	Input Debayer_BR_A_0 = Debayer_BR.A[0];
+	  Debayer_BR_A_0.firstLine = //0
+0;
+	  Debayer_BR_A_0.pixels = //643
+643;
+	  Debayer_BR_A_0.lineSkip = //0
+0;
+	  Debayer_BR_A_0.increment = 1;
+	  Debayer_BR_A_0.pixelSkip = //0
+0;
+	  Debayer_BR_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  Debayer_G_Buffer_1, 
+  Debayer_BR_A_0,
+  //1
+1};
+	Input Debayer_BR_A_1 = Debayer_BR.A[1];
+	  Debayer_BR_A_1.firstLine = //1
+1;
+	  Debayer_BR_A_1.pixels = //643
+643;
+	  Debayer_BR_A_1.lineSkip = //0
+0;
+	  Debayer_BR_A_1.increment = 1;
+	  Debayer_BR_A_1.pixelSkip = //0
+0;
+	  Debayer_BR_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  Debayer_G_Buffer_1, 
+  Debayer_BR_A_1,
+  //2
+2};
+	Input Debayer_BR_A_2 = Debayer_BR.A[2];
+	  Debayer_BR_A_2.firstLine = //2
+2;
+	  Debayer_BR_A_2.pixels = //643
+643;
+	  Debayer_BR_A_2.lineSkip = //0
+0;
+	  Debayer_BR_A_2.increment = 1;
+	  Debayer_BR_A_2.pixelSkip = //0
+0;
+	  Debayer_BR_A_2.type = GENERIC_16;
+		
+		
+Connect {
+  Debayer_G_Buffer_1, 
+  Debayer_BR_A_2,
+  //3
+3};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_BR_Buffer_2 {
+			Debayer_BR.out[2],
+	GENERIC_8,
+	//1284
+1284,
+	//4
+4,
+	//1284
+1284,
+	1
+		};
+		
+		Debayer_BR_Buffer_2.readPixels = //1284
+1284;
+		
+	Input RGB_2_YUV_A_1 = RGB_2_YUV.A[1];
+	  RGB_2_YUV_A_1.firstLine = //0
+0;
+	  RGB_2_YUV_A_1.pixels = //NUM_OUT_PIXELS
+1280;
+	  RGB_2_YUV_A_1.lineSkip = //0
+0;
+	  RGB_2_YUV_A_1.increment = 1;
+	  RGB_2_YUV_A_1.pixelSkip = //0
+0;
+	  RGB_2_YUV_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_BR_Buffer_2, 
+  RGB_2_YUV_A_1,
+  //1
+1};
+	Input ConvertRGB24_A_1 = ConvertRGB24.A[1];
+	  ConvertRGB24_A_1.firstLine = //0
+0;
+	  ConvertRGB24_A_1.pixels = //NUM_OUT_PIXELS
+1280;
+	  ConvertRGB24_A_1.lineSkip = //0
+0;
+	  ConvertRGB24_A_1.increment = 1;
+	  ConvertRGB24_A_1.pixelSkip = //0
+0;
+	  ConvertRGB24_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_BR_Buffer_2, 
+  ConvertRGB24_A_1,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_BR_Buffer_1 {
+			Debayer_BR.out[1],
+	GENERIC_8,
+	//1284
+1284,
+	//4
+4,
+	//1284
+1284,
+	1
+		};
+		
+		Debayer_BR_Buffer_1.readPixels = //1284
+1284;
+		
+	Input RGB_2_YUV_A_2 = RGB_2_YUV.A[2];
+	  RGB_2_YUV_A_2.firstLine = //0
+0;
+	  RGB_2_YUV_A_2.pixels = //NUM_OUT_PIXELS
+1280;
+	  RGB_2_YUV_A_2.lineSkip = //0
+0;
+	  RGB_2_YUV_A_2.increment = 1;
+	  RGB_2_YUV_A_2.pixelSkip = //0
+0;
+	  RGB_2_YUV_A_2.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_BR_Buffer_1, 
+  RGB_2_YUV_A_2,
+  //1
+1};
+	Input ConvertRGB24_A_0 = ConvertRGB24.A[0];
+	  ConvertRGB24_A_0.firstLine = //0
+0;
+	  ConvertRGB24_A_0.pixels = //NUM_OUT_PIXELS
+1280;
+	  ConvertRGB24_A_0.lineSkip = //0
+0;
+	  ConvertRGB24_A_0.increment = 1;
+	  ConvertRGB24_A_0.pixelSkip = //0
+0;
+	  ConvertRGB24_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_BR_Buffer_1, 
+  ConvertRGB24_A_0,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer Debayer_BR_Buffer_0 {
+			Debayer_BR.out[0],
+	GENERIC_8,
+	//1284
+1284,
+	//4
+4,
+	//1284
+1284,
+	1
+		};
+		
+		Debayer_BR_Buffer_0.readPixels = //1284
+1284;
+		
+	Input RGB_2_YUV_A_0 = RGB_2_YUV.A[0];
+	  RGB_2_YUV_A_0.firstLine = //0
+0;
+	  RGB_2_YUV_A_0.pixels = //NUM_OUT_PIXELS
+1280;
+	  RGB_2_YUV_A_0.lineSkip = //0
+0;
+	  RGB_2_YUV_A_0.increment = 1;
+	  RGB_2_YUV_A_0.pixelSkip = //0
+0;
+	  RGB_2_YUV_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_BR_Buffer_0, 
+  RGB_2_YUV_A_0,
+  //1
+1};
+	Input ConvertRGB24_A_2 = ConvertRGB24.A[2];
+	  ConvertRGB24_A_2.firstLine = //0
+0;
+	  ConvertRGB24_A_2.pixels = //NUM_OUT_PIXELS
+1280;
+	  ConvertRGB24_A_2.lineSkip = //0
+0;
+	  ConvertRGB24_A_2.increment = 1;
+	  ConvertRGB24_A_2.pixelSkip = //0
+0;
+	  ConvertRGB24_A_2.type = GENERIC_8;
+		
+		
+Connect {
+  Debayer_BR_Buffer_0, 
+  ConvertRGB24_A_2,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer RGB_2_YUV_Buffer_0 {
+			RGB_2_YUV.out[0],
+	GENERIC_8,
+	//NUM_OUT_PIXELS
+1280,
+	//8
+8,
+	//NUM_OUT_PIXELS
+1280,
+	1
+		};
+		
+		RGB_2_YUV_Buffer_0.readPixels = //NUM_OUT_PIXELS
+1280;
+		
+	Input Y_DOWNSCALE_A_0 = Y_DOWNSCALE.A[0];
+	  Y_DOWNSCALE_A_0.firstLine = //0
+0;
+	  Y_DOWNSCALE_A_0.pixels = //NUM_OUT_PIXELS
+1280;
+	  Y_DOWNSCALE_A_0.lineSkip = //0
+0;
+	  Y_DOWNSCALE_A_0.increment = 2;
+	  Y_DOWNSCALE_A_0.pixelSkip = //0
+0;
+	  Y_DOWNSCALE_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  RGB_2_YUV_Buffer_0, 
+  Y_DOWNSCALE_A_0,
+  //1
+1};
+	Input Y_DOWNSCALE_A_1 = Y_DOWNSCALE.A[1];
+	  Y_DOWNSCALE_A_1.firstLine = //1
+1;
+	  Y_DOWNSCALE_A_1.pixels = //NUM_OUT_PIXELS
+1280;
+	  Y_DOWNSCALE_A_1.lineSkip = //0
+0;
+	  Y_DOWNSCALE_A_1.increment = 2;
+	  Y_DOWNSCALE_A_1.pixelSkip = //0
+0;
+	  Y_DOWNSCALE_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  RGB_2_YUV_Buffer_0, 
+  Y_DOWNSCALE_A_1,
+  //2
+2};
+	Input Y_DOWNSCALE_A_2 = Y_DOWNSCALE.A[2];
+	  Y_DOWNSCALE_A_2.firstLine = //2
+2;
+	  Y_DOWNSCALE_A_2.pixels = //NUM_OUT_PIXELS
+1280;
+	  Y_DOWNSCALE_A_2.lineSkip = //0
+0;
+	  Y_DOWNSCALE_A_2.increment = 2;
+	  Y_DOWNSCALE_A_2.pixelSkip = //0
+0;
+	  Y_DOWNSCALE_A_2.type = GENERIC_8;
+		
+		
+Connect {
+  RGB_2_YUV_Buffer_0, 
+  Y_DOWNSCALE_A_2,
+  //3
+3};
+		
+			Input Y_TO_DDR = FastDMA.A[1];
+			  Y_TO_DDR.firstLine = //0
+0;
+			  Y_TO_DDR.increment = 1;
+			
+			Connect {
+				RGB_2_YUV_Buffer_0,
+				Y_TO_DDR,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_1 {
+		FastDMA.out[1],
+	GENERIC_8,
+	//NUM_OUT_Y_BYTES
+1280,
+	//NUM_OUT_LINES
+720,
+	//NUM_OUT_Y_BYTES
+1280,
+	1
+	};
+	
+		FastDMA_Buffer_1.readPixels = //NUM_OUT_Y_BYTES
+1280;
+	
+		
+	Connect { FastDMA_Buffer_1, DDR, 0 };
+	
+
+		
+	Input ConvertYUV_A_0 = ConvertYUV.A[0];
+	  ConvertYUV_A_0.firstLine = //0
+0;
+	  ConvertYUV_A_0.pixels = //NUM_OUT_PIXELS
+1280;
+	  ConvertYUV_A_0.lineSkip = //0
+0;
+	  ConvertYUV_A_0.increment = 1;
+	  ConvertYUV_A_0.pixelSkip = //0
+0;
+	  ConvertYUV_A_0.type = GENERIC_8;
+		
+		
+Connect {
+  RGB_2_YUV_Buffer_0, 
+  ConvertYUV_A_0,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer RGB_2_YUV_Buffer_1 {
+			RGB_2_YUV.out[1],
+	GENERIC_8,
+	//NUM_OUT_PIXELS
+1280,
+	//4
+4,
+	//NUM_OUT_PIXELS
+1280,
+	1
+		};
+		
+		RGB_2_YUV_Buffer_1.readPixels = //NUM_OUT_PIXELS
+1280;
+		
+	Input ConvertYUV_A_1 = ConvertYUV.A[1];
+	  ConvertYUV_A_1.firstLine = //0
+0;
+	  ConvertYUV_A_1.pixels = //NUM_OUT_PIXELS
+1280;
+	  ConvertYUV_A_1.lineSkip = //0
+0;
+	  ConvertYUV_A_1.increment = 1;
+	  ConvertYUV_A_1.pixelSkip = //0
+0;
+	  ConvertYUV_A_1.type = GENERIC_8;
+		
+		
+Connect {
+  RGB_2_YUV_Buffer_1, 
+  ConvertYUV_A_1,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer RGB_2_YUV_Buffer_2 {
+			RGB_2_YUV.out[2],
+	GENERIC_8,
+	//NUM_OUT_PIXELS
+1280,
+	//4
+4,
+	//NUM_OUT_PIXELS
+1280,
+	1
+		};
+		
+		RGB_2_YUV_Buffer_2.readPixels = //NUM_OUT_PIXELS
+1280;
+		
+	Input ConvertYUV_A_2 = ConvertYUV.A[2];
+	  ConvertYUV_A_2.firstLine = //0
+0;
+	  ConvertYUV_A_2.pixels = //NUM_OUT_PIXELS
+1280;
+	  ConvertYUV_A_2.lineSkip = //0
+0;
+	  ConvertYUV_A_2.increment = 1;
+	  ConvertYUV_A_2.pixelSkip = //0
+0;
+	  ConvertYUV_A_2.type = GENERIC_8;
+		
+		
+Connect {
+  RGB_2_YUV_Buffer_2, 
+  ConvertYUV_A_2,
+  //1
+1};
+		
+
+		
+		
+
+		
+		
+		Buffer CAM0_Buffer_0 {
+			CAM0.out[0],
+	GENERIC_16,
+	//1288
+1288,
+	//16
+16,
+	//2576
+2576,
+	1
+		};
+		
+		CAM0_Buffer_0.readPixels = //1288
+1288;
+		
+	Input ChGain_Exposure_A_1 = ChGain_Exposure.A[1];
+	  ChGain_Exposure_A_1.firstLine = //0
+0;
+	  ChGain_Exposure_A_1.pixels = //1288
+1288;
+	  ChGain_Exposure_A_1.lineSkip = //0
+0;
+	  ChGain_Exposure_A_1.increment = 1;
+	  ChGain_Exposure_A_1.pixelSkip = //0
+0;
+	  ChGain_Exposure_A_1.type = GENERIC_16;
+		
+		
+Connect {
+  CAM0_Buffer_0, 
+  ChGain_Exposure_A_1,
+  //1
+1};
+	Input ChGain_Exposure_A_0 = ChGain_Exposure.A[0];
+	  ChGain_Exposure_A_0.firstLine = //0
+0;
+	  ChGain_Exposure_A_0.pixels = //1288
+1288;
+	  ChGain_Exposure_A_0.lineSkip = //0
+0;
+	  ChGain_Exposure_A_0.increment = 1;
+	  ChGain_Exposure_A_0.pixelSkip = //0
+0;
+	  ChGain_Exposure_A_0.type = GENERIC_16;
+		
+		
+Connect {
+  CAM0_Buffer_0, 
+  ChGain_Exposure_A_0,
+  //1
+1};
+		
+
+		
+		
+	
+
+		
+		
+		Buffer ConvertRGB24_Buffer_0 {
+			ConvertRGB24.out[0],
+	GENERIC_8,
+	//NUM_OUT_RGB_BYTES
+3840,
+	//4
+4,
+	//NUM_OUT_RGB_BYTES
+3840,
+	1
+		};
+		
+		ConvertRGB24_Buffer_0.readPixels = //NUM_OUT_RGB_BYTES
+3840;
+		
+		
+			Input RGB_TO_DDR = FastDMA.A[2];
+			  RGB_TO_DDR.firstLine = //0
+0;
+			  RGB_TO_DDR.increment = 1;
+			
+			Connect {
+				ConvertRGB24_Buffer_0,
+				RGB_TO_DDR,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_2 {
+		FastDMA.out[2],
+	GENERIC_8,
+	//NUM_OUT_RGB_BYTES
+3840,
+	//NUM_OUT_LINES
+720,
+	//NUM_OUT_RGB_BYTES
+3840,
+	1
+	};
+	
+		FastDMA_Buffer_2.readPixels = //NUM_OUT_RGB_BYTES
+3840;
+	
+		
+	Connect { FastDMA_Buffer_2, DDR, 0 };
+	
+
+		
+		
+
+		
+		
+	
+	
+
+		
+		
+		Buffer Y_DOWNSCALE_Buffer_0 {
+			Y_DOWNSCALE.out[0],
+	GENERIC_8,
+	//NUM_OUT_Y_SCALED_BYTES
+640,
+	//4
+4,
+	//NUM_OUT_Y_SCALED_BYTES
+640,
+	1
+		};
+		
+		Y_DOWNSCALE_Buffer_0.readPixels = //NUM_OUT_Y_SCALED_BYTES
+640;
+		
+		
+			Input Y_SCALED_TO_DDR = FastDMA.A[3];
+			  Y_SCALED_TO_DDR.firstLine = //0
+0;
+			  Y_SCALED_TO_DDR.increment = 1;
+			
+			Connect {
+				Y_DOWNSCALE_Buffer_0,
+				Y_SCALED_TO_DDR,
+				//1
+1};
+
+	DDRBuffer FastDMA_Buffer_3 {
+		FastDMA.out[3],
+	GENERIC_8,
+	//NUM_OUT_Y_SCALED_BYTES
+640,
+	//NUM_OUT_Y_SCALED_LINES
+356,
+	//NUM_OUT_Y_SCALED_BYTES
+640,
+	1
+	};
+	
+		FastDMA_Buffer_3.readPixels = //NUM_OUT_Y_SCALED_BYTES
+640;
+	
+		
+	Connect { FastDMA_Buffer_3, DDR, 0 };
+	
+
+		
+		
+
+		
+		
+	

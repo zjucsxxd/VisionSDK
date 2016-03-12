@@ -1,0 +1,66 @@
+
+This document provide instructions for building and verifying the APEX-642-CL OpenCL bundle.
+
+
+**************************
+Table of Contents
+**************************
+
+- ACF 'offline' build
+- INTEGRITY build with MULTI
+   - OPENCL EXAMPLE MULTI BUILD and EXECUTION
+   - OPENCL CONFORMANCE MULTI MULTI BUILD and EXECUTION
+
+
+**************************
+ACF 'offline' build
+**************************
+Open a command line in the root folder and issue the command 'mingw32-make acfoffline'.
+
+This will invoke the autobuld on all relevant ACF graphs/processes required by the higher level
+applications/examples.
+
+Note: if "cgv_all_build" has already been compiled as described in "BuildInstructions.txt",
+this step can be skipped.
+
+**************************		
+INTEGRITY build with MULTI
+**************************
+
+It is assumed that Green Hills Integrity and Green Hills Multi are already installed and the user has a basic
+working knowledge of the Multi IDE.
+
+- Tested with the following tool versions:
+  * integrity 11.0.4
+  * multi 6.1.4
+
+****************************************
+OPENCL EXAMPLE MULTI BUILD and EXECUTION
+****************************************
+OpenCL example project is included as part of /multi/TopLevel.gpj.
+Open this top level project and compile.
+
+The following dynamic downloadable project is available and can be loaded
+and executed:
+ddl_apuocl.gpj       -> OpenCL example project
+
+Note that for ACF native kernel support, ACF 'offline" build is required first.
+
+**************************************************
+OPENCL CONFORMANCE MULTI MULTI BUILD and EXECUTION
+**************************************************
+1. Extract OpenCL conformance Loads:
+
+Extract this package "integer_ops_cloud_1.8.1.zip" into:
+\ICP_SDK\src\Features\ICP\ACL\APEX2\src\integer_ops
+
+2. Project:
+
+Open the top level project /multi/OpenCL_conformanceRelease.gpj and compile.  
+The following dynamic downloads are available and can be loaded
+and executed:
+
+dd_integerOps.gpj       -> OpenCL conformance integer operation test suite
+
+3. Conformance Test Selection:
+Please refer to "\Applications\Cognivue\OpenCL_Conformance\ConformanceGlobals.h" to switch between two test modes;

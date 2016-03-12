@@ -1,0 +1,23 @@
+#!gbuild
+[Library]
+	-bsp devtree-arm64
+	-G
+	-os_dir $__OS_DIR
+	-D__S32V234
+	-I..
+        -I../../src
+        -I../../graphs
+        -I../../../../../arm/apex/icp/include
+        -I../../../../../arm/apex/acf/include
+        -I../../../../../arm/utils/common/include
+        -I../../../../../arm/apex/apex/user/include
+        -I../../../../../arm/utils/oal/user/include
+        -I../../../../../arm/apexcv_base/apexcv_core/include
+    
+../../../../../arm/apexcv_base/histogram/src/histogram.cpp
+../../../../../arm/apexcv_base/histogram/src/apexcv_histogram.cpp
+../../../../../arm/apexcv_base/histogram/src/apexcv_histogram_ref.cpp
+
+
+
+

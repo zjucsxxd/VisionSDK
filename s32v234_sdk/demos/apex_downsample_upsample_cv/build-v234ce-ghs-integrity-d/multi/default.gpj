@@ -1,0 +1,25 @@
+#!gbuild
+macro __BSP_DIR=$__OS_DIR\$__BSP_NAME
+macro __BSP_NAME=devtree-arm64
+macro __BUILD_DIR=%expand_path(.)
+macro __LIBS_DIR_BASE=${__OS_DIR}/libs
+macro __OS_DIR=$INTEGRITY_ROOT_PATH
+macro __VISION_S32V234_SDK=%expand_path(../../../..)
+import INTEGRITY_ROOT_PATH
+primaryTarget=arm64_integrity.tgt
+customization=$__OS_DIR/target/integrity.bod
+#customization=$__VISION_S32V234_SDK/build/nbuild/platforms/build-v234ce-ghs-integrity-d/acf.bod
+[Project]
+	-bsp devtree-arm64
+	-G
+	-D__S32V234
+	-D__INTEGRITY__
+	{streq(__MULTI_HOST__, "win32")} -DINPUT_PATH_REL=\\..\\..\\data\\
+	{streq(__MULTI_HOST__, "win32")} -DOUTPUT_PATH_REL=\\..\\..\\data\\output\\
+	{streq(__MULTI_HOST__, "linux86")} -DINPUT_PATH_REL=/../../data/
+	{streq(__MULTI_HOST__, "linux86")} -DOUTPUT_PATH_REL=/../../data/output/
+	-object_dir=objs
+	:sourceDir=.
+	:optionsFile=$(__OS_DIR)/target/$(__BSP_NAME).opt
+	-os_dir $__OS_DIR
+apex_downsample_upsample_cv_app.gpj		[INTEGRITY Application]

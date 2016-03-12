@@ -1,0 +1,21 @@
+#!gbuild
+[Library]
+	-object_dir=${__VISION_S32V234_SDK}/libs/arm/io/gdi/build-v234ce-ghs-integrity-d/
+	-DINTEGRITY
+	{optgroup=GhsCommonOptions} -o ${__VISION_S32V234_SDK}/libs/arm/io/gdi/build-v234ce-ghs-integrity-d/gdi_lib.a
+
+../../include/gdi_types_public.hpp
+../../include/gdi_extras.hpp
+../../include/gdi_draw_public.hpp
+../../include/gdi_com.hpp
+../../src/gdi_com.cpp
+../../include/gdi_com_private.hpp
+../../include/gdi_com_private.hpp
+../../include/gdi_public.hpp
+../../src/gdi_public.cpp
+../../include/gdi_image.hpp
+../../src/gdi_image.cpp
+../../include/gdi_private.hpp
+../../src/gdi_private.cpp
+../../include/gdi_utils.hpp
+../../src/gdi_utils.cpp 

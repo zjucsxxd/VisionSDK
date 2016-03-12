@@ -1,0 +1,17 @@
+#!gbuild
+#component integrity_os_modules_file_system_copy
+[Program]
+	-DVFS_NO_MAP
+	-livfsserver
+#	-lstorage-core
+#	-lstorage-driver-pseudo
+	-lramdisk
+	-liso9660
+	-lffs
+	-rawimport $__VISION_S32V234_SDK/os/integrity/aarch64/gdi_kernel/multi/proj/static.iso
+	-follow_section ".text=.staticdisk ALIGN(__INTEGRITY_MaxPageAlign) : {static.iso(.raw)}"
+tgt/INTEGRITY.ld
+vfs_main.c
+#ivfsserver_module.int		[Module Integrate File]
+mounttable.c
+staticdisk.c

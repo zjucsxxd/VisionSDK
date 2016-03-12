@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{581DDC7D-0CD6-4EF5-92AB-DA3B56E91185}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{8D21B6A4-89A8-4ADB-A210-317592B25548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphs">
+      <UniqueIdentifier>{78f439b9-fce5-442b-b4ea-22445d16407d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\graphs\apu_gauss_5x5_apu_process_desc.hpp">
+      <Filter>Graphs</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\graphs\apu_gauss_5x5_graph.hpp">
+      <Filter>Graphs</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
