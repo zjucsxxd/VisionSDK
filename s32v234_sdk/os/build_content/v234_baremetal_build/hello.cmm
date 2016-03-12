@@ -1,0 +1,11 @@
+; This is the test-specific Lauterbach debug script
+
+do ..\..\..\os\debug\lauterbach\S32V234.cmm
+do ..\..\..\os\debug\lauterbach\S32V234-CA53.cmm
+
+d.load hello.elf /verify /plusvm
+
+d.list
+go main
+
+ENDDO

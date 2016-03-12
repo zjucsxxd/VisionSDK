@@ -1,0 +1,9 @@
+/* KMEM Kernel Firmware Srecord */
+
+char kmem_srec[] = {\
+"\
+S00C00006B6D656D2E737265636E\
+S10F0000040100021000812007FF10031F\
+S9030000FC\
+"\
+};

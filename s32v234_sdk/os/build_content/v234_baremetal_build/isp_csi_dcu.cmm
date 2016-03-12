@@ -1,0 +1,112 @@
+; This is the test-specific Lauterbach debug script
+
+do ..\..\..\os\debug\lauterbach\S32V234.cmm
+do ..\..\..\os\debug\lauterbach\S32V234-CA53.cmm
+
+d.load isp_csi_dcu.elf /verify /plusvm
+
+y.spath.reset
+y.spath ../src
+y.spath ../../../libs/arm/io/sdi/src
+y.spath ../../../libs/arm/isp/sequencer/user/src
+y.spath ../../../libs/arm/isp/sequencer/kernel/src
+y.spath ../../../libs/arm/startup/v234ce_standalone/src
+y.spath ../../../libs/arm/isp/sram/kernel/src
+y.spath ../../../libs/arm/utils/oal/user/src/standalone
+y.spath ../../../libs/arm/io/frame_io/src
+y.spath ../../../libs/arm/io/dcu/src
+y.spath ../../../libs/arm/io/i2c/src
+y.spath ../../../libs/arm/isp/csi/kernel/src
+y.spath ../../../libs/arm/isp/csi/user/src
+
+do a53_win.cmm
+
+GOSUB openXRDC
+
+go main
+
+ENDDO
+
+openXRDC:
+
+d.s ZSD:0x40006000 %long 0x00000000
+d.s ZSD:0x40006004 %long 0xffffffff
+d.s ZSD:0x4000600c %long 0x80000000
+
+d.s ZSD:0x40006020 %long 0x00000000
+d.s ZSD:0x40006024 %long 0xffffffff
+d.s ZSD:0x4000602c %long 0x80000000
+
+d.s ZSD:0x40006040 %long 0x00000000
+d.s ZSD:0x40006044 %long 0xffffffff
+d.s ZSD:0x4000604c %long 0x80000000
+
+d.s ZSD:0x40006060 %long 0x00000000
+d.s ZSD:0x40006064 %long 0xffffffff
+d.s ZSD:0x4000606c %long 0x80000000
+
+d.s ZSD:0x40006080 %long 0x00000000
+d.s ZSD:0x40006084 %long 0xffffffff
+d.s ZSD:0x4000608c %long 0x80000000
+
+d.s ZSD:0x400060a0 %long 0x00000000
+d.s ZSD:0x400060a4 %long 0xffffffff
+d.s ZSD:0x400060ac %long 0x80000000
+
+d.s ZSD:0x400060c0 %long 0x00000000
+d.s ZSD:0x400060c4 %long 0xffffffff
+d.s ZSD:0x400060cc %long 0x80000000
+
+d.s ZSD:0x400060e0 %long 0x00000000
+d.s ZSD:0x400060e4 %long 0xffffffff
+d.s ZSD:0x400060ec %long 0x80000000
+
+d.s ZSD:0x40006100 %long 0x00000000
+d.s ZSD:0x40006104 %long 0xffffffff
+d.s ZSD:0x4000610c %long 0x80000000
+
+d.s ZSD:0x40006120 %long 0x00000000
+d.s ZSD:0x40006124 %long 0xffffffff
+d.s ZSD:0x4000612c %long 0x80000000
+
+d.s ZSD:0x40006140 %long 0x00000000
+d.s ZSD:0x40006144 %long 0xffffffff
+d.s ZSD:0x4000614c %long 0x80000000
+
+d.s ZSD:0x40006160 %long 0x00000000
+d.s ZSD:0x40006164 %long 0xffffffff
+d.s ZSD:0x4000616c %long 0x80000000
+
+d.s ZSD:0x40006180 %long 0x00000000
+d.s ZSD:0x40006184 %long 0xffffffff
+d.s ZSD:0x4000618c %long 0x80000000
+
+d.s ZSD:0x400061a0 %long 0x00000000
+d.s ZSD:0x400061a4 %long 0xffffffff
+d.s ZSD:0x400061ac %long 0x80000000
+
+d.s ZSD:0x400061c0 %long 0x00000000
+d.s ZSD:0x400061c4 %long 0xffffffff
+d.s ZSD:0x400061cc %long 0x80000000
+
+d.s ZSD:0x400061e0 %long 0x00000000
+d.s ZSD:0x400061e4 %long 0xffffffff
+d.s ZSD:0x400061ec %long 0x80000000
+
+d.s ZSD:0x40006200 %long 0x00000000
+d.s ZSD:0x40006204 %long 0xffffffff
+d.s ZSD:0x4000620c %long 0x80000000
+
+d.s ZSD:0x40006220 %long 0x00000000
+d.s ZSD:0x40006224 %long 0xffffffff
+d.s ZSD:0x4000622c %long 0x80000000
+
+d.s ZSD:0x40006240 %long 0x00000000
+d.s ZSD:0x40006244 %long 0xffffffff
+d.s ZSD:0x4000624c %long 0x80000000
+
+d.s ZSD:0x40006260 %long 0x00000000
+d.s ZSD:0x40006264 %long 0xffffffff
+d.s ZSD:0x4000626c %long 0x80000000
+
+return
