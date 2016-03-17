@@ -13,6 +13,7 @@ sdi-cpp.o .sdi.cpp.d: ../src/sdi.cpp \
  ../../../../../../s32v234_sdk/libs/arm/io/gdi/include/gdi_image.hpp \
  ../../../../../../s32v234_sdk/libs/arm/io/gdi/include/gdi_types_public.hpp \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core.hpp \
+ ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/types_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/version.hpp \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/operations.hpp \
@@ -72,6 +73,7 @@ sdi-cpp.o .sdi.cpp.d: ../src/sdi.cpp \
  ../../../../../../s32v234_sdk/libs/arm/io/gdi/include/gdi_image.hpp \
  ../../../../../../s32v234_sdk/libs/arm/io/gdi/include/gdi_types_public.hpp \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core.hpp \
+ ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/types_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/version.hpp \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/operations.hpp \

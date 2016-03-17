@@ -44,6 +44,8 @@
 #define __OPENCV_CORE_MATRIX_OPERATIONS_HPP__
 
 #ifndef SKIP_INCLUDES
+#include <opencv2/core/core_c.h>
+#include <opencv2/core/core.hpp>
 #include <limits.h>
 #include <string.h>
 #endif // SKIP_INCLUDES
@@ -274,8 +276,8 @@ template<typename _Tp> inline Mat::Mat(const MatCommaInitializer_<_Tp>& commaIni
 inline Mat::~Mat()
 {
     release();
-    if( step.p != step.buf )
-        fastFree(step.p);
+    //if( step.p != step.buf )
+        //fastFree(step.p);
 }
 
 inline Mat& Mat::operator = (const Mat& m)
@@ -364,7 +366,7 @@ inline void Mat::addref()
 inline void Mat::release()
 {
     if( refcount && CV_XADD(refcount, -1) == 1 )
-        deallocate();
+        //deallocate();
     data = datastart = dataend = datalimit = 0;
     for(int i = 0; i < dims; i++)
         size.p[i] = 0;

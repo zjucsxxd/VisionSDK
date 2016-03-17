@@ -42,6 +42,7 @@ main-cpp.o .main.cpp.d: ../src/main.cpp \
  ../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_errors.h \
  ../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_types.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core.hpp \
+ ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/types_c.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/version.hpp \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/operations.hpp \
@@ -59,7 +60,6 @@ main-cpp.o .main.cpp.d: ../src/main.cpp \
  ../../../../s32v234_sdk/libs/arm/io/frame_io/include/frame_output_base.h \
  ../../../../s32v234_sdk/libs/arm/io/frame_io/include/video/fsl_dcu_ioctl.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/opencv.hpp \
- ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/flann/miniflann.hpp \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/flann/defines.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/flann/config.h \
@@ -126,6 +126,7 @@ main-cpp.o .main.cpp.d: ../src/main.cpp \
  ../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_errors.h \
  ../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_types.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core.hpp \
+ ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/types_c.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/version.hpp \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/operations.hpp \
@@ -143,7 +144,6 @@ main-cpp.o .main.cpp.d: ../src/main.cpp \
  ../../../../s32v234_sdk/libs/arm/io/frame_io/include/frame_output_base.h \
  ../../../../s32v234_sdk/libs/arm/io/frame_io/include/video/fsl_dcu_ioctl.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/opencv.hpp \
- ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/flann/miniflann.hpp \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/flann/defines.h \
  ../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/flann/config.h \

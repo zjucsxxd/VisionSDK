@@ -32,6 +32,7 @@ frame_input_isp-cpp.o .frame_input_isp.cpp.d: ../src/frame_input_isp.cpp \
  ../../../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_errors.h \
  ../../../../../../s32v234_sdk/libs/apu/common/include/global_types.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core.hpp \
+ ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/types_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/version.hpp \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/operations.hpp \
@@ -88,6 +89,7 @@ frame_input_isp-cpp.o .frame_input_isp.cpp.d: ../src/frame_input_isp.cpp \
  ../../../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_errors.h \
  ../../../../../../s32v234_sdk/libs/apu/common/include/global_types.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core.hpp \
+ ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/types_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/version.hpp \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/operations.hpp \

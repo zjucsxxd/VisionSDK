@@ -10,6 +10,7 @@ sdi_graph-cpp.o .sdi_graph.cpp.d: ../src/sdi_graph.cpp \
  ../../../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_errors.h \
  ../../../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_types.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core.hpp \
+ ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/types_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/version.hpp \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/operations.hpp \
@@ -53,6 +54,7 @@ sdi_graph-cpp.o .sdi_graph.cpp.d: ../src/sdi_graph.cpp \
  ../../../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_errors.h \
  ../../../../../../s32v234_sdk/libs/arm/utils/oal/user/include/global_types.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core.hpp \
+ ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/core_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/types_c.h \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/version.hpp \
  ../../../../../../s32v234_sdk/ocv/linux-arm64/include/opencv2/core/operations.hpp \

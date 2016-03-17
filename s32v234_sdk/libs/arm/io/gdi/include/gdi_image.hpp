@@ -45,10 +45,10 @@
   #define int64 ocv_int64
   #define uint64 ocv_uint64
     #include "opencv2/core/core.hpp"
-  #undef  int64
-  #undef  uint64
-  #define int64 ambiguous use global_int64 or ocv_int64
-  #define uint64 ambiguous use global_uint64 or ocv_uint64
+  //#undef  int64
+  //#undef  uint64
+  //#define int64 ambiguous use global_int64 or ocv_int64
+  //#define uint64 ambiguous use global_uint64 or ocv_uint64
 #else 
   #define int64 global_int64
   #define uint64 global_uint64

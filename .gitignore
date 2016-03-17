@@ -2,7 +2,7 @@
 all_src_cpp_and_h.cpp
 rootfs.tar
 build_content.tar.gz
-
+Linaro/
 ### C ###
 # Object files
 *.o
