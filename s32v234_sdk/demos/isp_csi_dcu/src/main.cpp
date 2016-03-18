@@ -39,7 +39,8 @@
 #include "seq_public.h"
 #include <ctime> // added to calculate FPS ~~RAY ADDED THIS~~
 #include <opencv2/opencv.hpp>
-#include <typeinfo>
+
+using namespace cv;
 //***************************************************************************
 
 // Possible to set input resolution (must be supported by the DCU)
@@ -88,6 +89,16 @@ int32_t SigintSetup(void);
 
 //***************************************************************************
 
+// //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+// void rotate(cv::Mat& src, double angle, cv::Mat& dst)
+// {
+//     int len = std::max(src.cols, src.rows);
+//     cv::Point2f pt(len/2., len/2.);
+//     cv::Mat r = cv::getRotationMatrix2D(pt, angle, 1.0);
+//     cv::warpAffine(src, dst, r, cv::Size(len, len));
+// }
+// //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 static bool sStop = false; ///< to signal Ctrl+c from command line
 
 #endif // #ifndef __STANDALONE__
@@ -117,7 +128,6 @@ int main(int, char **)
   }
 
   printf("Press Ctrl+C to terminate the demo.\n");
-  printf("Jake loves cocks.\n");
   io::FrameOutputV234Fb lDcuOutput(WIDTH,
                         HEIGHT,
                         io::IO_DATA_DEPTH_08,
@@ -156,26 +166,55 @@ int main(int, char **)
 
   lIsp.StartCam();
 
-
   lpFrame = lIsp.GetFrame();
+string txt = "FPS: ";
+cv::Mat text_mat;
   while(lpFrame)
   {
 	//std::cout << typeid(lpFrame).name() << "\n";
     lpFrame = OAL_MemoryReturnAddress(
                           lpFrame,
                           ACCESS_PHY + 1); // get virtual address
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
+    // printf("before\n");
+    // int cunt = 0;
+    using namespace cv;
+
+    // char *ptr = (char*)lpFrame;
+    //ptr[0] = ptr[1] = ptr[2] = 255;
+
+    char *ptr = (char*)lpFrame;
+    Mat frame = cv::Mat(720, 1280, CV_8UC3, lpFrame);
+    Point txtPt(250,250);
+    putText(frame, txt, txtPt,1, 2, cv::Scalar(0, 0, 255),2, false);
+    // rotate(text_mat, -180, text_mat);
+    // frame = frame+text_mat;
+    //cv::rotate()
+    //
+    // cv::Mat buff = cv::Mat(1080, 1920, CV_8UC3, lp_buffer);
+    //
+    //
+    // neon_memcpy_rotate_1280((char *)lp_buffer, (char *)lpFrame);
+
     lDcuOutput.PutFrame(lpFrame, false);
-    lFrmCnt++;
+    // printf("after\n");
+
 	clock_t begin = clock();
 	lpFrame = lIsp.GetFrame();
 	clock_t end = clock();
-	//double elapsedTime = double(end - begin)/ CLOCKS_PER_SEC;
-	//double fps = 1/elapsedTime;
-//	string txt = sprintf("FPS: %.2lf \n", fps);
-//	string txt = "HELLO WORLD!";
-	//cv::Point txtPt(10,10);
-//	putText(lpFrame, txt, txtPt,1, 2, cv::Scalar(4, 1, 8),2, false);
-//	printf("%s \n", txt);
+	double elapsedTime = double(end - begin)/ CLOCKS_PER_SEC;
+	double fps = 1/elapsedTime;
+	//string txt = "HELLO WORLD!";
+	// putText(lpFrame, txt, txtPt,1, 2, cv::Scalar(4, 1, 8),2, false);
+  txt = "FPS: " + std::to_string(fps);
+  printf("FPS: %.2lf \n", fps);
+
+
+
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+    lFrmCnt++;
+
 #ifndef __STANDALONE__
     if(sStop)
     {

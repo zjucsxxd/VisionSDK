@@ -40,12 +40,12 @@ SDK_ROOT := ../../../../s32v234_sdk
 ARM_APP = isp_csi_dcu
 ISP_GRAPH = mipi_simple
 
+
 ##############################################################################
 # isp_app
 ##############################################################################
 
 VPATH = ../src/lib
-
 ARM_APP_SRCS += main.cpp \
 
 ARM_INCS +=                                                      \
@@ -69,7 +69,7 @@ ARM_INCS +=                                                      \
     -I$(SDK_ROOT)/isp/graphs/$(ISP_GRAPH)/inc                    \
     -I$(SDK_ROOT)/libs/arm/isp/csi/user/include                  \
     -I$(SDK_ROOT)/libs/arm/isp/csi/kernel/include                \
-    -I$(SDK_ROOT)/libs/arm/io/dcu/include
+		-I$(SDK_ROOT)/libs/arm/io/dcu/include                        \
 
 ARM_APP_LIBS +=                                                               \
     $(SDK_ROOT)/libs/arm/io/frame_io/$(ODIR)/libframe_io.a                    \
@@ -82,12 +82,39 @@ ARM_APP_LIBS +=                                                               \
     $(SDK_ROOT)/libs/arm/isp/sram/user/$(ODIR)/libsramdrv.a                   \
     $(SDK_ROOT)/isp/firmware/$(ODIR)/sequencer.a                              \
     $(SDK_ROOT)/isp/graphs/$(ISP_GRAPH)/$(ODIR)/$(ISP_GRAPH).a                \
-    
-ifneq (,$(findstring gnu-sa,$(ODIR))) 
+
+ifneq (,$(findstring gnu-sa,$(ODIR)))
   ARM_APP_LIBS +=                                                             \
     $(SDK_ROOT)/libs/arm/io/i2c/$(ODIR)/libi2c.a                              \
     $(SDK_ROOT)/libs/arm/apex/apex/user/$(ODIR)/libapex2drv.a                 \
     $(SDK_ROOT)/libs/arm/isp/sram/user/$(ODIR)/libsramdrv.a                   \
     $(SDK_ROOT)/libs/arm/io/dcu/$(ODIR)/libdcu.a                              \
-    
+
 endif
+#$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+##############################################################################
+# LINUX SPECIFIC INCLUDES
+##############################################################################
+  ARM_LDOPTS +=                                                            \
+      -lopencv_core                                                        \
+      -lopencv_highgui                                                     \
+      -lopencv_imgproc                                                     \
+      -lopencv_features2d                                                  \
+      -lopencv_flann                                                       \
+      -lavcodec                                                            \
+      -lavdevice                                                           \
+      -lavfilter                                                           \
+      -lavformat                                                           \
+      -lavutil                                                             \
+      -lswresample                                                         \
+      -lswscale															\
+	-lrt																\
+	-lopencv_objdetect                                                  \
+	-lopencv_ml                                                          \
+
+#-lopencv_video                                                           \
+#    -lopencv_videostab                                                       \
+#   -lopencv_calib3d                                                         \
+#    -lopencv_gpu                                                             \
+#   -lopencv_photo                                                           \
+#  -lopencv_legacy                                                          \
