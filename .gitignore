@@ -9,7 +9,8 @@ Linaro/
 *.ko
 *.obj
 *.elf
-
+*.d
+*.el
 # Precompiled Headers
 *.gch
 *.pch
