@@ -48,6 +48,10 @@ using namespace cv;
 #define HEIGHT          720 ///< height of DDR buffer in pixels
 #define DDR_BUFFER_CNT  3    ///< number of DDR buffers per ISP stream
 
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+#define EXPOSURE_ENGINE 1,1
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
 //***************************************************************************
 
 /************************************************************************/
@@ -88,15 +92,38 @@ void SigintHandler(int aSigNo);
 int32_t SigintSetup(void);
 
 //***************************************************************************
+void ExposureConfigure();
+void rotate(cv::Mat& src, double angle, cv::Mat& dst);
+//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+void ExposureConfigure()
+{
+  // modify camera geometry
+  SONY_Geometry_t lGeo;
+  SONY_GeometryGet(CSI_IDX_0, &lGeo);
+  lGeo.mVerFlip = 1;
+  lGeo.mHorFlip = 0;
+  //lGeo.mFps     = 20;
+  SONY_GeometrySet(CSI_IDX_0,&lGeo);
 
-// //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
-// void rotate(cv::Mat& src, double angle, cv::Mat& dst)
-// {
-//     int len = std::max(src.cols, src.rows);
-//     cv::Point2f pt(len/2., len/2.);
-//     cv::Mat r = cv::getRotationMatrix2D(pt, angle, 1.0);
-//     cv::warpAffine(src, dst, r, cv::Size(len, len));
-// }
+  // update exposure engine (IPU) parameters
+  seq_setReg(EXPOSURE_ENGINE, 0, 0x70, 0xf08);  // GPR0 (IPUS)
+  seq_setReg(EXPOSURE_ENGINE, 0, 0x71, 0xf08);  // GPR1 (IPUS)
+  seq_setReg(EXPOSURE_ENGINE, 0, 0x72, 0xf08);  // GPR2 (IPUS)
+  seq_setReg(EXPOSURE_ENGINE, 0, 0x73, 0xf08);  // GPR3 (IPUS)
+  seq_setReg(EXPOSURE_ENGINE, 0, 0x74, 490);  // GPR4 (IPUS)
+  seq_setReg(EXPOSURE_ENGINE, 0, 0x75, 256);  // GPR5 (IPUS)
+  seq_setReg(EXPOSURE_ENGINE, 0, 0x76, 256);  // GPR6 (IPUS)
+  seq_setReg(EXPOSURE_ENGINE, 0, 0x77, 402);  // GPR7 (IPUS)
+} // ExposureConfigure;
+
+void rotate(cv::Mat& src, double angle, cv::Mat& dst)
+{
+    int len = std::max(src.cols, src.rows);
+    cv::Point2f pt(len/2., len/2.);
+    cv::Mat r = cv::getRotationMatrix2D(pt, angle, 1.0);
+    cv::warpAffine(src, dst, r, cv::Size(len, len));
+    r.release();
+}
 // //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 
 static bool sStop = false; ///< to signal Ctrl+c from command line
@@ -159,6 +186,9 @@ int main(int, char **)
   //*** Start ISP processing ***
   lIsp.Start();
 
+  // sony camera configuration
+  ExposureConfigure();
+
   // Frame buffer
   void *lpFrame = NULL;
 
@@ -167,51 +197,56 @@ int main(int, char **)
   lIsp.StartCam();
 
   lpFrame = lIsp.GetFrame();
-string txt = "FPS: ";
-cv::Mat text_mat;
+
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  int size = 200;
+  Point txtPt(10,size-30); // text position
+  Scalar color(0, 255, 0); // text
+  string txt = "FPS: ";
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+
   while(lpFrame)
   {
+    clock_t begin = clock();
+
 	//std::cout << typeid(lpFrame).name() << "\n";
     lpFrame = OAL_MemoryReturnAddress(
                           lpFrame,
                           ACCESS_PHY + 1); // get virtual address
-//$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
+  Mat frame = Mat(720, 1280, CV_8UC3, lpFrame);
+  //
+  // Rect roi; // direct modification: only square dimension works
+  // roi.x = frame.cols - size;
+  // roi.x = 1280 - size;
+  // roi.y = 0;
+  // roi.width = size;
+  // roi.height = size;
 
-    // printf("before\n");
-    // int cunt = 0;
-    using namespace cv;
+  putText(frame, txt, txtPt, 1, 2, color, 2, false);
 
-    // char *ptr = (char*)lpFrame;
-    //ptr[0] = ptr[1] = ptr[2] = 255;
+  // empty matrix to fill in texts
+  //Mat text_mat(roi.height, roi.width, CV_8UC3);
 
-    char *ptr = (char*)lpFrame;
-    Mat frame = cv::Mat(720, 1280, CV_8UC3, lpFrame);
-    Point txtPt(250,250);
-    putText(frame, txt, txtPt,1, 2, cv::Scalar(0, 0, 255),2, false);
-    // rotate(text_mat, -180, text_mat);
-    // frame = frame+text_mat;
-    //cv::rotate()
-    //
-    // cv::Mat buff = cv::Mat(1080, 1920, CV_8UC3, lp_buffer);
-    //
-    //
-    // neon_memcpy_rotate_1280((char *)lp_buffer, (char *)lpFrame);
+  // x,y of text_mat: only has [0-height],[0-width]
+  // width and height diff than frame's w and h
+  // Scalar(B,G,R) each ranges 0-255
+  //putText(text_mat, txt, txtPt, 1, 2, color, 2, false);
 
-    lDcuOutput.PutFrame(lpFrame, false);
-    // printf("after\n");
+  //rotate(text_mat, 180, text_mat);
+  //frame(roi) = frame(roi) + text_mat;
+  lDcuOutput.PutFrame(lpFrame, false);
 
-	clock_t begin = clock();
+  // Compute FPS
+	//clock_t begin = clock();
 	lpFrame = lIsp.GetFrame();
 	clock_t end = clock();
 	double elapsedTime = double(end - begin)/ CLOCKS_PER_SEC;
 	double fps = 1/elapsedTime;
-	//string txt = "HELLO WORLD!";
-	// putText(lpFrame, txt, txtPt,1, 2, cv::Scalar(4, 1, 8),2, false);
   txt = "FPS: " + std::to_string(fps);
-  printf("FPS: %.2lf \n", fps);
-
-
-
+  printf("FRAME:  %.2lf FPS: %.2lf \n", (double)lFrmCnt, fps);
+  //text_mat.release();
+  frame.release();
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
     lFrmCnt++;
 
@@ -221,7 +256,7 @@ cv::Mat text_mat;
       break; // break if Ctrl+C pressed
     } // if Ctrl+C
 #endif //#ifndef __STANDALONE__
-  }
+  } // while
 
   //*** Stop ISP processing ***
   lIsp.Stop();
