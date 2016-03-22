@@ -1,0 +1,20 @@
+--- with rotation ---
+Mem: 188872K used, 2896K free, 44K shrd, 820K buff, 15236K cached
+CPU:  24% usr   0% sys   0% nic  74% idle   0% io   0% irq   0% sirq
+Load average: 0.33 0.08 0.03 4/54 519
+  PID  PPID USER     STAT   VSZ %VSZ %CPU COMMAND
+  518   512 root     R     450m 240%  25% ./isp_csi_dcu.elf
+
+--- without rotation ---
+Mem: 189160K used, 2608K free, 44K shrd, 212K buff, 3576K cached
+CPU:  25% usr   0% sys   0% nic  74% idle   0% io   0% irq   0% sirq
+Load average: 0.97 0.50 0.20 3/57 531
+  PID  PPID USER     STAT   VSZ %VSZ %CPU COMMAND
+  529   522 root     R     965m 515%  25% ./isp_csi_dcu.elf
+
+--- without new keyword in Mat constructor ---
+Mem: 189312K used, 2456K free, 44K shrd, 196K buff, 1024K cached
+CPU:  24% usr   0% sys   0% nic  74% idle   0% io   0% irq   0% sirq
+Load average: 0.97 0.53 0.22 3/54 525
+  PID  PPID USER     STAT   VSZ %VSZ %CPU COMMAND
+  524   517 root     R     979m 522%  25% ./isp_csi_dcu.elf
